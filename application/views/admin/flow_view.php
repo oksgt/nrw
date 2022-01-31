@@ -531,10 +531,8 @@
                 }();
 
                 let output;
-                console.log(result_structure);
                 output = result_structure.reduce(aggregateTree, {result: {} }).result;
-                
-
+            
                 let t = JSON.stringify(output);
 
                 t = t.replace(/{}/g, '""');
@@ -554,6 +552,13 @@
                     });
                     return tmp;
                 }();
+                console.log(result_node_detail);
+                // for (result_node_detail in obj ) {
+                //     console.log(obj[kode]);
+                // }
+                for (var key in result_node_detail) {
+                    console.log(key);
+                }
 
                 let node_style = {
                     'box-shadow': '0 0 5px 1px blue'
