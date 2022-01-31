@@ -35,6 +35,7 @@ class IpaDetail extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = format_month_year($r->periode);
             $row[] = $r->debit_produksi . " l/dt ( " . conver_ldt_m3($r->debit_produksi) . " ) ";
             $row[] = $r->debit_distribusi . " l/dt ( " . conver_ldt_m3($r->debit_distribusi) . " ) ";
             $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
@@ -68,12 +69,14 @@ class IpaDetail extends CI_Controller
         $this->form_validation->set_rules('input_kehilangan_air', 'Kehilangan Air', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_jml_pelanggan', 'Jumlah Pelanggan', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_kapasitas_pompa', 'Kapasitas Pompa', 'required', array('required' => 'Wajib Diisi'));
+        $this->form_validation->set_rules('input_periode', 'Periode', 'required', array('required' => 'Wajib Diisi'));
 
         if ($this->form_validation->run()) {
             $array = array('success' => true);
         } else {
             $array = array(
                 'error' => true,
+                'input_periode_error_detail'             => form_error('input_periode', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_debit_produksi_error_detail'     => form_error('input_debit_produksi', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_debit_distribusi_error_detail'   => form_error('input_debit_distribusi', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_air_terjual_error_detail'        => form_error('input_air_terjual', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
@@ -105,6 +108,7 @@ class IpaDetail extends CI_Controller
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
             'kapasitas_pompa'   => $this->input->post('input_kapasitas_pompa'),
+            'periode'          => $this->input->post('input_periode'),
             'input_date'        => Date('Y-m-d H:i:s'),
             'is_del'            => 0,
         );
@@ -132,6 +136,7 @@ class IpaDetail extends CI_Controller
             'air_terjual'       => $this->input->post('input_air_terjual'),
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
+            'periode'          => $this->input->post('input_periode'),
             'kapasitas_pompa'   => $this->input->post('input_kapasitas_pompa'),
             'input_date'        => Date('Y-m-d H:i:s'),
             'is_del'            => 0,

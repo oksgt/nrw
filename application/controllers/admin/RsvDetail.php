@@ -35,6 +35,7 @@ class RsvDetail extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = format_month_year($r->periode);
             $row[] = $r->debit_input . " l/dt ( " . conver_ldt_m3($r->debit_input) . " ) ";
             $row[] = $r->debit_distribusi . " l/dt ( " . conver_ldt_m3($r->debit_distribusi) . " ) ";
             $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
@@ -62,6 +63,7 @@ class RsvDetail extends CI_Controller
     public function validation()
     {
         $this->form_validation->set_rules('input_debit_input', 'Debit Input', 'required', array('required' => 'Wajib Diisi'));
+        $this->form_validation->set_rules('input_periode', 'Periode', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_debit_distribusi', 'Debit Distribusi', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_air_terjual', 'Air Terjual', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_kehilangan_air', 'Kehilangan Air', 'required', array('required' => 'Wajib Diisi'));
@@ -77,6 +79,7 @@ class RsvDetail extends CI_Controller
                 'input_air_terjual_error_detail'        => form_error('input_air_terjual', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_kehilangan_air_error_detail'     => form_error('input_kehilangan_air', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_jml_pelanggan_error_detail'      => form_error('input_jml_pelanggan', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
+                'input_periode_error_detail'             => form_error('input_periode', '<b class="fa fa-exclamation-triangle"></b> ', ' ')
             );
         }
         echo json_encode($array);
@@ -99,6 +102,7 @@ class RsvDetail extends CI_Controller
             'debit_input'       => $this->input->post('input_debit_input'),
             'debit_distribusi'  => $this->input->post('input_debit_distribusi'),
             'air_terjual'       => $this->input->post('input_air_terjual'),
+            'periode'           => $this->input->post('input_periode'),
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
             'input_date'        => Date('Y-m-d H:i:s'),
@@ -127,6 +131,7 @@ class RsvDetail extends CI_Controller
             'debit_distribusi'  => $this->input->post('input_debit_distribusi'),
             'air_terjual'       => $this->input->post('input_air_terjual'),
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
+            'periode'           => $this->input->post('input_periode'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
             'input_date'        => Date('Y-m-d H:i:s'),
             'is_del'            => 0,

@@ -33,6 +33,24 @@ class Flowkomponen extends CI_Controller
         }
     }
 
+    public function fetch_existing_node($id){
+        $existing_node = $this->Komponen_model->get_existing_node($id);
+        $option = '<option value="x">-- Silahkan Pilih --</option>
+        <option value=""></option>';
+        if(!empty($existing_node->result())){
+            foreach ($existing_node->result() as $row) { 
+                if($row->step == 5){
+                    $option_name = $row->step_name . ' - ' . $row->kode;
+                } else {
+                    $option_name = $row->step_name . ' - ' . $row->name ;
+                }
+                $option .= '<option value="'.$row->id.'">'.$option_name.'</option>';
+            }
+        }
+
+        echo $option;
+    }
+
     public function ajax_list($root)
     {
         $list = $this->Komponen_model->get_datatables($root);
@@ -42,8 +60,19 @@ class Flowkomponen extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] = $spam->step_name . ' - ' . $spam->name;
-            $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
+            $row[] = $spam->kode;
+            if($spam->step == 5){
+                $row[] = $spam->step_name . ' - ' . $spam->kode;
+            } else {
+                $row[] = $spam->step_name . ' - ' . $spam->name;
+            }
+
+            if($spam->parent_step == 5){
+                $row[] = $spam->parent_step_name . ' - ' . $spam->parent_step_kode;
+            } else {
+                $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
+            }
+            // $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
 
             $string = strip_tags($spam->url);
             if (strlen($string) > 20) {
@@ -64,10 +93,18 @@ class Flowkomponen extends CI_Controller
             // $row[] = $spam->step_name;
 
             //add html for action
-            $row[] = '
-            <a class="btn btn-sm btn-info" href="'.base_url('index.php/').'detailkomponen/'.$spam->id.'" title="Nilai Parameter"><i class="fas fa-list"></i></a>
-            <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
-            <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
+            if($spam->step == 5){
+                $row[] = '
+                <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
+                <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
+            } else {
+                // $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
+                $row[] = '
+                <a class="btn btn-sm btn-info" href="'.base_url('index.php/').'detailkomponen/'.$spam->id.'" title="Nilai Parameter"><i class="fas fa-list"></i></a>
+                <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
+                <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
+            }
+            
             $data[] = $row;
             // $no++;
         }
@@ -83,7 +120,7 @@ class Flowkomponen extends CI_Controller
 
     public function validation()
     {
-        $this->form_validation->set_rules('input_nama_komponen', 'SPAM Name', 'required', array('required' => 'Wajib Diisi'));
+        // $this->form_validation->set_rules('input_nama_komponen', 'SPAM Name', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_parent', 'Parent', 'callback_validasi_pilih');
         $this->form_validation->set_rules('input_step', 'Step', 'callback_validasi_pilih');
 
@@ -92,7 +129,7 @@ class Flowkomponen extends CI_Controller
         } else {
             $array = array(
                 'error' => true,
-                'input_nama_komponen_error_detail'   => form_error('input_nama_komponen', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
+                // 'input_nama_komponen_error_detail'   => form_error('input_nama_komponen', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_parent_error_icon'  => form_error('input_parent', '', ''),
                 'input_step_error_icon'  => form_error('input_step', '', ''),
             );
@@ -110,21 +147,33 @@ class Flowkomponen extends CI_Controller
         }
     }
 
+    public function validasi_kode($str)
+    {
+        $data = $this->Komponen_model->getByKode($str)->row_array();
+        if (!empty($data)) {
+            $this->form_validation->set_message('validasi_kode', '<b class="fa fa-exclamation-triangle"></b> Kode Logger '.$str.' Sudah Ada');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
     public function insert()
     {
         $data = array(
             'root'      => $this->input->post('root'),
-            'pid'       => ($this->input->post('input_parent') == "x") ? null : $this->input->post('input_parent'),
+            'pid'       => ($this->input->post('input_parent') == "x") ? 0 : $this->input->post('input_parent'),
             'step'      => $this->input->post('input_step'),
             'desc'      => '-',
             'name'      => $this->input->post('input_nama_komponen'),
+            'kode'      => $this->input->post('input_kode'),
             'img'       => '-',
             'url'       => $this->input->post('input_url'),
             'is_del'    => 0,
         );
         $inserted = $this->Komponen_model->save($data);
         if ($inserted) {
-            $result = array('status' => true);
+            $result = array('status' => true, 'id' => $inserted);
         } else {
             $result = array('status' => false);
         }
@@ -143,6 +192,7 @@ class Flowkomponen extends CI_Controller
             'pid'       => $this->input->post('input_parent'),
             'step'      => $this->input->post('input_step'),
             'name'      => $this->input->post('input_nama_komponen'),
+            'kode'      => $this->input->post('input_kode'),
             'url'       => $this->input->post('input_url')
         );
 
@@ -158,12 +208,12 @@ class Flowkomponen extends CI_Controller
         if (!empty($edited_data)) { //if there is any edited data
             $updated = $this->Komponen_model->update($object, array('ID' => $this->input->post('id', true)));
             if ($updated) {
-                $result = array('status' => true);
+                $result = array('status' => true, 'id' => $this->input->post('id', true));
             } else {
                 $result = array('status' => false);
             }
         } else {
-            $result = array('status' => true);
+            $result = array('status' => true, 'id' => $this->input->post('id', true));
         }
         echo json_encode($result);
     }

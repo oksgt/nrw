@@ -33,6 +33,7 @@ class IntakeDetail extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = format_month_year($r->periode);
             $row[] = $r->air_baku;
             $row[] = $r->debit . " l/dt ( " . conver_ldt_m3($r->debit) . " ) ";
             $row[] = $r->kapasitas_pompa . " l/dt ( " . conver_ldt_m3($r->kapasitas_pompa) . " ) ";
@@ -59,6 +60,7 @@ class IntakeDetail extends CI_Controller
     public function validation()
     {
         $this->form_validation->set_rules('input_air_baku', 'Air Baku', 'required', array('required' => 'Wajib Diisi'));
+        $this->form_validation->set_rules('input_periode', 'Periode', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_debit', 'Debit Air', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_kapasitas_pompa', 'Kapasitas Pompa', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_lokasi', 'Lokasi', 'required', array('required' => 'Wajib Diisi'));
@@ -71,7 +73,8 @@ class IntakeDetail extends CI_Controller
                 'input_air_baku_error_detail'           => form_error('input_air_baku', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_debit_error_detail'              => form_error('input_debit', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_kapasitas_pompa_error_detail'    => form_error('input_kapasitas_pompa', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
-                'input_lokasi_error_detail'             => form_error('input_lokasi', '<b class="fa fa-exclamation-triangle"></b> ', ' ')
+                'input_lokasi_error_detail'             => form_error('input_lokasi', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
+                'input_periode_error_detail'             => form_error('input_periode', '<b class="fa fa-exclamation-triangle"></b> ', ' ')
             );
         }
         echo json_encode($array);
@@ -92,6 +95,7 @@ class IntakeDetail extends CI_Controller
         $data = array(
             'id_spam_node'      => $this->input->post('input_spam_node'),
             'air_baku'          => $this->input->post('input_air_baku'),
+            'periode'          => $this->input->post('input_periode'),
             'debit'             => $this->input->post('input_debit'),
             'kapasitas_pompa'   => $this->input->post('input_kapasitas_pompa'),
             'lokasi'            => $this->input->post('input_lokasi'),
@@ -118,6 +122,7 @@ class IntakeDetail extends CI_Controller
         $object = array(
             'air_baku'          => $this->input->post('input_air_baku'),
             'debit'             => $this->input->post('input_debit'),
+            'periode'          => $this->input->post('input_periode'),
             'kapasitas_pompa'   => $this->input->post('input_kapasitas_pompa'),
             'lokasi'            => $this->input->post('input_lokasi'),
         );

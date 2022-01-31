@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
     <style>
         .btn-file {
             position: relative;
@@ -80,6 +81,7 @@
                                             <thead>
                                                 <tr>
                                                     <th width="3%">No</th>
+                                                    <th width="10%">Periode</th>
                                                     <th width="10%">Air Baku</th>
                                                     <th width="10%">DebiT</th>
                                                     <th width="10%">Kapasitas Pompa</th>
@@ -112,6 +114,11 @@
                                 <form id="form" method="post" onsubmit="return false;">
                                     <input type="hidden" name="id">
                                     <input type="hidden" name="input_spam_node" value="<?= $node_id ?>">
+                                    <div class="form-group">
+                                        <label for="input_periode">Periode</label>
+                                        <input type="text" class="form-control" id="input_periode" name="input_periode" readonly>
+                                        <small id="input_periode_error_detail" class="form-text text-danger"></small>
+                                    </div>
                                     <div class="form-group">
                                         <label for="input_air_baku">Air Baku</label>
                                         <input type="text" class="form-control" id="input_air_baku" name="input_air_baku">
@@ -169,7 +176,7 @@
                                             </div>
                                             <br>
                                             <div class="input-group">
-                                                <img id='img-upload' style="height: 300px"/>
+                                                <img id='img-upload' style="height: 300px" />
                                             </div>
 
                                         </div>
@@ -209,10 +216,22 @@
         <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.print.min.js"></script>
         <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+        <script src="<?= base_url(); ?>/assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
         <script type="text/javascript">
             var save_method; //for save method string
             var table;
             $(document).ready(function() {
+
+                $("#input_periode").datepicker({
+                    format: "mm-yyyy",
+                    startView: "months",
+                    minViewMode: "months",
+                    defaultViewDate: {
+                        year: <?= Date('Y') ?>
+                    }
+                });
+
                 form_validation();
                 upload_handler();
                 table = $('#table').DataTable({
@@ -247,7 +266,7 @@
             });
 
             function reload_table() {
-                table.ajax.reload(null, false);
+                $('#table').DataTable().ajax.reload();
             }
 
             function add_spam() {
@@ -267,12 +286,14 @@
 
                     var input_list = [
                         'input_air_baku',
+                        'input_periode',
                         'input_debit',
                         'input_kapasitas_pompa',
                         'input_lokasi'
                     ];
                     var input_list_error = [
                         'input_air_baku_error_detail',
+                        'input_periode_error_detail',
                         'input_debit_error_detail',
                         'input_kapasitas_pompa_error_detail',
                         'input_lokasi_error_detail'
@@ -325,16 +346,19 @@
             function reset_validation() {
                 var input_list = [
                     'input_air_baku',
+                    'input_periode',
                     'input_debit',
                     'input_kapasitas_pompa',
                     'input_lokasi'
                 ];
                 var input_list_error = [
                     'input_air_baku_error_detail',
+                    'input_periode_error_detail',
                     'input_debit_error_detail',
                     'input_kapasitas_pompa_error_detail',
                     'input_lokasi_error_detail'
                 ];
+
 
                 for (let index = 0; index < input_list.length; index++) {
                     const input_ = input_list[index];
@@ -419,6 +443,7 @@
                         $('[name=id]').val(data.id);
                         $('[name=input_spam_node]').val(data.id_spam_node);
                         $('[name=input_air_baku]').val(data.air_baku);
+                        $('[name=input_periode]').val(data.periode);
                         $('[name=input_debit]').val(data.debit);
                         $('[name=input_kapasitas_pompa]').val(data.kapasitas_pompa);
                         $('[name=input_lokasi]').val(data.lokasi);
@@ -505,7 +530,7 @@
                     success: function(data) {
                         console.log(data)
                         $('#old_img').val(data);
-                        $('#img-upload').attr('src', '<?= base_url('assets/gambar/') ?>'+data);
+                        $('#img-upload').attr('src', '<?= base_url('assets/gambar/') ?>' + data);
                     }
                 });
 

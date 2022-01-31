@@ -35,6 +35,7 @@ class WilDetail extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = format_month_year($r->periode);
             $row[] = $r->input_sistem . " l/dt ( " . conver_ldt_m3($r->input_sistem) . " ) ";
             $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
             $row[] = $r->kehilangan_air . " l/dt ( " . conver_ldt_m3($r->kehilangan_air) . " ) ";
@@ -61,6 +62,7 @@ class WilDetail extends CI_Controller
     public function validation()
     {
         $this->form_validation->set_rules('input_sistem', 'Input Sistem', 'required', array('required' => 'Wajib Diisi'));
+        $this->form_validation->set_rules('input_periode', 'Periode', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_air_terjual', 'Air Terjual', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_kehilangan_air', 'Kehilangan Air', 'required', array('required' => 'Wajib Diisi'));
         $this->form_validation->set_rules('input_jml_pelanggan', 'Jumlah Pelanggan', 'required', array('required' => 'Wajib Diisi'));
@@ -74,6 +76,7 @@ class WilDetail extends CI_Controller
                 'input_air_terjual_error_detail'        => form_error('input_air_terjual', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_kehilangan_air_error_detail'     => form_error('input_kehilangan_air', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
                 'input_jml_pelanggan_error_detail'      => form_error('input_jml_pelanggan', '<b class="fa fa-exclamation-triangle"></b> ', ' '),
+                'input_periode_error_detail'             => form_error('input_periode', '<b class="fa fa-exclamation-triangle"></b> ', ' ')
             );
         }
         echo json_encode($array);
@@ -93,7 +96,8 @@ class WilDetail extends CI_Controller
     {
         $data = array(
             'id_spam_node'      => $this->input->post('input_spam_node'),
-            'input_sistem'       => $this->input->post('input_sistem'),
+            'input_sistem'      => $this->input->post('input_sistem'),
+            'periode'           => $this->input->post('input_periode'),
             'air_terjual'       => $this->input->post('input_air_terjual'),
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
@@ -119,8 +123,9 @@ class WilDetail extends CI_Controller
     {
         $object = array(
             'id_spam_node'      => $this->input->post('input_spam_node'),
-            'input_sistem'       => $this->input->post('input_sistem'),
+            'input_sistem'      => $this->input->post('input_sistem'),
             'air_terjual'       => $this->input->post('input_air_terjual'),
+            'periode'           => $this->input->post('input_periode'),
             'kehilangan_air'    => $this->input->post('input_kehilangan_air'),
             'jml_pelanggan'     => $this->input->post('input_jml_pelanggan'),
             'input_date'        => Date('Y-m-d H:i:s'),

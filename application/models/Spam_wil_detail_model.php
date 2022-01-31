@@ -123,7 +123,7 @@ class Spam_wil_detail_model extends CI_Model {
     }
 
     public function get_last_value($node_id){
-        $sql = 'select 
+        $sql = 'select periode as "Periode", 
         concat(input_sistem, " l/dt", " | " , format(input_sistem/1000*(86400*24*30), 0), " m3" ) as "Input Sistem", 
         concat(air_terjual, " l/dt", " | " , format(air_terjual/1000*(86400*24*30), 0), " m3" ) as "Air Terjual",
         concat(kehilangan_air, " l/dt", " | " , format(kehilangan_air/1000*(86400*24*30), 0), " m3" ) as "Kehilangan Air",

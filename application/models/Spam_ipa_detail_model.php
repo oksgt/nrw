@@ -5,8 +5,8 @@ class Spam_ipa_detail_model extends CI_Model {
  
     var $table = 'tb_spam_ipa_detail';
     var $view  = 'v_spam_ipa_detail';
-    var $column_order = array('id','step', 'step_name', 'id_spam_node','debit_produksi','debit_distribusi','air_terjual','kehilangan_air','jml_pelanggan','kapasitas_pompa','is_del','input_date','name'); //set column field database for datatable orderable
-    var $column_search = array('id','step', 'step_name', 'id_spam_node','debit_produksi','debit_distribusi','air_terjual','kehilangan_air','jml_pelanggan','kapasitas_pompa','is_del','input_date','name'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_order = array('id','step', 'step_name', 'periode', 'id_spam_node','debit_produksi','debit_distribusi','air_terjual','kehilangan_air','jml_pelanggan','kapasitas_pompa','is_del','input_date','name'); //set column field database for datatable orderable
+    var $column_search = array('id','step', 'step_name', 'periode',  'id_spam_node','debit_produksi','debit_distribusi','air_terjual','kehilangan_air','jml_pelanggan','kapasitas_pompa','is_del','input_date','name'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('input_date' => 'desc'); // default order 
  
     public function __construct()
@@ -123,7 +123,7 @@ class Spam_ipa_detail_model extends CI_Model {
     }
 
     public function get_last_value($node_id){
-        $sql = 'select 
+        $sql = 'select periode as "Periode", 
         concat(debit_produksi, " l/dt", " | " , format(debit_produksi/1000*(86400*24*30), 0), " m3" ) as "Debit Produksi", 
         concat(debit_distribusi, " l/dt", " | " , format(debit_distribusi/1000*(86400*24*30), 0), " m3" ) as "Debit Distribusi", 
         concat(air_terjual, " l/dt", " | " , format(air_terjual/1000*(86400*24*30), 0), " m3" ) as "Air Terjual",

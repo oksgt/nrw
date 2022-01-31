@@ -55,6 +55,15 @@ function rupiah($angka){
   
     return $pieces[2].' '.bulan($bulan).' '.$pieces[0] . ' - ' .$time_raw[0].':'.$time_raw[1];
   }
+
+  function format_month_year($stringDate){
+    if($stringDate!== null){
+      $pieces_raw = explode("-", $stringDate);
+      return bulan_1($pieces_raw[0]) . " " . $pieces_raw[1];
+    } else {
+      return "-";
+    }
+  }
   
   function hari($day){
     switch ($day) {

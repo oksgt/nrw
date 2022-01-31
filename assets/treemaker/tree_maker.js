@@ -36,10 +36,11 @@ function treeMaker(tree, params) {
     
 
     treeContainer.appendChild(card);
+    // console.log(treeParamas[Object.keys(tree)[0]].img);
     let trad = treeParamas[Object.keys(tree)[0]] !== undefined && treeParamas[Object.keys(tree)[0]].trad !== undefined ? treeParamas[Object.keys(tree)[0]].trad : Object.keys(tree)[0].trad;
-    card.innerHTML = '<p class="tree__container__step__card__p" id="card_' + Object.keys(tree)[0] + '">' + trad +'<br>'+
-    '<img onclick="getTableDetail(' +  Object.keys(tree)[0] + ')" data-id="' +  Object.keys(tree)[0] + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/node_icon/pump.png" >'+
-    '<br><span style="font-size: 1.1em;" class="badge badge-warning"></span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-warning"></span>'
+    card.innerHTML = '<p onclick="getTableDetail(' +  Object.keys(tree)[0] + ')" class="tree__container__step__card__p node" id="card_' + Object.keys(tree)[0] + '">' + trad +'<br>'+
+    '<img onclick="$("#card_' + Object.keys(tree)[0] + '").click(); " data-id="' +  Object.keys(tree)[0] + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/'+treeParamas[Object.keys(tree)[0]].img+'">'+
+    // '<br><span style="font-size: 1.1em;" class="badge badge-warning" id="P_' +  Object.keys(tree)[0] + '">P_' +  Object.keys(tree)[0] + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-warning" id="Q_' +  Object.keys(tree)[0] + '">Q_' +  Object.keys(tree)[0] + '</span>'
     '</p>';
 
 
@@ -58,7 +59,7 @@ function treeMaker(tree, params) {
 
     window.onresize = function () {
         svgDiv.setAttribute('height', '0');
-        svgDiv.setAttribute('width', '0');
+        svgDiv.setAttribute('width', '0');  
         connectCard();
     };
 }
@@ -83,17 +84,31 @@ function iterate(tree, start = false, from = '') {
     document.getElementById(from).after(treeContainer);
 
     for (const key in tree) {
-
+        // console.log('is logger '+treeParamas[key].is_logger);
         let textCard = treeParamas[key] !== undefined && treeParamas[key].trad !== undefined ? treeParamas[key].trad : key;
+        
+        if(treeParamas[key].is_logger){
+            treeContainer.innerHTML += '<div class="tree__container__step"><div class="tree__container__step__card" id="' + key + '">'+
+            ''+
+            '<p  id="card_' + key + '" class="tree__container__step__card__p node">Logger ' + 
+            treeParamas[key].kode +'<br>'+
+            // '<img onclick="getTableDetail(' + key + ')" data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/node_icon/pump.png" >'+
+            '<span style="font-size: 1.1em;" class="badge badge-success" id="P_' + key + '">P_' + key + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-success" id="P_' + key + '">Q_' + key + '</span>'+
+            '</p>'+ 
+            '</div></div>';
+        } else {
+            console.log(treeParamas[key].img);
+            treeContainer.innerHTML += '<div class="tree__container__step"><div class="tree__container__step__card" id="' + key + '">'+
+            ''+
+            '<p onclick="getTableDetail(' + key + ')" id="card_' + key + '" class="tree__container__step__card__p node">' + 
+            textCard +'<br>'+
+            '<img onclick="$("#card_' + key + '").click(); " data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/'+treeParamas[key].img+'" >'+
+            // '<br><span style="font-size: 1.1em;" class="badge badge-warning" id="P_' + key + '">P_' + key + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-warning" id="P_' + key + '">Q_' + key + '</span>'+
+            '</p>'+ 
+            '</div></div>';
+        }
 
-        treeContainer.innerHTML += '<div class="tree__container__step"><div class="tree__container__step__card" id="' + key + '">'+
-        ''+
-        '<p  id="card_' + key + '" class="tree__container__step__card__p">' + 
-        textCard +'<br>'+
-        '<img onclick="getTableDetail(' + key + ')" data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/node_icon/pump.png" >'+
-        '<br><span style="font-size: 1.1em;" class="badge badge-warning"></span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-warning"></span>'+
-        '</p>'+ 
-        '</div></div>';
+        
         // treeContainer.onclick = function () {
         //     alert(treeParamas[key].trad);
         // };
@@ -182,8 +197,8 @@ function drawPath(svg, path, startX, startY, endX, endY) {
     if (svg.getAttribute("width") < (startX + stroke)) svg.setAttribute("width", (startX + stroke));
     if (svg.getAttribute("width") < (endX + stroke)) svg.setAttribute("width", (endX + stroke));
 
-    let deltaX = (endX - startX) * 0.15;
-    let deltaY = (endY - startY) * 0.15;
+    let deltaX = (endX - startX) * 0.25;
+    let deltaY = (endY - startY) * 0.25;
     // for further calculations which ever is the shortest distance
     let delta = deltaY < absolute(deltaX)
         ? deltaY

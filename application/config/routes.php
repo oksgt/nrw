@@ -61,6 +61,7 @@ $route['logger'] = 'admin/logger';
 $route['kartu'] = 'admin/kartu';
 $route['spam'] = 'admin/spam';
 $route['flow/(:any)'] = 'admin/flow/load/$1';
+$route['admin/flow/(:any)'] = 'admin/flow/load/$1';
 $route['flowkomponen/(:any)'] = 'admin/flowkomponen/load/$1';
 
 $route['detailkomponen/(:any)'] = 'admin/detailkomponen/index/$1';

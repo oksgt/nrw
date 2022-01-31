@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 </head>
 
 <body class="" style="height: auto;">
@@ -54,6 +55,7 @@
                                             <thead>
                                                 <tr>
                                                     <th width="3%">No</th>
+                                                    <th width="10%">Periode</th>
                                                     <th width="10%">Debit Input</th>
                                                     <th width="10%">Debit Distribusi</th>
                                                     <th width="10%">Air Terjual</th>
@@ -87,6 +89,11 @@
                                 <form id="form" method="post" onsubmit="return false;">
                                     <input type="hidden" name="id">
                                     <input type="hidden" name="input_spam_node" value="<?= $node_id ?>">
+                                    <div class="form-group">
+                                        <label for="input_periode">Periode</label>
+                                        <input readonly type="text" class="form-control" id="input_periode" name="input_periode">
+                                        <small id="input_periode_error_detail" class="form-text text-danger"></small>
+                                    </div>
                                     <div class="form-group">
                                         <label for="input_debit_input">Debit Input (l/dt)</label>
                                         <input type="text" class="form-control float" id="input_debit_input" name="input_debit_input">
@@ -149,7 +156,7 @@
                                             </div>
                                             <br>
                                             <div class="input-group">
-                                                <img id='img-upload' style="height: 300px"/>
+                                                <img id='img-upload' style="height: 300px" />
                                             </div>
 
                                         </div>
@@ -188,11 +195,22 @@
         <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.html5.min.js"></script>
         <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.print.min.js"></script>
         <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.colVis.min.js"></script>
+        <script src="<?= base_url(); ?>/assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 
         <script type="text/javascript">
             var save_method; //for save method string
             var table;
             $(document).ready(function() {
+
+                $("#input_periode").datepicker({
+                    format: "mm-yyyy",
+                    startView: "months",
+                    minViewMode: "months",
+                    defaultViewDate: {
+                        year: <?= Date('Y') ?>
+                    }
+                });
+
                 form_validation();
                 upload_handler();
                 table = $('#table').DataTable({
@@ -203,10 +221,10 @@
                     "autoWidth": false,
                     "order": [],
                     "dom": "<'row'>" +
-                                "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"+
-                                "<'row'<'col-sm-12 '>>",
+                        "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>" +
+                        "<'row'<'col-sm-12 '>>",
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                     "ajax": {
                         "url": "<?php echo site_url('admin/RsvDetail/ajax_list/') ?>" + <?= $node_id ?>,
@@ -237,7 +255,7 @@
             });
 
             function reload_table() {
-                table.ajax.reload(null, false);
+                $('#table').DataTable().ajax.reload();
             }
 
             function add_spam() {
@@ -257,6 +275,7 @@
 
                     var input_list = [
                         'input_debit_input',
+                        'input_periode',
                         'input_debit_distribusi',
                         'input_air_terjual',
                         'input_kehilangan_air',
@@ -264,6 +283,7 @@
                     ];
                     var input_list_error = [
                         'input_debit_input_error_detail',
+                        'input_periode_error_detail',
                         'input_debit_distribusi_error_detail',
                         'input_air_terjual_error_detail',
                         'input_kehilangan_air_error_detail',
@@ -317,6 +337,7 @@
             function reset_validation() {
                 var input_list = [
                     'input_debit_input',
+                    'input_periode',
                     'input_debit_distribusi',
                     'input_air_terjual',
                     'input_kehilangan_air',
@@ -324,6 +345,7 @@
                 ];
                 var input_list_error = [
                     'input_debit_input_error_detail',
+                    'input_periode_error_detail',
                     'input_debit_distribusi_error_detail',
                     'input_air_terjual_error_detail',
                     'input_kehilangan_air_error_detail',
@@ -412,7 +434,7 @@
 
                         $('[name=id]').val(data.id);
                         $('[name=input_spam_node]').val(data.id_spam_node);
-
+                        $('[name=input_periode]').val(data.periode);
                         $('[name=input_debit_input]').val(data.debit_input);
                         $('[name=input_debit_distribusi]').val(data.debit_distribusi);
                         $('[name=input_air_terjual]').val(data.air_terjual);
@@ -501,7 +523,7 @@
                     success: function(data) {
                         console.log(data)
                         $('#old_img').val(data);
-                        $('#img-upload').attr('src', '<?= base_url('assets/gambar/') ?>'+data);
+                        $('#img-upload').attr('src', '<?= base_url('assets/gambar/') ?>' + data);
                     }
                 });
 

@@ -137,6 +137,7 @@ class Spam_model extends CI_Model {
         $this->db->where('root', $id);
         $this->db->where('is_del', 0);
         $this->db->select('id, pid');
+        $this->db->order_by('id', 'asc');
         $data = $this->db->get("tb_spam_node");
         return $data;
     }
@@ -147,7 +148,7 @@ class Spam_model extends CI_Model {
         // $data = $this->db->get("tb_spam_node");
         // return $data;
         $qry = '
-        select node.id, node.root, spam.name as spam_name, spam.diagram_flow_direction, 
+        select node.id, node.root, spam.name as spam_name, spam.diagram_flow_direction, node.kode,
         node.pid, node.step, tss.name as step_name, node.name, node.img, node.url from tb_spam_node as node 
         inner join tb_spam as spam on node.root = spam.id 
         left join tb_spam_step tss on node.step = tss.id

@@ -123,7 +123,7 @@ class Spam_rsv_detail_model extends CI_Model {
     }
 
     public function get_last_value($node_id){
-        $sql = 'select 
+        $sql = 'select periode as "Periode", 
         concat(debit_input, " l/dt", " | " , format(debit_input/1000*(86400*24*30), 0), " m3" ) as "Debit Input", 
         concat(debit_distribusi, " l/dt", " | " , format(debit_distribusi/1000*(86400*24*30), 0), " m3" ) as "Debit Distribusi", 
         concat(air_terjual, " l/dt", " | " , format(air_terjual/1000*(86400*24*30), 0), " m3" ) as "Air Terjual",

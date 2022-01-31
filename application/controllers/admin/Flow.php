@@ -8,7 +8,7 @@ class Flow extends CI_Controller
     {
         parent::__construct();
         $this->load->library(array('form_validation'));
-        $this->load->model('Spam_model');
+        $this->load->model(['Spam_model', 'Komponen_model']);
     }
 
     // function _remap($param)
@@ -18,6 +18,24 @@ class Flow extends CI_Controller
 
     public function index(){
         
+    }
+
+    public function fetch_existing_node($node_id){
+        $existing_node = $this->Komponen_model->get_existing_node($node_id);
+        $option = '<option value="x">-- Silahkan Pilih --</option>
+        <option value=""></option>';
+        if(!empty($existing_node->result())){
+            foreach ($existing_node->result() as $row) { 
+                if($row->step == 5){
+                    $option_name = $row->step_name . ' - ' . $row->kode;
+                } else {
+                    $option_name = $row->step_name . ' - ' . $row->name ;
+                }
+                $option .= '<option value="'.$row->id.'">'.$option_name.'</option>';
+            }
+        }
+
+        echo $option;
     }
 
     public function load($id){
@@ -31,9 +49,26 @@ class Flow extends CI_Controller
                 $data['spam_name'] = $data[0]['spam_name'];
                 $data['direction'] = $data[0]['diagram_flow_direction'];
                 $data['root']      = $id;
+                $is_exist = $this->cek_existing_root($id);
+                if($is_exist){
+                    $data['step'] = $this->Komponen_model->get_step();
+                } else {
+                    $data['step'] = $this->Komponen_model->get_first_step();
+                }
                 $this->load->view('admin/flow_view', $data);
             }
         }
+    }
+
+    public function cek_existing_root($root){
+        $res = null;
+        $data_existing = $this->Komponen_model->get_by(['root' => $root, 'is_del' => 0])->result();
+        if(empty($data_existing)){
+            $res = false;
+        } else {
+            $res = true;
+        }
+        return $res;
     }
 
     function getNodeStructure($root)

@@ -45,7 +45,7 @@
                   <button type="button" class="btn btn-success" id="btn-add-komponen" onclick="add_spam()">
                     <i class="fa fa-plus"></i>&nbsp; Tambah Komponen
                   </button>
-                  <button class="btn btn-default" onclick="reload_table()"><i class="fas fa-refresh"></i>&nbsp; Reload</button>
+                  <button class="btn btn-default" onclick="reload_table()"><i class="fas fa-sync"></i>&nbsp; Reload</button>
                   <a class="btn btn-success" href="<?= base_url('index.php/flow/'.$root) ?>"><i class="fas fa-project-diagram"></i>&nbsp; Lihat Diagram</a>
                 </div>
                 <div class="card-body">
@@ -53,12 +53,13 @@
                     <table id="table" class="table table-striped table-bordered table-sm small" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th width="10%">No</th>
-                          <th width="30%">Nama</th>
+                          <th width="5%">No</th>
+                          <th width="10%">Kode</th>
+                          <th width="20%">Nama</th>
                           <th width="20%">Parent (Turunan Dari)</th>
-                          <th width="15%">URL</th>
+                          <th width="20%">URL</th>
                           <!-- <th width="50%">Step Flow</th> -->
-                          <th width="10%">Action</th>
+                          <th width="20%">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -84,25 +85,17 @@
               <div class="modal-body">
                 <form id="form" method="post" onsubmit="return false;">
                   <input type="hidden" name="id">
-                  <input type="hidden" name="root" value="<?= $root ?>;">
+                  <input type="hidden" name="root" value="<?= $root ?>">
                   <div class="form-group">
                     <label for="input_parent">Pilih Parent (Turunan Dari)</label>
                     <select  class="form-control" id="input_parent" name="input_parent">
-                      <option value="x">-- Silahkan Pilih --</option>
-                      <option value=""></option>
-                      <?php 
-                      if(!empty($existing_node->result())){
-                        foreach ($existing_node->result() as $row) { ?>
-                         <option value="<?= $row->id ?>"><?= $row->step_name . ' - ' . $row->name ?></option>
-                      <?php }
-                      }
-                      ?>
+                      
                     </select>
                     <small id="input_parent_error_icon" class="form-text text-danger"></small>
                   </div>
                   <div class="form-group">
                     <label for="input_step">Step</label>
-                    <select  class="form-control" id="input_step" name="input_step">
+                    <select  class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
                       <option value="x">-- Silahkan Pilih --</option>
                       <?php 
                       if(!empty($step->result())){
@@ -114,10 +107,15 @@
                     </select>
                     <small id="input_step_error_icon" class="form-text text-danger"></small>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group form-group-name" >
                     <label for="input_nama_komponen">Nama</label>
                     <input type="text" class="form-control" id="input_nama_komponen" name="input_nama_komponen">
                     <small id="input_nama_komponen_error_detail" class="form-text text-danger"></small>
+                  </div>
+                  <div class="form-group form-group-kode" >
+                    <label for="input_kode">Kode</label>
+                    <input type="text" class="form-control" id="input_kode" name="input_kode">
+                    <small id="input_kode_error_detail" class="form-text text-danger"></small>
                   </div>
                   <div class="form-group">
                     <label for="input_url">URL</label>
@@ -191,7 +189,7 @@
       });
 
       function reload_table() {
-        table.ajax.reload(null, false);
+        $('#table').DataTable().ajax.reload();
       }
 
       function add_spam() {
@@ -202,6 +200,24 @@
         $('#btnSave').html('<b class="fa fa-save"></b> Simpan');
         $('#btnSave').removeClass('bg-gradient-warning');
         $('#btnSave').addClass('bg-gradient-primary');
+        $('.form-group-name').hide();
+        $('.form-group-kode').hide();
+        fetch_existing_node();
+      }
+
+      function fetch_existing_node(){
+        $.ajax({
+              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
+              method: "GET",
+              dataType: 'html',
+              success: function(html) {
+                $('#input_parent').html(html);
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+              }
+            });
       }
 
       function form_validation() {
@@ -209,8 +225,12 @@
           event.preventDefault();
           event.stopPropagation();
 
-          var input_list = ['input_nama_komponen', 'input_parent', 'input_step'];
-          var input_list_error = ['input_nama_komponen_error_detail', 'input_parent_error_icon', 'input_step_error_icon'];
+          var input_list = [
+            // 'input_nama_komponen', 
+            'input_parent', 'input_step'];
+          var input_list_error = [
+            // 'input_nama_komponen_error_detail', 
+          'input_parent_error_icon', 'input_step_error_icon'];
 
           $.ajax({
             url: "<?php echo site_url('admin/flowkomponen/validation') ?>",
@@ -257,8 +277,12 @@
       }
 
       function reset_validation() {
-        var input_list = ['input_nama_komponen', 'input_parent', 'input_step'];
-        var input_list_error = ['input_nama_komponen_error_detail', 'input_parent_error_icon', 'input_step_error_icon'];
+        var input_list = [
+          // 'input_nama_komponen', 
+        'input_parent', 'input_step'];
+        var input_list_error = [
+          // 'input_nama_komponen_error_detail', 
+        'input_parent_error_icon', 'input_step_error_icon'];
 
         for (let index = 0; index < input_list.length; index++) {
           const input_ = input_list[index];
@@ -344,6 +368,7 @@
             $('[name=input_parent]').val(data.pid);
             $('[name=input_step]').val(data.step);
             $('[name=input_nama_komponen]').val(data.name);
+            $('[name=input_kode]').val(data.kode);
             $('[name=input_url]').val(data.url);
 
             save_method = "edit";
@@ -352,7 +377,7 @@
             $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
             $('#btnSave').removeClass('bg-gradient-primary');
             $('#btnSave').addClass('bg-gradient-warning');
-
+            input_name_handler();
             $('#modal-add-komponen').modal('show');
           }
         });
@@ -400,6 +425,19 @@
         if (charCode > 31 && (charCode < 48 || charCode > 57))
           return false;
         return true;
+      }
+
+      
+
+      function input_name_handler(){
+        var r = $('#input_step').val();
+        if(r == 5){
+          $('.form-group-name').hide();
+          $('.form-group-kode').show();
+        } else {
+          $('.form-group-name').show();
+          $('.form-group-kode').hide();
+        }
       }
     </script>
 

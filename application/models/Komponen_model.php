@@ -5,9 +5,9 @@ class Komponen_model extends CI_Model {
  
     var $table = 'tb_spam_node';
     var $view  = 'view_spam_node';
-    var $column_order = array('id', 'root', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable orderable
-    var $column_search = array('id', 'root', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('pid' => 'asc'); // default order 
+    var $column_order = array('id', 'root', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable orderable
+    var $column_search = array('id', 'root', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id' => 'asc'); // default order 
  
     public function __construct()
     {
@@ -190,6 +190,11 @@ class Komponen_model extends CI_Model {
     public function get_image($node_id){
         $this->db->where('node_id', $node_id);
         return $this->db->get('image_upload');
+    }
+
+    public function getByKode( $kode){
+        $this->db->where('kode', $kode);
+        $this->db->delete($this->table);
     }
 
 }

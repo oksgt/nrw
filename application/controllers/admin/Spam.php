@@ -8,6 +8,7 @@ class Spam extends CI_Controller
     {
         parent::__construct();
         $this->load->library(array('form_validation'));
+        $this->load->helper('app_helper');
         $this->load->model([
             'Spam_model', 'Spam_intake_detail_model', 'Spam_rsv_detail_model', 'Spam_ipa_detail_model', 'Spam_wil_detail_model',
             'Komponen_model'
@@ -148,15 +149,47 @@ class Spam extends CI_Controller
     function getNodeStructure($root)
 	{
 		$data = $this->Spam_model->getDataNodeByRoot($root)->result();
-		echo json_encode($data);
+        array_walk_recursive($data, function(&$item) {
+            if (is_numeric($item)) {
+                $item = intval($item);
+            }
+        });
+        // echo "<pre>";
+		echo json_encode($data, JSON_NUMERIC_CHECK);
 	}
 
 	function getNodeDetail($root)
 	{
 		$data = $this->Spam_model->getDataNodeDetailByRoot($root)->result();
+
 		$result = [];
 		foreach ($data as $key => $value) {
-			$result[$value->id] = ['trad' => $value->step_name .'<br>'.$value->name, 'styles' => ['box-shadow' => '0 0 5px 1px blue']];
+            $color_box = ($value->step == 1) ? "#f8f9fa" : "#f8f9fa" ;
+
+            if($value->img == "-"){
+                $img = 'node_icon/pump.png';
+            } else {
+                $img = 'gambar/'.$value->img;
+            }
+
+            if($value->step == 5){ //jika step komponen == logger
+                $result[$value->id] = [
+                    'trad' => $value->step_name .'<br>'.$value->name,
+                    'kode' => $value->kode, 
+                    'is_logger' => true,
+                    'img'   => $img,
+                    'styles' => ['box-shadow' => '0 0 5px 5px orange']
+                ];
+            } else {
+                $result[$value->id] = [
+                    'trad' => $value->step_name .'<br>'.$value->name, 
+                    'kode' => "",
+                    'is_logger' => false,
+                    'img'   => $img,
+                    'styles' => ['box-shadow' => '0 0 5px 5px '.$color_box]
+                ];
+            }
+			
 		}
 		echo json_encode($result, JSON_PRETTY_PRINT);
 	}
@@ -178,7 +211,6 @@ class Spam extends CI_Controller
         } else {
             $res = 'no-image.png';
         }
-        
         echo $res;
     }
 
@@ -187,45 +219,76 @@ class Spam extends CI_Controller
         $res = "";
         if($step == 1) {
             $data = $this->Spam_intake_detail_model->get_last_value($node_id)->row_array();
-            $res = '
-            <table class="table table-bordered">
-                <tbody>';
-                foreach ($data as $key => $value) {
-                    $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                }
-            $res .= '</tbody>
-            </table>';
+            if(!empty($data)){
+                $res = '
+                <table class="table table-bordered">
+                    <tbody>';
+                    foreach ($data as $key => $value) {
+                        if($key == "Periode") {
+                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
+                        } else {
+                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+                        }
+                    }
+                $res .= '</tbody>
+                </table>';   
+            } else {
+                $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
+            }
         } else if($step == 2) {
             $data = $this->Spam_ipa_detail_model->get_last_value($node_id)->row_array();
-            $res = '
-            <table class="table table-bordered">
-                <tbody>';
-                foreach ($data as $key => $value) {
-                    $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                }
-            $res .= '</tbody>
-            </table>';
-            
+            if(!empty($data)){
+                $res = '
+                <table class="table table-bordered">
+                    <tbody>';
+                    foreach ($data as $key => $value) {
+                        if($key == "Periode") {
+                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
+                        } else {
+                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+                        }
+                    }
+                $res .= '</tbody>
+                </table>';
+            } else {
+                $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
+            }
         } else if($step == 3) {
             $data = $this->Spam_rsv_detail_model->get_last_value($node_id)->row_array();
-            $res = '
-            <table class="table table-bordered">
-                <tbody>';
-                foreach ($data as $key => $value) {
-                    $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                }
-            $res .= '</tbody>
-            </table>';
+            if(!empty($data)){
+                $res = '
+                <table class="table table-bordered">
+                    <tbody>';
+                    foreach ($data as $key => $value) {
+                        if($key == "Periode") {
+                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
+                        } else {
+                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+                        }
+                    }
+                $res .= '</tbody>
+                </table>';
+            } else {
+                $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
+            }
         } else if($step == 4) {
             $data = $this->Spam_wil_detail_model->get_last_value($node_id)->row_array();
-            $res = '
-            <table class="table table-bordered">
-                <tbody>';
-                foreach ($data as $key => $value) {
-                    $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                }
-            $res .= '</tbody>
-            </table>';
+            if(!empty($data)){
+                $res = '
+                <table class="table table-bordered">
+                    <tbody>';
+                    foreach ($data as $key => $value) {
+                        if($key == "Periode") {
+                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
+                        } else {
+                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+                        }
+                    }
+                $res .= '</tbody>
+                </table>'; 
+            } else {
+                $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
+            }
         }
         echo $res;
     }

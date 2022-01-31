@@ -164,7 +164,7 @@
       });
 
       function reload_table() {
-        table.ajax.reload(null, false);
+        $('#table').DataTable().ajax.reload();
       }
 
       function add_spam() {

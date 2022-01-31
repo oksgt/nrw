@@ -5,8 +5,8 @@ class Spam_intake_detail_model extends CI_Model {
  
     var $table = 'tb_spam_intake_detail';
     var $view  = 'v_spam_intake_detail';
-    var $column_order = array('id', 'step', 'step_name', 'id_spam_node', 'air_baku', 'debit', 'kapasitas_pompa', 'lokasi','is_del', 'input_date', 'name'); //set column field database for datatable orderable
-    var $column_search = array('id', 'step', 'step_name', 'id_spam_node', 'air_baku', 'debit', 'kapasitas_pompa', 'lokasi','is_del', 'input_date', 'name'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_order = array('id', 'step', 'periode', 'step_name', 'id_spam_node', 'air_baku', 'debit', 'kapasitas_pompa', 'lokasi','is_del', 'input_date', 'name'); //set column field database for datatable orderable
+    var $column_search = array('id', 'step', 'periode', 'step_name', 'id_spam_node', 'air_baku', 'debit', 'kapasitas_pompa', 'lokasi','is_del', 'input_date', 'name'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('input_date' => 'desc'); // default order 
  
     public function __construct()
@@ -124,7 +124,7 @@ class Spam_intake_detail_model extends CI_Model {
     
     public function get_last_value($node_id){
         $sql = 'select 
-        air_baku as "Air Baku", 
+        periode as "Periode", air_baku as "Air Baku", 
         concat(debit, " l/dt", " | " , format(debit/1000*(86400*24*30), 0), "  &#13221;" ) as "Debit", 
         concat(kapasitas_pompa, " l/dt", " | " , format(kapasitas_pompa/1000*(86400*24*30), 0), "  &#13221;" ) as "Kapasitas Pompa", 
         lokasi as "Lokasi" 
