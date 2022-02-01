@@ -20,6 +20,7 @@ class Kartu extends CI_Controller {
         foreach ($list as $kartu) {
             $no++;
             $row = array();
+            $row[] = $no;
             $row[] = $kartu->no_hp;
             $row[] = $kartu->lokasi_pasang;
             $row[] = $kartu->keterangan;
@@ -33,8 +34,8 @@ class Kartu extends CI_Controller {
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->kartu->count_all(),
-            "recordsFiltered" => $this->kartu->count_filtered(),
+            "recordsTotal" => $this->kartu_model->count_all(),
+            "recordsFiltered" => $this->kartu_model->count_filtered(),
             "data" => $data,
         );
         //output to json format
@@ -43,39 +44,35 @@ class Kartu extends CI_Controller {
 
     public function ajax_edit($id)
     {
-        $data = $this->kartu->get_by_id($id);
+        $data = $this->kartu_model->get_by_id($id);
         echo json_encode($data);
     }
 
     public function ajax_add()
     {
         $data = array(
-            'firstName' => $this->input->post('firstName'),
-            'lastName' => $this->input->post('lastName'),
-            'gender' => $this->input->post('gender'),
-            'address' => $this->input->post('address'),
-            'dob' => $this->input->post('dob'),
+            'no_hp' => $this->input->post('no_hp'),
+            'lokasi_pasang' => $this->input->post('lokasi_pasang'),
+            'keterangan' => $this->input->post('lokasi_pasang'),
         );
-        $insert = $this->kartu->save($data);
+        $insert = $this->kartu_model->save($data);
         echo json_encode(array("status" => TRUE));
     }
 
     public function ajax_update()
     {
         $data = array(
-            'firstName' => $this->input->post('firstName'),
-            'lastName' => $this->input->post('lastName'),
-            'gender' => $this->input->post('gender'),
-            'address' => $this->input->post('address'),
-            'dob' => $this->input->post('dob'),
+           'no_hp' => $this->input->post('no_hp'),
+            'lokasi_pasang' => $this->input->post('lokasi_pasang'),
+            'keterangan' => $this->input->post('lokasi_pasang'),
         );
-        $this->kartu->update(array('id' => $this->input->post('id')), $data);
+        $this->kartu_model->update(array('id' => $this->input->post('id')), $data);
         echo json_encode(array("status" => TRUE));
     }
 
     public function ajax_delete($id)
     {
-        $this->kartu->delete_by_id($id);
+        $this->kartu_model->delete_by_id($id);
         echo json_encode(array("status" => TRUE));
     }
 

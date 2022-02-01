@@ -198,19 +198,61 @@
             var root = <?= $root ?>;
             var save_method;
             var detail_clicked = false;
+            const id_logger = [];
             $(document).ready(function() {
                 
                 generateTreeDiagram();
                 rightClickNode();
                 form_validation();
                 //simulasi sync data log air
-                // var seconds = 0;
-                // var el = document.getElementById('seconds-counter');
-                // function incrementSeconds() {
-                //     seconds += 1;
-                //     $('.badge').text(seconds)
-                // }
-                // var cancel = setInterval(incrementSeconds, 1000);
+                var seconds = 0;
+                var el = document.getElementById('seconds-counter');
+
+                setInterval(function() {
+                    console.log("Message to alert every 5 seconds");
+                }, 5000);
+                
+                function incrementSeconds() {
+                    for (var key in id_logger) {
+                        // $('#P_' + 'M.058').text('P: ' + 12);
+                        // $('#P_' +  id_logger[key].replace(".", "\\.") ).removeClass();
+                        // $('#P_' +  id_logger[key].replace(".", "\\.")).addClass('badge badge-danger');
+                        // console.log(id_logger[key]);
+                        // $('#P_' +  id_logger[key].replace(".", "\\.")).text('P: '+id_logger[key]);
+                        $.ajax({
+                            url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
+                            method: "GET",
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data);
+                                
+                                $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.debit);
+                                if(data.debit < data.DEBIT_NORMAL){
+                                    $('#P_' +  data.new_kode).removeClass();
+                                    $('#P_' +  data.new_kode).addClass('badge badge-danger');
+                                } else {
+                                    $('#P_' +  data.new_kode).removeClass();
+                                    $('#P_' +  data.new_kode).addClass('badge badge-success');
+                                }
+
+                                $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.tekanan);
+                                if(data.tekanan < data.TEKANAN_NORMAL){
+                                    $('#Q_' +  data.new_kode).removeClass();
+                                    $('#Q_' +  data.new_kode).addClass('badge badge-danger');
+                                } else {
+                                    $('#Q_' +  data.new_kode).removeClass();
+                                    $('#Q_' +  data.new_kode).addClass('badge badge-success');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                                $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+                            }
+                        });
+                    }
+                    // console.clear();
+                }
+                var cancel = setInterval(incrementSeconds, 3600000);
 
                 $('#P_' + 6).text('P: ' + 12);
                 $('#P_' + 6).removeClass();
@@ -420,7 +462,7 @@
                         console.log(errorThrown);
                         $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
                     }
-                    });
+                });
             }
 
             function detail(id) {
@@ -552,17 +594,12 @@
                     });
                     return tmp;
                 }();
-                console.log(result_node_detail);
-                // for (result_node_detail in obj ) {
-                //     console.log(obj[kode]);
-                // }
-                for (var key in result_node_detail) {
-                    console.log(key);
-                }
 
-                let node_style = {
-                    'box-shadow': '0 0 5px 1px blue'
-                };
+                for (var key in result_node_detail) {
+                    if(result_node_detail[key].kode !== ""){
+                        id_logger.push(result_node_detail[key].kode);
+                    }
+                }
 
                 let treeParams = result_node_detail;
 

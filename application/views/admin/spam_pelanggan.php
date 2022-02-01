@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Master Mendoan</h3>
+                            <h3 class="card-title">Data Pelanggan</h3>
                         </div>
                         <div class="col-md-9">
                             <button class="btn btn-success" onclick="add_person()"><i class="glyphicon glyphicon-plus"></i> Add Data</button>
@@ -18,14 +18,19 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-										<th>Kode</th>
-										<th>Lokasi</th>
-                                        <th>Debit Normal</th>
-                                        <th>Tekanan Normal</th>
-                                        <th>Diameter</th>
-										<th>SPAM</th>
-										<th>Cabang</th>
-										<th>Jenis Layanan</th>
+										<th>Kd Sumber</th>
+                                        <th>Kd Cabang</th>
+                                        <th>Kd Spam</th>
+                                        <th>Kd DMA</th>
+                                        <th>Kd Wilayah</th>
+                                        <th>No Sambungan</th>
+										<!-- <th>Alamat</th>
+                                        <th>Golongan</th>
+                                        <th>Status</th>
+                                        <th>Status</th>
+										<th>No WM</th>
+										<th>Pemakaian</th> -->
+										<th>Keterangan</th>
                                         <th style="width:125px;">Action</th>
                                     </tr>
                                 </thead>
@@ -54,11 +59,11 @@ $(document).ready(function() {
         ],
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
-        "order": [], //Initial no order.
+        "order": [], //Initial id order.
 
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('admin/mendoan/ajax_list')?>",
+            "url": "<?php echo site_url('admin/spam_pelanggan/ajax_list')?>",
             "type": "POST"
         },
 
@@ -66,7 +71,7 @@ $(document).ready(function() {
         "columnDefs": [
         { 
             "targets": [ -1 ], //last column
-            "orderable": false, //set not orderable
+            "orderable": false, //set idt orderable
         },
         ],
 
@@ -109,15 +114,20 @@ function edit_person(id)
         dataType: "JSON",
         success: function(data)
         {
-            $('[name="NO"]').val(data.NO);
-            $('[name="KODE"]').val(data.KODE);
-            $('[name="LOKASI"]').val(data.LOKASI);
-            $('[name="DEBIT_NORMAL"]').val(data.DEBIT_NORMAL);
-            $('[name="TEKANAN_NORMAL"]').val(data.TEKANAN_NORMAL);
-            $('[name="DIAMETER_PIPA"]').val(data.DIAMETER_PIPA);
-            $('[name="SPAM"]').val(data.SPAM);
-            $('[name="CABANG_LAYANAN"]').val(data.CABANG_LAYANAN);
-            $('[name="JENIS_LAYANAN"]').val(data.JENIS_LAYANAN);
+            $('[name="id"]').val(data.id);
+            $('[name="kd_sumber"]').val(data.kd_sumber);
+            $('[name="kd_cabang"]').val(data.kd_cabang);
+            $('[name="kd_spam"]').val(data.kd_spam);
+            $('[name="kd_dma"]').val(data.kd_dma);
+            $('[name="kd_wil"]').val(data.kd_wil);
+            $('[name="nosamw"]').val(data.nosamw);
+            $('[name="alamat"]').val(data.alamat);
+            $('[name="gol"]').val(data.gol);
+            $('[name="stat_aktif"]').val(data.stat_aktif);
+            $('[name="status"]').val(data.status);
+            $('[name="id_wm"]').val(data.id_wm);
+            $('[name="pakai"]').val(data.pakai);
+            $('[name="keterangan"]').val(data.keterangan);
             $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
 
@@ -141,9 +151,9 @@ function save()
     var url;
 
     if(save_method == 'add') {
-        url = "<?php echo site_url('admin/mendoan/ajax_add')?>";
+        url = "<?php echo site_url('admin/spam_pelanggan/ajax_add')?>";
     } else {
-        url = "<?php echo site_url('admin/mendoan/ajax_update')?>";
+        url = "<?php echo site_url('admin/spam_pelanggan/ajax_update')?>";
     }
 
     // ajax adding data to database
@@ -182,7 +192,7 @@ function delete_person(id)
     {
         // ajax delete data to database
         $.ajax({
-            url : "<?php echo site_url('admin/mendoan/ajax_delete')?>/"+id,
+            url : "<?php echo site_url('admin/spam_pelanggan/ajax_delete')?>/"+id,
             type: "POST",
             dataType: "JSON",
             success: function(data)
@@ -210,69 +220,47 @@ function delete_person(id)
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
-                    <input type="text" value="" name="NO"/> 
+                    <input type="text" value="" name="id"/> 
                     <div class="form-body">
                         <div class="form-group">
-                            <label class="control-label col-md-3">KODE</label>
+                            <label class="control-label col-md-3">Kode sumber</label>
                             <div class="col-md-9">
-                                <input name="KODE" placeholder="KODE" class="form-control" type="text">
+                                <input name="kd_sumber" placeholder="kd_sumber" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">LOKASI</label>
+                            <label class="control-label col-md-3">Kode cabang</label>
                             <div class="col-md-9">
-                                <input name="LOKASI" placeholder="LOKASI" class="form-control" type="text">
+                                <input name="kd_cabang" placeholder="kd_cabang" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">DEBIT NORMAL</label>
+                            <label class="control-label col-md-3">Kode Spam</label>
                             <div class="col-md-9">
-                                <input name="DEBIT_NORMAL" placeholder="DEBIT_NORMAL" class="form-control" type="text">
+                                <input name="kd_spam" placeholder="kd_spam" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4">TEKANAN NORMAL</label>
+                            <label class="control-label col-md-4">Kode DMA</label>
                             <div class="col-md-9">
-                                <input name="TEKANAN_NORMAL" placeholder="TEKANAN_NORMAL" class="form-control" type="text">
+                                <input name="kd_dma" placeholder="kd_dma" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div> 
                         <div class="form-group">
-                            <label class="control-label col-md-3">SPAM</label>
+                            <label class="control-label col-md-3">Nosamw</label>
                             <div class="col-md-9">
-                                <input name="SPAM" placeholder="SPAM" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label class="control-label col-md-4">CABANG LAYANAN</label>
-                            <div class="col-md-9">
-                                <select name="CABANG_LAYANAN" class="form-control">
-                                    <option value="">--Select Cabang--</option>
-                                    <option value="Purwokerto 1">Purwokerto 1</option>
-                                    <option value="Purwokerto 2">Purwokerto 2</option>
-                                    <option value="Banyumas">Banyumas</option>
-                                    <option value="Ajibarang">Ajibarang</option>
-                                    <option value="Wangon">Wangon</option>
-                                </select>
+                                <input name="nosamw" placeholder="nosamw" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4">JENIS LAYANAN</label>
+                            <label class="control-label col-md-3">Keterangan</label>
                             <div class="col-md-9">
-                                <select name="JENIS_LAYANAN" class="form-control">
-                                    <option value="">--Select Jenis--</option>
-                                    <option value="SUPER DMA">SUPER DMA</option>
-                                    <option value="DMA">DMA</option>
-                                    <option value="SUMBER">SUMBER</option>
-                                    <option value="TRANSMISI">TRANSMISI</option>
-                                    <option value="DISTRIBUSI">DISTRIBUSI</option>
-                                    <option value="LAYANAN KHUSUS">LAYANAN KHUSUS</option>
-                                </select>
+                                <input name="keterangan" placeholder="keterangan" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>

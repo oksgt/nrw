@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '127.0.0.1',
+	'hostname' => '192.168.10.84',
 	'username' => 'root',
-	'password' => '',
+	'password' => 'purwo',
 	'database' => 'mendoan',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

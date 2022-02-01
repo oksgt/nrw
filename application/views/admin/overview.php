@@ -64,14 +64,12 @@
     </div>
     <div class="tab-content">
       
-      <div class="tab-pane fade active show" id="panel-index" role="tabpanel" aria-labelledby="tab-index">
+      <!-- <div class="tab-pane fade active show" id="panel-index" role="tabpanel" aria-labelledby="tab-index">
         <iframe src="flow/6" style="height: 671px;"></iframe>
+      </div> -->
+      <div class="tab-empty">
+        <img src="<?php echo base_url('assets/gambar/mendoan.jpg'); ?>" style="width: 90%; height: 60%; "  />
       </div>
-    
-      <!-- <div class="tab-content"> -->
-        <!-- <object style="" type="text/html" data="flow/1" ></object> -->
-        <!-- <img src="<?php echo base_url('assets/gambar/mendoan.jpg'); ?>" style="width: 90%; height: 60%; "  /> -->
-      <!-- </div> -->
       <div class="tab-loading">
         <div>
           <h2 class="display-4">Tab is loading <i class="fa fa-sync fa-spin"></i></h2>

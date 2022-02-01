@@ -164,4 +164,13 @@ class Spam_model extends CI_Model {
         return $data;
     }
 
+    public function get_data_logger($id){
+        $sql = "select li.id, li.debit, li.tekanan, li.updatedindb,
+        concat_ws('.', Substring(li.kode, 2, 1), Substring(li.kode, 9, 3)) as new_kode, mm.DEBIT_NORMAL, mm.TEKANAN_NORMAL
+        from log_inbox li 
+        inner join m_mendoan mm on mm.KODE = concat_ws('.', Substring(li.kode, 2, 1), Substring(li.kode, 9, 3)) 
+        where mm.KODE = '".$id."' order by updatedindb desc limit 1";
+        return $this->db->query($sql);
+    }
+
 }

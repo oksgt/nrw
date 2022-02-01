@@ -294,4 +294,9 @@ class Spam extends CI_Controller
         }
         echo $res;
     }
+
+    public function getDataLogger($id){
+        $res = $this->Spam_model->get_data_logger($id)->row_array();
+        echo json_encode($res);
+    }
 }
