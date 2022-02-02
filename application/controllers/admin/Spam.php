@@ -175,6 +175,7 @@ class Spam extends CI_Controller
                 $result[$value->id] = [
                     'trad' => $value->step_name .'<br>'.$value->name,
                     'kode' => $value->kode, 
+                    'current_step' => $value->step,
                     'is_logger' => true,
                     'parent_kode' => '',
                     'img'   => $img,
@@ -185,6 +186,7 @@ class Spam extends CI_Controller
                     'trad' => $value->step_name .'<br>'.$value->name, 
                     'kode' => "",
                     'is_logger' => false,
+                    'current_step' => $value->step,
                     'parent_kode' => $value->parent_step_kode,
                     'img'   => $img,
                     'styles' => ['box-shadow' => '0 0 5px 5px '.$color_box]

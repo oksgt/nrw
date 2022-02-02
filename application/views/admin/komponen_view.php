@@ -96,14 +96,7 @@
                   <div class="form-group">
                     <label for="input_step">Step</label>
                     <select  class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
-                      <option value="x">-- Silahkan Pilih --</option>
-                      <?php 
-                      if(!empty($step->result())){
-                        foreach ($step->result() as $row) { ?>
-                         <option value="<?= $row->id ?>"><?= $row->name ?></option>
-                      <?php }
-                      }
-                      ?>
+                      <option value="x" >-- Silahkan Pilih Parent--</option>'
                     </select>
                     <small id="input_step_error_icon" class="form-text text-danger"></small>
                   </div>
@@ -186,6 +179,7 @@
             "orderable": false,
           }]
         }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+
       });
 
       function reload_table() {
@@ -217,7 +211,7 @@
                 console.log(errorThrown);
                 $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
               }
-            });
+        });
       }
 
       function form_validation() {
@@ -225,12 +219,8 @@
           event.preventDefault();
           event.stopPropagation();
 
-          var input_list = [
-            // 'input_nama_komponen', 
-            'input_parent', 'input_step'];
-          var input_list_error = [
-            // 'input_nama_komponen_error_detail', 
-          'input_parent_error_icon', 'input_step_error_icon'];
+          var input_list = [ 'input_parent', 'input_step'];
+          var input_list_error = [ 'input_parent_error_icon', 'input_step_error_icon'];
 
           $.ajax({
             url: "<?php echo site_url('admin/flowkomponen/validation') ?>",
@@ -277,12 +267,8 @@
       }
 
       function reset_validation() {
-        var input_list = [
-          // 'input_nama_komponen', 
-        'input_parent', 'input_step'];
-        var input_list_error = [
-          // 'input_nama_komponen_error_detail', 
-        'input_parent_error_icon', 'input_step_error_icon'];
+        var input_list = ['input_parent', 'input_step'];
+        var input_list_error = ['input_parent_error_icon', 'input_step_error_icon'];
 
         for (let index = 0; index < input_list.length; index++) {
           const input_ = input_list[index];
@@ -332,55 +318,57 @@
         });
       }
 
-      function detail(id) {
+      function detail(id, step, pid) {
         reset_validation();
-        $.ajax({
-          url: "<?php echo site_url('admin/flowkomponen/') ?>" + "detail/" + id,
-          method: 'GET',
-          dataType: 'json',
-          success: function(data) {
-
-            var format = function(num) {
-              var str = num.toString().replace("", ""),
-                parts = false,
-                output = [],
-                i = 1,
-                formatted = null;
-              if (str.indexOf(".") > 0) {
-                parts = str.split(".");
-                str = parts[0];
-              }
-              str = str.split("").reverse();
-              for (var j = 0, len = str.length; j < len; j++) {
-                if (str[j] != ",") {
-                  output.push(str[j]);
-                  if (i % 3 == 0 && j < (len - 1)) {
-                    output.push(",");
-                  }
-                  i++;
+        $.when(
+          $.ajax({
+                url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
+                method: "GET",
+                dataType: 'html',
+                success: function(html) {
+                  $('#input_parent').html(html);
+                  $('[name=input_parent]').val(pid);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(errorThrown);
+                  $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
                 }
-              }
-              formatted = output.reverse().join("");
-              return (formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
-            };
+          }),
+          $.ajax({
+                url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +step,
+                method: "GET",
+                dataType: 'html',
+                success: function(html) {
+                  $('#input_step').html(html);
+                  $('[name=input_step]').val(step);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(errorThrown);
+                  $('#input_step').html('<option>Oups! Something gone wrong!</option>');
+                }
+          }),
+          $.ajax({
+            url: "<?php echo site_url('admin/flowkomponen/') ?>" + "detail/" + id,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+              console.log(step);
+              $('[name=id]').val(data.id);
+              $('[name=input_nama_komponen]').val(data.name);
+              $('[name=input_kode]').val(data.kode);
+              $('[name=input_url]').val(data.url);
 
-            $('[name=id]').val(data.id);
-            $('[name=input_parent]').val(data.pid);
-            $('[name=input_step]').val(data.step);
-            $('[name=input_nama_komponen]').val(data.name);
-            $('[name=input_kode]').val(data.kode);
-            $('[name=input_url]').val(data.url);
+              save_method = "edit";
+              $('.modal-title').text('Edit Komponen');
 
-            save_method = "edit";
-            $('.modal-title').text('Edit Komponen');
-
-            $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
-            $('#btnSave').removeClass('bg-gradient-primary');
-            $('#btnSave').addClass('bg-gradient-warning');
-            input_name_handler();
-            $('#modal-add-komponen').modal('show');
-          }
-        });
+              $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
+              $('#btnSave').removeClass('bg-gradient-primary');
+              $('#btnSave').addClass('bg-gradient-warning');
+              input_name_handler();
+              $('#modal-add-komponen').modal('show');
+            }
+          })
+        );
       }
 
       function hapus_data(id) {
@@ -438,6 +426,21 @@
           $('.form-group-name').show();
           $('.form-group-kode').hide();
         }
+      }
+      
+      function getNextStep(id){
+        $.ajax({
+              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +id,
+              method: "GET",
+              dataType: 'html',
+              success: function(html) {
+                $('#input_step').html(html);
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                $('#input_step').html('<option>Oups! Something gone wrong!</option>');
+              }
+        });
       }
     </script>
 

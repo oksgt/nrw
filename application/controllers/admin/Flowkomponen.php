@@ -36,8 +36,8 @@ class Flowkomponen extends CI_Controller
     public function fetch_existing_node($id)
     {
         $existing_node = $this->Komponen_model->get_existing_node($id);
-        $option = '<option value="x">-- Silahkan Pilih --</option>
-        <option value=""></option>';
+        $option = '<option value="x" onclick="getNextStep(9999)">-- Silahkan Pilih --</option>
+        <option value="" onclick="getNextStep(0)"></option>';
         if (!empty($existing_node->result())) {
             foreach ($existing_node->result() as $row) {
                 if ($row->step == 5) {
@@ -45,10 +45,26 @@ class Flowkomponen extends CI_Controller
                 } else {
                     $option_name = $row->step_name . ' - ' . $row->name;
                 }
-                $option .= '<option value="' . $row->id . '">' . $option_name . '</option>';
+                $option .= '<option value="' . $row->id . '" onclick="getNextStep(' . $row->step . ')">' . $option_name . '</option>';
             }
         }
+        echo $option;
+    }
 
+    public function fetchNextStep($id)
+    {
+        $next_step = $this->Komponen_model->getNextStep($id);
+        $option = "";
+        if($id == 9999){
+            $option .= '<option value="x" >-- Silahkan Pilih Parent--</option>';
+        } else {
+            if (!empty($next_step->result())) {
+                $option .= '<option value="x">-- Silahkan Pilih --</option>';
+                foreach ($next_step->result() as $row) {
+                    $option .= '<option value="' . $row->id . '" >' . $row->name . '</option>';
+                }
+            }
+        }
         echo $option;
     }
 
@@ -95,7 +111,7 @@ class Flowkomponen extends CI_Controller
 
             $row[] = '<a class="btn btn-sm btn-info" href="' . base_url('index.php/') . 'detailkomponen/' . $spam->id . '" title="Nilai Parameter"><i class="fas fa-list"></i></a>';
             $row[] = '
-                <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
+                <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(' . $spam->id . ',' . $spam->step . ',' . $spam->pid . ')"><i class="fas fa-edit"></i> Edit</a>
                 <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
 
             $data[] = $row;

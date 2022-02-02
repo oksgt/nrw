@@ -136,14 +136,7 @@
                   <div class="form-group">
                     <label for="input_step">Step</label>
                     <select  class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
-                      <option value="x">-- Silahkan Pilih --</option>
-                      <?php 
-                      if(!empty($step->result())){
-                        foreach ($step->result() as $row) { ?>
-                         <option value="<?= $row->id ?>"><?= $row->name ?></option>
-                      <?php }
-                      }
-                      ?>
+                      <option value="x" >-- Silahkan Pilih Parent--</option>'
                     </select>
                     <small id="input_step_error_icon" class="form-text text-danger"></small>
                   </div>
@@ -182,6 +175,7 @@
             </ul>
         </div>
         <input type='hidden' value='' id='txt_id'>
+        <input type='hidden' value='' id='txt_step'>
 
         <!-- jQuery -->
         <script src="<?= base_url() ?>assets/jquery/jquery.min.js"></script>
@@ -284,11 +278,29 @@
                 }
             }
 
+            function getNextStep(id){
+                $.ajax({
+                    url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +id,
+                    method: "GET",
+                    dataType: 'html',
+                    success: function(html) {
+                        $('#input_step').html(html);
+                        $('[name=input_step]').val(id);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                        $('#input_step').html('<option>Oups! Something gone wrong!</option>');
+                    }
+                });
+            }
+
             function rightClickNode(){
                 // disable right click and show custom context menu
                 $(".node").bind('contextmenu', function (e) {
                     var id = this.id;
+                    console.log($(this).attr("data-step"));
                     $("#txt_id").val(id);
+                    $("#txt_step").val($(this).attr("data-step"));
             
                     var top = e.pageY+5;
                     var left = e.pageX;
@@ -307,6 +319,7 @@
                 $(document).bind('contextmenu click',function(){
                     $(".context-menu").hide();
                     $("#txt_id").val("");
+                    $("#txt_step").val("");
                 });
 
                 // disable context-menu from custom menu
@@ -318,11 +331,13 @@
                 $('.context-menu li').click(function(){
                     var className = $(this).find("span:nth-child(1)").attr("class");
                     var titleid = $('#txt_id').val();
+                    var nextStep = $('#txt_step').val();
                     titleid = titleid.split("_");
                     
                     if(className == "Gainsboro") { //add child
-                        add_spam();
                         fetch_existing_node(titleid[1]);
+                        getNextStep(nextStep);
+                        add_spam();
                     } else if(className == "Gainsboro2"){ //edit
                         detail(titleid[1]);
                     } else { 
@@ -427,6 +442,7 @@
                             );
                             reset_validation();
                             generateTreeDiagram();
+                            // fetch_existing_node();
                             rightClickNode();
                             $('#modal-add-komponen').modal('hide');
                             $('#form')[0].reset();
@@ -448,6 +464,7 @@
                     dataType: 'html',
                     success: function(html) {
                         console.log('fetched');
+                        console.log('id '+id);
                         $('#input_parent').html(html);
                         if(id!==""){
                             $('#input_parent').val(id);
@@ -474,34 +491,14 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-
-                    var format = function(num) {
-                        var str = num.toString().replace("", ""),
-                            parts = false,
-                            output = [],
-                            i = 1,
-                            formatted = null;
-                        if (str.indexOf(".") > 0) {
-                            parts = str.split(".");
-                            str = parts[0];
-                        }
-                        str = str.split("").reverse();
-                        for (var j = 0, len = str.length; j < len; j++) {
-                            if (str[j] != ",") {
-                            output.push(str[j]);
-                            if (i % 3 == 0 && j < (len - 1)) {
-                                output.push(",");
-                            }
-                            i++;
-                            }
-                        }
-                        formatted = output.reverse().join("");
-                        return (formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
-                    };
+                    console.log(data);
+                    $('.input_parent_container').show();
                     fetch_existing_node(data.pid, "edit");
+                    getNextStep(data.step);
+                    // console.log(data.step);
                     $('[name=id]').val(data.id);
                     // $('[name=input_parent]').val(data.pid);
-                    $('[name=input_step]').val(data.step);
+                    
                     $('[name=input_nama_komponen]').val(data.name);
                     $('[name=input_kode]').val(data.kode);
                     $('[name=input_url]').val(data.url);
