@@ -23,7 +23,7 @@ class Flowkomponen extends CI_Controller
             $data['existing_node'] = $this->Komponen_model->get_existing_node($id);
 
             $is_exist = $this->cek_existing_root($id);
-            if($is_exist){
+            if ($is_exist) {
                 $data['step'] = $this->Komponen_model->get_step();
             } else {
                 $data['step'] = $this->Komponen_model->get_first_step();
@@ -33,18 +33,19 @@ class Flowkomponen extends CI_Controller
         }
     }
 
-    public function fetch_existing_node($id){
+    public function fetch_existing_node($id)
+    {
         $existing_node = $this->Komponen_model->get_existing_node($id);
         $option = '<option value="x">-- Silahkan Pilih --</option>
         <option value=""></option>';
-        if(!empty($existing_node->result())){
-            foreach ($existing_node->result() as $row) { 
-                if($row->step == 5){
+        if (!empty($existing_node->result())) {
+            foreach ($existing_node->result() as $row) {
+                if ($row->step == 5) {
                     $option_name = $row->step_name . ' - ' . $row->kode;
                 } else {
-                    $option_name = $row->step_name . ' - ' . $row->name ;
+                    $option_name = $row->step_name . ' - ' . $row->name;
                 }
-                $option .= '<option value="'.$row->id.'">'.$option_name.'</option>';
+                $option .= '<option value="' . $row->id . '">' . $option_name . '</option>';
             }
         }
 
@@ -61,13 +62,13 @@ class Flowkomponen extends CI_Controller
             $row = array();
             $row[] = $no;
             $row[] = $spam->kode;
-            if($spam->step == 5){
+            if ($spam->step == 5) {
                 $row[] = $spam->step_name . ' - ' . $spam->kode;
             } else {
                 $row[] = $spam->step_name . ' - ' . $spam->name;
             }
 
-            if($spam->parent_step == 5){
+            if ($spam->parent_step == 5) {
                 $row[] = $spam->parent_step_name . ' - ' . $spam->parent_step_kode;
             } else {
                 $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
@@ -82,29 +83,21 @@ class Flowkomponen extends CI_Controller
                 $endPoint = strrpos($stringCut, ' ');
 
                 //if the string doesn't contain any space then it will cut without word basis.
-                $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+                $string = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
                 $string .= '...';
             }
-            
+
             // if($spam->url !== "" || $spam->url !== "-")
-            $button_url = "<i class='text-info'>$string</i>" ." <a class='btn btn-sm btn-info' href='". prep_url($spam->url)."' alt='Broken Link' target='_blank'><i class='fa fa-link'></i></a>";
+            $button_url = "<i class='text-info'>$string</i>" . " <a class='btn btn-sm btn-info' href='" . prep_url($spam->url) . "' alt='Broken Link' target='_blank'><i class='fa fa-link'></i></a>";
 
             $row[] = $button_url;
             // $row[] = $spam->step_name;
 
-            //add html for action
-            if($spam->step == 5){
-                $row[] = '
+            $row[] = '<a class="btn btn-sm btn-info" href="' . base_url('index.php/') . 'detailkomponen/' . $spam->id . '" title="Nilai Parameter"><i class="fas fa-list"></i></a>';
+            $row[] = '
                 <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
                 <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
-            } else {
-                // $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
-                $row[] = '
-                <a class="btn btn-sm btn-info" href="'.base_url('index.php/').'detailkomponen/'.$spam->id.'" title="Nilai Parameter"><i class="fas fa-list"></i></a>
-                <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
-                <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
-            }
-            
+
             $data[] = $row;
             // $no++;
         }
@@ -151,7 +144,7 @@ class Flowkomponen extends CI_Controller
     {
         $data = $this->Komponen_model->getByKode($str)->row_array();
         if (!empty($data)) {
-            $this->form_validation->set_message('validasi_kode', '<b class="fa fa-exclamation-triangle"></b> Kode Logger '.$str.' Sudah Ada');
+            $this->form_validation->set_message('validasi_kode', '<b class="fa fa-exclamation-triangle"></b> Kode Logger ' . $str . ' Sudah Ada');
             return FALSE;
         } else {
             return TRUE;
@@ -230,10 +223,11 @@ class Flowkomponen extends CI_Controller
         echo json_encode($result);
     }
 
-    public function cek_existing_root($root){
+    public function cek_existing_root($root)
+    {
         $res = null;
         $data_existing = $this->Komponen_model->get_by(['root' => $root, 'is_del' => 0])->result();
-        if(empty($data_existing)){
+        if (empty($data_existing)) {
             $res = false;
         } else {
             $res = true;

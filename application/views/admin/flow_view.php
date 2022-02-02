@@ -93,7 +93,8 @@
                 <div class="container">
                     <div class="row mt-3">
                         <div class="col-sm-8 col-12">
-                            <h3 class="text-light"><?= $spam_name ?></h3>
+                            <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
+                            
                         </div>
                         <div class="col-sm-4 col-12 text-right">
                             <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
@@ -204,15 +205,15 @@
                 generateTreeDiagram();
                 rightClickNode();
                 form_validation();
-                //simulasi sync data log air
-                var seconds = 0;
-                var el = document.getElementById('seconds-counter');
+                getDataLogger();
 
                 setInterval(function() {
-                    console.log("Message to alert every 5 seconds");
-                }, 5000);
+                    getDataLogger();
+                }, 3600 * 1000);
                 
-                function incrementSeconds() {
+            });
+
+            function getDataLogger() {
                     for (var key in id_logger) {
                         // $('#P_' + 'M.058').text('P: ' + 12);
                         // $('#P_' +  id_logger[key].replace(".", "\\.") ).removeClass();
@@ -250,14 +251,15 @@
                             }
                         });
                     }
-                    // console.clear();
-                }
-                var cancel = setInterval(incrementSeconds, 3600000);
-
-                $('#P_' + 6).text('P: ' + 12);
-                $('#P_' + 6).removeClass();
-                $('#P_' + 6).addClass('badge badge-danger');
-            });
+                    var currentdate = new Date(); 
+                    var datetime = "Logger Last Sync : " 
+                                    + currentdate.getDate() + "/"
+                                    + (currentdate.getMonth()+1)  + "/" 
+                                    + currentdate.getFullYear() + " @ "  
+                                    + currentdate.getHours() + ":"  
+                                    + currentdate.getMinutes();
+                    $('.timelabel').text(datetime);                    
+            }
 
             function setCenterScreen(id){
                 $('#58').css({

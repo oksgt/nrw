@@ -161,7 +161,6 @@ class Spam extends CI_Controller
 	function getNodeDetail($root)
 	{
 		$data = $this->Spam_model->getDataNodeDetailByRoot($root)->result();
-
 		$result = [];
 		foreach ($data as $key => $value) {
             $color_box = ($value->step == 1) ? "#f8f9fa" : "#f8f9fa" ;

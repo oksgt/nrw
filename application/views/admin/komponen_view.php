@@ -58,8 +58,8 @@
                           <th width="20%">Nama</th>
                           <th width="20%">Parent (Turunan Dari)</th>
                           <th width="20%">URL</th>
-                          <!-- <th width="50%">Step Flow</th> -->
-                          <th width="20%">Action</th>
+                          <th width="10%">Nilai Parameter</th>
+                          <th width="10%">Action</th>
                         </tr>
                       </thead>
                       <tbody>
