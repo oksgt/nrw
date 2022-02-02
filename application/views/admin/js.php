@@ -30,3 +30,16 @@
 <script src="<?= base_url(); ?>/assets/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <script src="<?= base_url(); ?>/assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+  function loaddaftarspam() {
+        $.ajax({
+          url: "<?php echo site_url('admin/spam/') ?>" + "load_active_spam/",
+          method: 'GET',
+          dataType: 'html',
+          success: function(html) {
+            $('#list-menu-spam').html(html);
+          }
+        });
+      }
+</script>

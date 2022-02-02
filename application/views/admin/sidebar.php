@@ -36,6 +36,12 @@
                   <p>Data Pelanggan</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="spam" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data SPAM</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -49,7 +55,7 @@
           </li>
   
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" onclick="loaddaftarspam()">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Data Logger
@@ -63,26 +69,9 @@
                   <p>Data Logger</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/mendoan/m020.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>SPAM A</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="mendoan" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>SPAM B</p>
-                </a>
-              </li>
+              <div id="list-menu-spam">
+                
+              </div>
+              
             </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="spam" class="nav-link">
-              <i class="nav-icon fas fa-project-diagram"></i>
-              <p>
-                SPAM
-              </p>
-            </a>
           </li>

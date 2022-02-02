@@ -298,4 +298,16 @@ class Spam extends CI_Controller
         $res = $this->Spam_model->get_data_logger($id)->row_array();
         echo json_encode($res);
     }
+
+    function load_active_spam(){
+        $data_spam = $this->Spam_model->get_active_spam()->result();
+        foreach ($data_spam as $r) {
+            echo '<li class="nav-item">
+                <a href="flow/'.$r->id.'" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>'.ucwords($r->name).'</p>
+                </a>
+            </li>';
+        }
+    }
 }
