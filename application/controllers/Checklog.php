@@ -4,7 +4,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Checklog extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -30,7 +29,8 @@ class Checklog extends CI_Controller
             
             $inserted = $this->Checklog_model->insert_local($result);
             if($inserted > 0){
-                echo $inserted." row(s) inserted at ".date('Y-m-d H:i:s');
+                echo $inserted." row(s) inserted at ".date('Y-m-d H:i:s')."<br><pre>";
+                print_r($result); 
             } else {
                 echo " nothing inserted";
             }

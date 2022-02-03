@@ -209,20 +209,15 @@
 
             function getDataLogger() {
                     for (var key in id_logger) {
-                        // $('#P_' + 'M.058').text('P: ' + 12);
-                        // $('#P_' +  id_logger[key].replace(".", "\\.") ).removeClass();
-                        // $('#P_' +  id_logger[key].replace(".", "\\.")).addClass('badge badge-danger');
-                        // console.log(id_logger[key]);
-                        // $('#P_' +  id_logger[key].replace(".", "\\.")).text('P: '+id_logger[key]);
                         $.ajax({
                             url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
                             method: "GET",
                             dataType: 'json',
                             success: function(data) {
-                                console.log(data);
-                                
-                                $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.debit);
-                                if(data.debit < data.DEBIT_NORMAL){
+                                // console.log('P: ' + data.debit);
+                                // console.log('Q: ' + data.tekanan);
+                                $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
+                                if(data.tekanan < data.TEKANAN_NORMAL){
                                     $('#P_' +  data.new_kode).removeClass();
                                     $('#P_' +  data.new_kode).addClass('badge badge-danger');
                                 } else {
@@ -230,8 +225,8 @@
                                     $('#P_' +  data.new_kode).addClass('badge badge-success');
                                 }
 
-                                $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.tekanan);
-                                if(data.tekanan < data.TEKANAN_NORMAL){
+                                $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
+                                if(data.debit < data.DEBIT_NORMAL){
                                     $('#Q_' +  data.new_kode).removeClass();
                                     $('#Q_' +  data.new_kode).addClass('badge badge-danger');
                                 } else {
