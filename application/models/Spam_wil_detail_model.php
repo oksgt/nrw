@@ -124,9 +124,9 @@ class Spam_wil_detail_model extends CI_Model {
 
     public function get_last_value($node_id){
         $sql = 'select periode as "Periode", 
-        concat(input_sistem, " l/dt", " | " , format(input_sistem/1000*(86400*24*30), 0), " m3" ) as "Input Sistem", 
-        concat(air_terjual, " l/dt", " | " , format(air_terjual/1000*(86400*24*30), 0), " m3" ) as "Air Terjual",
-        concat(kehilangan_air, " l/dt", " | " , format(kehilangan_air/1000*(86400*24*30), 0), " m3" ) as "Kehilangan Air",
+        concat(input_sistem, " l/dt", " | " , format(input_sistem/1000*(86400*24*30), 0), " &#13221;" ) as "Input Sistem", 
+        concat(format(air_terjual, 0), " &#13221;" ) as "Air Terjual",
+        concat(format(kehilangan_air, 0), " &#13221;" ) as "Kehilangan Air",
         format(jml_pelanggan, 0) as "Jumlah Pelanggan"
         from v_spam_wil_detail vswd  where id_spam_node = '.$node_id.' order by input_date desc limit 1';
         return $this->db->query($sql);

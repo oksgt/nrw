@@ -124,11 +124,11 @@ class Spam_ipa_detail_model extends CI_Model {
 
     public function get_last_value($node_id){
         $sql = 'select periode as "Periode", 
-        concat(debit_produksi, " l/dt", " | " , format(debit_produksi/1000*(86400*24*30), 0), " m3" ) as "Debit Produksi", 
-        concat(debit_distribusi, " l/dt", " | " , format(debit_distribusi/1000*(86400*24*30), 0), " m3" ) as "Debit Distribusi", 
-        concat(air_terjual, " l/dt", " | " , format(air_terjual/1000*(86400*24*30), 0), " m3" ) as "Air Terjual",
-        concat(kehilangan_air, " l/dt", " | " , format(kehilangan_air/1000*(86400*24*30), 0), " m3" ) as "Kehilangan Air",
-        concat(kapasitas_pompa, " l/dt", " | " , format(kapasitas_pompa/1000*(86400*24*30), 0), " m3" ) as "Kapasitas Pompa",
+        concat(debit_produksi, " l/dt", " | " , format(debit_produksi/1000*(86400*24*30), 0), " &#13221;" ) as "Debit Produksi", 
+        concat(debit_distribusi, " l/dt", " | " , format(debit_distribusi/1000*(86400*24*30), 0), " &#13221;" ) as "Debit Distribusi", 
+        concat(format(air_terjual, 0), " &#13221;" ) as "Air Terjual",
+        concat(format(kehilangan_air, 0), " &#13221;" ) as "Kehilangan Air",
+        concat(kapasitas_pompa, " l/dt", " | " , format(kapasitas_pompa/1000*(86400*24*30), 0), " &#13221;" ) as "Kapasitas Pompa",
         format(jml_pelanggan, 0) as "Jumlah Pelanggan"
         from v_spam_ipa_detail vsid where id_spam_node = '.$node_id.' order by input_date desc limit 1';
         return $this->db->query($sql);
