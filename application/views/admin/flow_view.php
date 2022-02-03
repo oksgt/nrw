@@ -281,6 +281,7 @@
                     success: function(html) {
                         $('#input_step').html(html);
                         $('[name=input_step]').val(id);
+                        input_name_handler();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
@@ -439,6 +440,7 @@
                             generateTreeDiagram();
                             // fetch_existing_node();
                             rightClickNode();
+                            getDataLogger();
                             $('#modal-add-komponen').modal('hide');
                             $('#form')[0].reset();
                         } else {
@@ -504,7 +506,7 @@
                     $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
                     $('#btnSave').removeClass('bg-gradient-primary');
                     $('#btnSave').addClass('bg-gradient-warning');
-                    input_name_handler();
+                    
                     $('#modal-add-komponen').modal('show');
                 }
                 });
@@ -535,6 +537,7 @@
                             if (result.isConfirmed) {
                                 generateTreeDiagram();
                                 rightClickNode();
+                                getDataLogger();
                             }
                         });
                         }
