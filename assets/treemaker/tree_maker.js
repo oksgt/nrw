@@ -89,7 +89,7 @@ function iterate(tree, start = false, from = '') {
         
         if(treeParamas[key].is_logger){
             treeContainer.innerHTML += '<div class="tree__container__step"><div class="tree__container__step__card" id="' + key + '">'+
-            '<p data-step='+treeParamas[key].current_step+' id="card_' + key + '" class="tree__container__step__card__p node">' + 
+            '<p data-step='+treeParamas[key].current_step+' data-parent-step='+treeParamas[key].parent_step+' id="card_' + key + '" class="tree__container__step__card__p node">' + 
             // '<img onclick="getTableDetail(' + key + ')" data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/node_icon/pump.png" >'+
             'Logger '+ treeParamas[key].kode +'<br>'+
             '<span style="font-size: 1.1em;" class="badge badge-success" id="P_' + treeParamas[key].kode + '">' + '' + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-success" id="Q_' + treeParamas[key].kode + '">' + '' + '</span>'+
@@ -98,7 +98,7 @@ function iterate(tree, start = false, from = '') {
             '</div></div>';
         } else {
             treeContainer.innerHTML += '<div class="tree__container__step"><div class="tree__container__step__card" id="' + key + '">'+  
-            '<p data-step='+treeParamas[key].current_step+' onclick="getTableDetail(' + key + ')" id="card_' + key + '" class="tree__container__step__card__p node">' + 
+            '<p data-step='+treeParamas[key].current_step+' data-parent-step='+treeParamas[key].parent_step+' onclick="getTableDetail(' + key + ')" id="card_' + key + '" class="tree__container__step__card__p node">' + 
             '<img onclick="$("#card_' + key + '").click(); " data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/'+treeParamas[key].img+'" ><br>'+
             '' + "" +textCard+'<br>'+
             // '<br><span style="font-size: 1.1em;" class="badge badge-warning" id="P_' + key + '">P_' + key + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-warning" id="P_' + key + '">Q_' + key + '</span>'+

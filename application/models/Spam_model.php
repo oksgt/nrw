@@ -144,7 +144,7 @@ class Spam_model extends CI_Model {
 
     public function getDataNodeDetailByRoot($id){
         $qry = '
-        select node.id, node.root, node.parent_step_kode, spam.name as spam_name, spam.diagram_flow_direction, node.kode, 
+        select node.id, node.root, node.parent_step_kode, node.parent_step, spam.name as spam_name, spam.diagram_flow_direction, node.kode, 
         node.pid, node.step, tss.name as step_name, node.name, tss.img , node.url from view_spam_node as node 
         inner join tb_spam as spam on node.root = spam.id 
         left join tb_spam_step tss on node.step = tss.id

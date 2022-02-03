@@ -105,7 +105,7 @@
 
             <section class="content">
                 <div class="col-md-12 container-fluid py-2 ">
-                    <div class="d-flex flex-row flex-nowrap">
+                    <div class="d-flex flex-row flex-nowrap justify-content-center">
                         <div id="my_tree" class=""></div>
                     </div>
                 </div>
@@ -296,8 +296,13 @@
                     var id = this.id;
                     console.log($(this).attr("data-step"));
                     $("#txt_id").val(id);
-                    $("#txt_step").val($(this).attr("data-step"));
-            
+
+                    if($(this).attr("data-step") == 5){
+                        $("#txt_step").val($(this).attr("data-parent-step"));
+                    } else {
+                        $("#txt_step").val($(this).attr("data-step"));
+                    }
+
                     var top = e.pageY+5;
                     var left = e.pageX;
 

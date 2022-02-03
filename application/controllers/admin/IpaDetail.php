@@ -38,9 +38,9 @@ class IpaDetail extends CI_Controller
             $row[] = format_month_year($r->periode);
             $row[] = $r->debit_produksi . " l/dt ( " . conver_ldt_m3($r->debit_produksi) . " ) ";
             $row[] = $r->debit_distribusi . " l/dt ( " . conver_ldt_m3($r->debit_distribusi) . " ) ";
-            $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
-            $row[] = $r->kehilangan_air . " l/dt ( " . conver_ldt_m3($r->kehilangan_air) . " ) ";
-            $row[] = $r->jml_pelanggan . " SR ";
+            $row[] = rupiah($r->air_terjual) . " &#13221; ";
+            $row[] = rupiah($r->kehilangan_air) . " &#13221; ";
+            $row[] = rupiah($r->jml_pelanggan) . " SR ";
             $row[] = $r->kapasitas_pompa . " l/dt ( " . conver_ldt_m3($r->kapasitas_pompa) . " ) ";
             $row[] = formatTglIndo_datetime($r->input_date);
 

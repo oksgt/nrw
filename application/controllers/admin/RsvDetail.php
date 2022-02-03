@@ -38,9 +38,9 @@ class RsvDetail extends CI_Controller
             $row[] = format_month_year($r->periode);
             $row[] = $r->debit_input . " l/dt ( " . conver_ldt_m3($r->debit_input) . " ) ";
             $row[] = $r->debit_distribusi . " l/dt ( " . conver_ldt_m3($r->debit_distribusi) . " ) ";
-            $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
-            $row[] = $r->kehilangan_air . " l/dt ( " . conver_ldt_m3($r->kehilangan_air) . " ) ";
-            $row[] = $r->jml_pelanggan . " SR ";
+            $row[] = rupiah($r->air_terjual) . " &#13221; ";
+            $row[] = rupiah($r->kehilangan_air) . " &#13221; ";
+            $row[] = rupiah($r->jml_pelanggan) . " SR ";
             $row[] = formatTglIndo_datetime($r->input_date);
 
             $row[] = '

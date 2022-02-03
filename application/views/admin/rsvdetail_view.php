@@ -105,12 +105,12 @@
                                         <small id="input_debit_distribusi_error_detail" class="form-text text-danger"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input_air_terjual">Air Terjual (l/dt)</label>
+                                        <label for="input_air_terjual">Air Terjual (&#13221;)</label>
                                         <input type="text" class="form-control float" id="input_air_terjual" name="input_air_terjual">
                                         <small id="input_air_terjual_error_detail" class="form-text text-danger"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input_kehilangan_air">Kehilangan Air (l/dt)</label>
+                                        <label for="input_kehilangan_air">Kehilangan Air (&#13221;)</label>
                                         <input type="text" class="form-control float" id="input_kehilangan_air" name="input_kehilangan_air">
                                         <small id="input_kehilangan_air_error_detail" class="form-text text-danger"></small>
                                     </div>

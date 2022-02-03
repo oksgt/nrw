@@ -37,9 +37,9 @@ class WilDetail extends CI_Controller
             $row[] = $no;
             $row[] = format_month_year($r->periode);
             $row[] = $r->input_sistem . " l/dt ( " . conver_ldt_m3($r->input_sistem) . " ) ";
-            $row[] = $r->air_terjual . " l/dt ( " . conver_ldt_m3($r->air_terjual) . " ) ";
-            $row[] = $r->kehilangan_air . " l/dt ( " . conver_ldt_m3($r->kehilangan_air) . " ) ";
-            $row[] = $r->jml_pelanggan . " SR ";
+            $row[] = rupiah($r->air_terjual) . " &#13221; ";
+            $row[] = rupiah($r->kehilangan_air). " &#13221; ";
+            $row[] = rupiah($r->jml_pelanggan) . " SR ";
             $row[] = formatTglIndo_datetime($r->input_date);
 
             $row[] = '
