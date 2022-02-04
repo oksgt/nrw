@@ -38,4 +38,24 @@ class Checklog extends CI_Controller
             echo "kosong";
         }
     }
+
+    public function test(){
+        $table_rows = $this->Checklog_model->cekrowscheme()->row_array();
+        $result = json_encode($table_rows);
+        if ( ! write_file(FCPATH.'/data.json', $result))
+        {
+                echo 'Unable to write the file';
+        }
+        else
+        {
+                echo 'File written!';
+        }
+
+        $file = file_get_contents(FCPATH.'/data.json');
+        $file = json_decode($file);
+        $table_rows = $file->TABLE_ROWS;
+        if($table_rows['TABLE_ROWS'] > $table_rows){
+            
+        }
+    }
 }

@@ -61,4 +61,9 @@ class Checklog_model extends CI_Model
     public function insert_local($data){
         return $this->db->insert_batch('log_inbox', $data);
     }
+
+    public function cekrowscheme(){
+        $sql = "select TABLE_ROWS  from information_schema.TABLES where TABLE_SCHEMA = 'GAMMU_9200' and TABLE_NAME = 'inbox'";
+        return $this->db_212->query($sql);
+    }
 }

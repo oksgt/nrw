@@ -218,20 +218,22 @@
                                 // console.log('Q: ' + data.tekanan);
                                 $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
                                 if(data.tekanan < data.TEKANAN_NORMAL){
-                                    $('#P_' +  data.new_kode).removeClass();
-                                    $('#P_' +  data.new_kode).addClass('badge badge-danger');
+                                    console.log('danger'+'#P_' +  data.new_kode);
+                                    $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                    $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
                                 } else {
-                                    $('#P_' +  data.new_kode).removeClass();
-                                    $('#P_' +  data.new_kode).addClass('badge badge-success');
+                                    console.log('normal')
+                                    $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                    $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
                                 }
 
                                 $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
                                 if(data.debit < data.DEBIT_NORMAL){
-                                    $('#Q_' +  data.new_kode).removeClass();
-                                    $('#Q_' +  data.new_kode).addClass('badge badge-danger');
+                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
                                 } else {
-                                    $('#Q_' +  data.new_kode).removeClass();
-                                    $('#Q_' +  data.new_kode).addClass('badge badge-success');
+                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
                                 }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
@@ -247,7 +249,8 @@
                                     + currentdate.getFullYear() + " @ "  
                                     + currentdate.getHours() + ":"  
                                     + currentdate.getMinutes();
-                    $('.timelabel').text(datetime);                    
+                    $('.timelabel').text(datetime);        
+                    console.log(datetime);            
             }
 
             function setCenterScreen(id){
