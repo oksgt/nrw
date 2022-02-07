@@ -39,6 +39,30 @@ class Checklog extends CI_Controller
         }
     }
 
+    public function ajax_update(){
+        $last_updatedindb = $this->Checklog_model->get_local_last_date_record();
+        $result_compare = $this->Checklog_model->check_compare($last_updatedindb)->result_array();
+        if(!empty($result_compare)){
+            $result = [];
+            $result_get_compare = $this->Checklog_model->get_check_compare($last_updatedindb)->result_array();
+            
+            foreach ($result_get_compare as $key => $value) {
+                $result[] = $value;
+            }
+            
+            $inserted = $this->Checklog_model->insert_local($result);
+            if($inserted > 0){
+                $result = ['status' => true];
+            } else {
+                $result = ['status' => false];
+            }
+        } else {
+            $result = ['status' => true];
+        }
+        echo json_encode($result);
+    }
+
+
     public function test(){
         $table_rows = $this->Checklog_model->cekrowscheme()->row_array();
         $result = json_encode($table_rows);

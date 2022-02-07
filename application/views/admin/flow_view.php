@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <style type="text/css">
+
+        .custom-loader {
+        animation: none !important;
+        border-width: 0 !important;
+        }
         .path {
             animation: dash 2.5s linear infinite;
         }
@@ -81,36 +86,86 @@
             background-color: #28a745;
         }
 
+        /* .c{
+            width:100%;
+            height: 100%;
+            overflow:hidden;
+            overflow-y:auto;
+        }
+        .card-home{
+            position:absolute;
+            top:0;
+            animation: scroll 20s linear 1s infinite;
+        }
+        @keyframes scroll {
+            100% { top: -200%; }  
+            
+        } */
+
     </style>
 
 
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container">
-                    <div class="row mt-3">
-                        <div class="col-sm-8 col-12">
-                            <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
-                            
-                        </div>
-                        <div class="col-sm-4 col-12 text-right">
-                            <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
+    <div class="wrapper ">
+        <div class="content-wrapper c border border-danger">
+            <div class="card-home">
+                <section class="content-header">
+                    <div class="container">
+                        <div class="row mt-3">
+                            <div class="col-sm-7 col-12">
+                                <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
+                                
+                            </div>
+                            <div class="col-sm-5 col-12 text-right">
+                                <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Update Data Logger</a>
+                                <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="content">
-                <div class="col-md-12 container-fluid py-2 ">
-                    <div class="d-flex flex-row flex-nowrap justify-content-center">
-                        <div id="my_tree" class=""></div>
+                <section class="content">
+                    <div class="col-md-12 container-fluid py-2 ">
+                        <div class="d-flex flex-row flex-nowrap justify-content-center ">
+                            <div id="my_tree" class=""></div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
+            
         </div>
+
+        <div class="content-wrapper c border border-success">
+            <div class="card-home">
+                <section class="content-header">
+                    <div class="container">
+                        <div class="row mt-3">
+                            <div class="col-sm-7 col-12">
+                                <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
+                                
+                            </div>
+                            <div class="col-sm-5 col-12 text-right">
+                                <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Update Data Logger</a>
+                                <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content">
+                    <div class="col-md-12 container-fluid py-2 ">
+                        <div class="d-flex flex-row flex-nowrap justify-content-center ">
+                            <div id="my_tree2" class=""></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+        </div>
+
+        
 
         <div class="modal" tabindex="-1" id="modal-add-komponen">
           <div class="modal-dialog">
@@ -197,6 +252,7 @@
             $(document).ready(function() {
                 
                 generateTreeDiagram();
+                // generateTreeDiagram2();
                 rightClickNode();
                 form_validation();
                 getDataLogger();
@@ -291,6 +347,85 @@
                         $('#input_step').html('<option>Oups! Something gone wrong!</option>');
                     }
                 });
+            }
+
+            function UpdateLogger(){
+                Swal.fire({
+                title: 'Update Data Logger',
+                // input: 'text',
+                // inputAttributes: {
+                //     autocapitalize: 'off'
+                // },
+                showCancelButton: true,
+                confirmButtonText: 'Look up',
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    return fetch(`<?php echo site_url('Checklog/ajax_update') ?>`)
+                    .then(response => {
+                        if (!response.status) {
+                        throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                        )
+                    })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Good job!',
+                        'Data logger berhasil update!',
+                        'success'
+                    )
+                }
+                })
+
+                // $.fn.modal.Constructor.prototype._enforceFocus = function () {}
+                // Swal.fire({
+                //         title: 'Updating data logger',
+                //         buttonsStyling: false,
+                //         // showCancelButton: true,
+                //         customClass: {
+                //             confirmButton: 'btn btn-primary btn-lg',
+                //             cancelButton: 'btn btn-danger btn-lg',
+                //             loader: 'custom-loader'
+                //         },
+                //         loaderHtml: '<div class="spinner-border text-primary"></div>',
+                //         preConfirm: () => {
+                //             Swal.showLoading()
+                //             return new Promise((resolve) => {
+                //                 $.ajax({
+                //                     url: "<?php echo site_url('Checklog/ajax_update') ?>",
+                //                     method: "GET",
+                //                     dataType: 'json',
+                //                     success: function(json) {
+                //                         if(data.status){
+                //                             setTimeout(() => {
+                //                                 resolve(true);
+                //                                 Swal.fire(
+                //                                     'Good job!',
+                //                                     'Data logger berhasil update!',
+                //                                     'success'
+                //                                 );
+                                    
+                //                             }, 3000)
+                                            
+                //                         }
+                //                     },
+                //                     error: function(jqXHR, textStatus, errorThrown) {
+                //                         console.log(errorThrown);
+                //                         $('#input_step').html('<option>Oups! Something gone wrong!</option>');
+                //                     }
+                //                 });
+                                
+                //             })
+                //         }
+                //     })
+                
             }
 
             function rightClickNode(){
