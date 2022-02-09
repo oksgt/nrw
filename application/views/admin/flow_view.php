@@ -86,7 +86,7 @@
             background-color: #28a745;
         }
 
-        /* .c{
+        .c{
             width:100%;
             height: 100%;
             overflow:hidden;
@@ -94,13 +94,13 @@
         }
         .card-home{
             position:absolute;
-            top:0;
-            animation: scroll 20s linear 1s infinite;
+            top: 0;
+            animation: scroll 70s linear 1s infinite;
         }
         @keyframes scroll {
             100% { top: -200%; }  
             
-        } */
+        }
 
     </style>
 
@@ -109,8 +109,8 @@
 
 <body>
     <div class="wrapper ">
-        <div class="content-wrapper c border border-danger">
-            <div class="card-home">
+        <div class="content-wrapper c">
+            <div class=" card-home">
                 <section class="content-header">
                     <div class="container">
                         <div class="row mt-3">
@@ -126,45 +126,18 @@
                     </div>
                 </section>
 
-                <section class="content">
-                    <div class="col-md-12 container-fluid py-2 ">
+                <section class="content ">
+                    <div class="col-md-12 container-fluid py-2">
                         <div class="d-flex flex-row flex-nowrap justify-content-center ">
                             <div id="my_tree" class=""></div>
                         </div>
                     </div>
                 </section>
             </div>
+
+            
             
         </div>
-
-        <div class="content-wrapper c border border-success">
-            <div class="card-home">
-                <section class="content-header">
-                    <div class="container">
-                        <div class="row mt-3">
-                            <div class="col-sm-7 col-12">
-                                <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
-                                
-                            </div>
-                            <div class="col-sm-5 col-12 text-right">
-                                <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Update Data Logger</a>
-                                <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="content">
-                    <div class="col-md-12 container-fluid py-2 ">
-                        <div class="d-flex flex-row flex-nowrap justify-content-center ">
-                            <div id="my_tree2" class=""></div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            
-        </div>
-
         
 
         <div class="modal" tabindex="-1" id="modal-add-komponen">
