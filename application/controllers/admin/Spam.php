@@ -13,10 +13,14 @@ class Spam extends CI_Controller
             'Spam_model', 'Spam_intake_detail_model', 'Spam_rsv_detail_model', 'Spam_ipa_detail_model', 'Spam_wil_detail_model',
             'Komponen_model'
         ]);
+        
     }
 
     public function index()
     {
+        if ($this->session->userdata('status') !== 'loggedin') {
+            redirect(site_url("admin/login"));
+        }
         $this->load->view('admin/spam_view');
     }
 

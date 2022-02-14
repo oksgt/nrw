@@ -99,7 +99,6 @@
         }
         @keyframes scroll {
             100% { top: -200%; }  
-            
         }
 
     </style>
@@ -119,8 +118,11 @@
                                 
                             </div>
                             <div class="col-sm-5 col-12 text-right">
-                                <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Update Data Logger</a>
-                                <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
+                                <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Sync Data Logger</a>
+                                <?php if ($this->session->userdata('status') == 'loggedin') { ?>
+                                    <a type="button" class="btn btn-success pull-right" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> Kelola Komponen</a>
+                                <?php } ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -330,7 +332,7 @@
                 //     autocapitalize: 'off'
                 // },
                 showCancelButton: true,
-                confirmButtonText: 'Look up',
+                confirmButtonText: 'Sync',
                 showLoaderOnConfirm: true,
                 preConfirm: (login) => {
                     return fetch(`<?php echo site_url('Checklog/ajax_update') ?>`)
@@ -353,7 +355,15 @@
                         'Good job!',
                         'Data logger berhasil update!',
                         'success'
-                    )
+                    );
+                    var currentdate = new Date(); 
+                    var datetime = "Logger Last Sync : " 
+                                    + currentdate.getDate() + "/"
+                                    + (currentdate.getMonth()+1)  + "/" 
+                                    + currentdate.getFullYear() + " @ "  
+                                    + currentdate.getHours() + ":"  
+                                    + currentdate.getMinutes();
+                    $('.timelabel').text(datetime); 
                 }
                 })
 

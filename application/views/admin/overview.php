@@ -68,7 +68,7 @@
         <iframe src="flow/6" style="height: 671px;"></iframe>
       </div> -->
       <div class="tab-empty">
-        <img src="<?php echo base_url('assets/gambar/mendoan.jpg'); ?>" style="width: 90%; height: 60%; "  />
+        <img src="<?php echo base_url('assets/gambar/mendoan.jpg'); ?>" style="width: 90%; height: 60%; "/>
       </div>
       <div class="tab-loading">
         <div>

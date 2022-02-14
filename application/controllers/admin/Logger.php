@@ -10,6 +10,9 @@ class Logger extends CI_Controller
         $this->load->database();
         $this->load->model("logger_model");
         $this->load->library('form_validation');
+        if ($this->session->userdata('status') !== 'loggedin') {
+            redirect(site_url("admin/login"));
+        }
     }
 
     public function index()

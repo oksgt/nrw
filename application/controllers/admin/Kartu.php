@@ -6,6 +6,9 @@ class Kartu extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('kartu_model');
+        if ($this->session->userdata('status') !== 'loggedin') {
+            redirect(site_url("admin/login"));
+        }
     }
 
     public function index(){

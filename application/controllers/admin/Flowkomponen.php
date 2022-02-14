@@ -10,6 +10,10 @@ class Flowkomponen extends CI_Controller
         $this->load->library(array('form_validation'));
         $this->load->model('Spam_model');
         $this->load->model('Komponen_model');
+
+        if ($this->session->userdata('status') !== 'loggedin') {
+            redirect(site_url("admin/login"));
+        }
     }
 
     public function load($id)
