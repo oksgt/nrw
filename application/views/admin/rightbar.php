@@ -107,17 +107,28 @@
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
+
+        <li class="nav-item">
+          <?php if ($this->session->userdata('status') == 'loggedin') { ?>
+            <a class="nav-link text-primary" role="button" href="<?= site_url('admin/login/ubah_password') ?>">
+              <i class="fa fa-lock-open "> </i> Ubah Password
+            </a>
+          <?php }?>
+        </li>
+
         <li class="nav-item">
           <?php if ($this->session->userdata('status') !== 'loggedin') { ?>
-            <a class="nav-link" role="button" onclick="login()">
-              <i class="fas fa-user text-primary"></i>
+            <a class="nav-link text-primary" role="button" onclick="login()">
+              <i class="fas fa-user "></i>
             </a>
           <?php } else { ?>
-            <a class="nav-link" role="button" onclick="logout()" >
-              <i class="fas fa-sign-out-alt text-danger"></i>
+            <a class="nav-link text-danger" role="button" onclick="logout()" >
+              <i class="fas fa-sign-out-alt "> </i> Logout
             </a>
           <?php } ?>
-          <script>
+        </li>
+
+        <script>
             function login(){
               window.open('<?= site_url('admin/login') ?>', 'refresh');
             }
@@ -125,6 +136,9 @@
             function logout(){
               window.open('<?= site_url('admin/logout') ?>', 'refresh');
             }
+
+            function ubahpassword(){
+              window.open('<?= site_url('admin/login/ubah_password') ?>', 'refresh');
+            }
           </script>
-        </li>
       </ul>

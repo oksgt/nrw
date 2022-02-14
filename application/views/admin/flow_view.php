@@ -97,9 +97,9 @@
             top: 0;
             animation: scroll 70s linear 1s infinite;
         }
-        @keyframes scroll {
+        /* @keyframes scroll {
             100% { top: -200%; }  
-        }
+        } */
 
     </style>
 
