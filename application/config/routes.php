@@ -58,6 +58,8 @@ $route['admin'] = 'admin/overview';
 $route['mendoan'] = 'admin/mendoan';
 $route['logger'] = 'admin/logger';
 
+$route['dashboard'] = 'admin/dashboard';
+
 $route['kartu'] = 'admin/kartu';
 $route['spam'] = 'admin/spam';
 $route['flow/(:any)'] = 'admin/flow/load/$1';

@@ -5,9 +5,9 @@ class Overview extends CI_Controller {
     {
 		parent::__construct();
 		$this->load->model('Spam_model');
-        if ($this->session->userdata('status') !== 'loggedin') {
-            redirect(site_url("admin/login"));
-        }
+        // if ($this->session->userdata('status') !== 'loggedin') {
+        //     redirect(site_url("admin/login"));
+        // }
 	}
 
 

@@ -129,7 +129,8 @@ class Spam_ipa_detail_model extends CI_Model {
         concat(format(air_terjual, 0), " &#13221;" ) as "Air Terjual",
         concat(format(kehilangan_air, 0), " &#13221;" ) as "Kehilangan Air",
         concat(kapasitas_pompa, " l/dt", " | " , format(kapasitas_pompa/1000*(86400*24*30), 0), " &#13221;" ) as "Kapasitas Pompa",
-        format(jml_pelanggan, 0) as "Jumlah Pelanggan"
+        format(jml_pelanggan, 0) as "Jumlah Pelanggan",
+        format(jml_pelanggan, 0) as jml_pelanggan_
         from v_spam_ipa_detail vsid where id_spam_node = '.$node_id.' order by input_date desc limit 1';
         return $this->db->query($sql);
     }
