@@ -44,7 +44,7 @@
                             <div class="small-box bg-info">
                                 <div class="inner" >
                                     <h3 style="font-size: 30px"><?= $spam->name ?></h3>
-                                    <p><?= getJumlahPelangganSpam($spam->id) ?> SR</p>
+                                    <p>Jumlah pelanggan <?= getJumlahPelangganSpam($spam->id) ?> SR</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-project-diagram"></i>
