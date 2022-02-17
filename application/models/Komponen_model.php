@@ -198,7 +198,7 @@ class Komponen_model extends CI_Model {
     }
 
     public function getNextStep($id){
-        $this->db->where('id >= ', $id);
+        // $this->db->where('id >= ', $id);
         // $this->db->where('is_last != 1');
         $this->db->order_by('id', 'asc');
         return  $this->db->get('tb_spam_step');

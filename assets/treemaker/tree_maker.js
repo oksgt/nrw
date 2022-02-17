@@ -92,7 +92,7 @@ function iterate(tree, start = false, from = '') {
             '<p data-step='+treeParamas[key].current_step+' data-parent-step='+treeParamas[key].parent_step+' id="card_' + key + '" class="tree__container__step__card__p node" onclick="window.open(\''+"http://pdambanyumas.net/mendoan_x/speedometer/cabang_pwt2_spam_sidabowa.php"+'\')">' + 
             // '<img onclick="getTableDetail(' + key + ')" data-id="' + key + '" style=" height:100px; width:200px; margin:auto;" src="'+base_url+'assets/node_icon/pump.png" >'+
             'Logger '+ treeParamas[key].kode +'<br>'+
-            '<span style="font-size: 1.1em;" class="badge badge-success " id="P_' + treeParamas[key].kode + '">' + '' + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge badge-success" id="Q_' + treeParamas[key].kode + '">' + '' + '</span>'+
+            '<span style="font-size: 1.1em;" class="badge badge-secondary " id="P_' + treeParamas[key].kode + '">' + '' + '</span>&nbsp;<span style="font-size: 1.1em;" class="badge  badge-secondary" id="Q_' + treeParamas[key].kode + '">' + '' + '</span>'+
             ''+
             '</p>'+ 
             '</div></div>';

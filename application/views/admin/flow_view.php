@@ -101,6 +101,28 @@
             100% { top: -200%; }  
         } */
 
+        /* #padre{
+            overflow-x: visible;
+            white-space: nowrap;
+            
+        }
+
+
+        #hijo{
+        left: 0;
+            position: fixed;
+            overflow: visible;
+            -moz-transform-origin: top left;
+            -ms-transform-origin: top left;
+            -o-transform-origin: top left;
+            -webkit-transform-origin: top left;
+            transform-origin: top left;
+            -moz-transition: all .2s ease-in-out;
+            -o-transition: all .2s ease-in-out;
+            -webkit-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+        } */
+
     </style>
 
 
@@ -108,8 +130,8 @@
 
 <body>
     <div class="wrapper ">
-        <div class="content-wrapper c">
-            <div class=" card-home">
+        <div class="content-wrapper c" id="padre">
+            <div class="card-home" id="hijo">
                 <section class="content-header">
                     <div class="container">
                         <div class="row mt-3">
@@ -235,41 +257,73 @@
                 setInterval(function() {
                     getDataLogger();
                 }, 5 * 60 * 1000 );
+
+
+                // var width = document.getElementById('hijo').offsetWidth;
+                // var height = document.getElementById('hijo').offsetHeight;
+                // var windowWidth = $(document).outerWidth();
+                // var windowHeight = $(document).outerHeight();
+
+                // console.log('width '+width);
+                // console.log('height '+height);
+                // console.log('windowWidth '+windowWidth);
+                // console.log('windowHeight '+windowHeight);
+
+                // var r = 1;
+                // r = Math.min(windowWidth , windowHeight / height)
+                // console.log('r '+r);
+                // $('#hijo').css({
+                //     '-webkit-transform': 'scale(' + r + ')',
+                //     '-moz-transform': 'scale(' + r + ')',
+                //     '-ms-transform': 'scale(' + r + ')',
+                //     '-o-transform': 'scale(' + r + ')',
+                //     'transform': 'scale(' + r + ')'
+                // });
                 
             });
 
             function getDataLogger() {
                     for (var key in id_logger) {
+                        console.log('id_logger[key] '+id_logger[key]);
+                        $('#P_' +  id_logger[key].replace(".", "\\.")).text('P: -');
+                        $('#Q_' +  id_logger[key].replace(".", "\\.")).text('Q: -');
                         $.ajax({
                             url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
                             method: "GET",
                             dataType: 'json',
                             success: function(data) {
                                 // console.log('P: ' + data.debit);
-                                // console.log('Q: ' + data.tekanan);
-                                $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
-                                if(data.tekanan < data.TEKANAN_NORMAL){
-                                    console.log('danger'+'#P_' +  data.new_kode);
-                                    $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
-                                    $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
-                                } else {
-                                    console.log('normal')
-                                    $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
-                                    $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
-                                }
+                                
 
-                                $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
-                                if(data.debit < data.DEBIT_NORMAL){
-                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
-                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
+                                if(data != null){
+                                    console.log('data.new_kode '+data.new_kode);
+                                    $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
+                                    if(data.tekanan < data.TEKANAN_NORMAL){
+                                        console.log('danger'+'#P_' +  data.new_kode);
+                                        $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                        $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
+                                    } else {
+                                        console.log('normal')
+                                        $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                        $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
+                                    }
+
+                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
+                                    if(data.debit < data.DEBIT_NORMAL){
+                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
+                                    } else {
+                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
+                                    }
                                 } else {
-                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
-                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
+                                    
                                 }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.log(errorThrown);
-                                $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+                                // $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+                                
                             }
                         });
                     }
