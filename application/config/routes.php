@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['admin'] = 'admin/overview';
 $route['mendoan'] = 'admin/mendoan';
 $route['logger'] = 'admin/logger';
+$route['spam_pelanggan'] = 'admin/spam_pelanggan';
 
 $route['dashboard'] = 'admin/dashboard';
 
