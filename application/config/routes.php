@@ -62,6 +62,7 @@ $route['spam_pelanggan'] = 'admin/spam_pelanggan';
 $route['dashboard'] = 'admin/dashboard';
 
 $route['kartu'] = 'admin/kartu';
+$route['step'] = 'admin/step';
 $route['spam'] = 'admin/spam';
 $route['flow/(:any)'] = 'admin/flow/load/$1';
 $route['admin/flow/(:any)'] = 'admin/flow/load/$1';

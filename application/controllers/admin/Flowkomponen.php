@@ -188,7 +188,7 @@ class Flowkomponen extends CI_Controller
         if ($inserted) {
             $result = array('status' => true, 'id' => $inserted);
         } else {
-            $result = array('status' => false);
+            $result = array('status' => false, 'error' => $this->db->error());
         }
         echo json_encode($result);
     }
