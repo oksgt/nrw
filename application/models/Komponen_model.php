@@ -18,6 +18,7 @@ class Komponen_model extends CI_Model {
     private function _get_datatables_query($root) {
         $this->db->where('root', $root);
         $this->db->where('is_del', 0); 
+        $this->db->where('step != 999'); 
         $this->db->from($this->view);
  
         $i = 0;
@@ -92,6 +93,12 @@ class Komponen_model extends CI_Model {
         $this->db->where($parameter);
         return $this->db->get($this->view);
     }
+
+    public function get_table_by($parameter)
+    {
+        $this->db->where($parameter);
+        return $this->db->get($this->table);
+    }
  
     public function save($data)
     {
@@ -116,7 +123,7 @@ class Komponen_model extends CI_Model {
     public function soft_delete_by_id($where, $data)
     {
         $this->db->update($this->table, $data, $where);
-        return $this->db->affected_rows();
+        return $this->db->affected_rows(); 
     }
  
     public function delete_by_id($id)
@@ -128,6 +135,7 @@ class Komponen_model extends CI_Model {
     public function get_existing_node($root){
         $this->db->where('root', $root);
         $this->db->where('is_del', 0);
+        // $this->db->where('step != 999'); 
         return $this->db->get($this->view);
     }
 
@@ -197,10 +205,12 @@ class Komponen_model extends CI_Model {
         // $this->db->delete($this->table);
     }
 
-    public function getNextStep($id){
+    public function getNextStep($id=""){
         // $this->db->where('id >= ', $id);
         // $this->db->where('is_last != 1');
         $this->db->order_by('id', 'asc');
         return  $this->db->get('tb_spam_step');
     }
+
+    
 }

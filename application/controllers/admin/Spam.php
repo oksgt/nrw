@@ -11,7 +11,7 @@ class Spam extends CI_Controller
         $this->load->helper('app_helper');
         $this->load->model([
             'Spam_model', 'Spam_intake_detail_model', 'Spam_rsv_detail_model', 'Spam_ipa_detail_model', 'Spam_wil_detail_model',
-            'Komponen_model'
+            'Komponen_model', 'Komponen_model'
         ]);
         
     }
@@ -22,6 +22,31 @@ class Spam extends CI_Controller
             redirect(site_url("admin/login"));
         }
         $this->load->view('admin/spam_view');
+    }
+
+    public function getOtherNode($root, $idnya){
+        $data = $this->Spam_model->getExistingNode($root, $idnya)->result_array();
+        echo '<br>';
+        foreach ($data as $key => $value) {
+            echo '<button onclick="childDuplicate('.$value['row_id'].')" type="button" class="btn btn-outline-primary btn-block btn-flat" value="'.$value['row_id'].'">'.$value['step_name'] . " - ". $value['name'] .'</button>';
+        }
+        // echo '</div>';
+    }
+
+    function childDuplicate($id,$parent){
+        if ($this->session->userdata('status') !== 'loggedin') {
+            redirect(site_url("admin/login"));
+        }
+        $existing = $this->Komponen_model->get_table_by(['row_id' => $id])->row_array();
+        $existing['pid'] = $parent;
+        $existing['row_id'] = null;
+        $inserted = $this->Komponen_model->save($existing);
+        if ($inserted) {
+            $result = array('status' => true);
+        } else {
+            $result = array('status' => false);
+        }
+        echo json_encode($result);
     }
 
     public function ajax_list()
@@ -72,12 +97,32 @@ class Spam extends CI_Controller
     {
         $data = array(
             'name'                   => $this->input->post('input_spam'),
+            'kode'                   => uniqid('spm'),
             'diagram_flow_direction' => $this->input->post('input_flow'),
             'is_del'                 => 0
         );
         $inserted = $this->Spam_model->save($data);
         if ($inserted) {
             $result = array('status' => true);
+            //insert initial komponen
+            $data = array(
+                'root'      => $inserted,
+                'pid'       => 0,
+                'step'      => 999,
+                'id'        => $this->Spam_model->getMaxId(),
+                'desc'      => '-',
+                'name'      => 'Awal >',
+                'img'       => '-',
+                'url'       => '-',
+                'is_del'    => 0,
+            );
+            $inserted = $this->Komponen_model->save($data);
+            if ($inserted) {
+                $result = array('status' => true, 'id' => $inserted);
+            } else {
+                $result = array('status' => false, 'error' => $this->db->error());
+            }
+            // echo json_encode($result);
         } else {
             $result = array('status' => false);
         }

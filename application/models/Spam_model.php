@@ -142,6 +142,15 @@ class Spam_model extends CI_Model {
         return $data;
     }
 
+    public function getDataNodeByRootV2($id){
+        $this->db->where('root', $id);
+        $this->db->where('is_del', 0);
+        $this->db->select('seq, pid');
+        $this->db->order_by('id', 'asc');
+        $data = $this->db->get("tb_spam_node");
+        return $data;
+    }
+
     public function getDataNodeDetailByRoot($id){
         $qry = '
         select node.id, node.root, node.parent_step_kode, node.parent_step, spam.name as spam_name, spam.diagram_flow_direction, node.kode, 
@@ -172,6 +181,21 @@ class Spam_model extends CI_Model {
     public function get_active_spam(){
         $this->db->where('is_del', 0);
         return $this->db->get('tb_spam');
+    }
+
+    public function getMaxId(){
+        $sql = "select max(id) as total from tb_spam_node";
+        $data = $this->db->query($sql)->row_array();
+        return $data['total'] + 1;
+    }
+
+    public function getExistingNode($root, $idnya=""){
+        $this->db->where('is_del', 0);
+        $this->db->where('step != 999'); 
+        $this->db->where('root', $root);
+        $this->db->where('id > '. $idnya);
+        $this->db->group_by('id');
+        return $this->db->get('view_spam_node');
     }
 
 }

@@ -41,7 +41,7 @@ class Flowkomponen extends CI_Controller
     {
         $existing_node = $this->Komponen_model->get_existing_node($id);
         $option = '<option value="x" onclick="getNextStep(9999)">-- Silahkan Pilih --</option>
-        <option value="" onclick="getNextStep(0)"></option>';
+        ';
         if (!empty($existing_node->result())) {
             foreach ($existing_node->result() as $row) {
                 if ($row->step == 5) {
@@ -49,15 +49,15 @@ class Flowkomponen extends CI_Controller
                 } else {
                     $option_name = $row->step_name . ' - ' . $row->name;
                 }
-                $option .= '<option value="' . $row->id . '" onclick="getNextStep(' . $row->step . ')">' . $option_name . '</option>';
+                $option .= '<option value="' . $row->id . '" onclick="getNextStep()">' . $option_name . '</option>';
             }
         }
         echo $option;
     }
 
-    public function fetchNextStep($id)
+    public function fetchNextStep($id="")
     {
-        $next_step = $this->Komponen_model->getNextStep($id);
+        $next_step = $this->Komponen_model->getNextStep();
         $option = "";
         if($id == 9999){
             $option .= '<option value="x" >-- Silahkan Pilih Parent--</option>';
@@ -177,9 +177,9 @@ class Flowkomponen extends CI_Controller
             'root'      => $this->input->post('root'),
             'pid'       => ($this->input->post('input_parent') == "x") ? 0 : $this->input->post('input_parent'),
             'step'      => $this->input->post('input_step'),
+            'id'        => $this->Spam_model->getMaxId(),
             'desc'      => '-',
             'name'      => $this->input->post('input_nama_komponen'),
-            'kode'      => $this->input->post('input_kode'),
             'img'       => '-',
             'url'       => $this->input->post('input_url'),
             'is_del'    => 0,

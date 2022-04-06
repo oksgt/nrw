@@ -74,3 +74,5 @@ $route['intakedetail/(:any)'] = 'admin/intakedetail/index/$1';
 $route['ipadetail/(:any)'] = 'admin/ipadetail/index/$1';
 $route['rsvdetail/(:any)'] = 'admin/rsvdetail/index/$1';
 $route['wildetail/(:any)'] = 'admin/wildetail/index/$1';
+
+$route['drawflow'] = 'admin/flow/testing';

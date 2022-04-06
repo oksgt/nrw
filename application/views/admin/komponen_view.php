@@ -428,9 +428,9 @@
         }
       }
       
-      function getNextStep(id){
+      function getNextStep(id=""){
         $.ajax({
-              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +id,
+              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/",
               method: "GET",
               dataType: 'html',
               success: function(html) {

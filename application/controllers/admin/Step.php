@@ -86,7 +86,7 @@ class Step extends CI_Controller
     public function update()
     {
         $object = array(
-            'name'                      => $this->input->post('input_step', true)
+            'name' => $this->input->post('input_step', true)
         );
 
         $existing_data = $this->Step_model->get_by(array('ID' => $this->input->post('id', true)))->row_array();

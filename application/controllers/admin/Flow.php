@@ -20,6 +20,10 @@ class Flow extends CI_Controller
         
     }
 
+    public function testing(){
+        $this->load->view('admin/flow_3');
+    }
+
     public function fetch_existing_node($node_id){
         $existing_node = $this->Komponen_model->get_existing_node($node_id);
         $option = '<option value="x">-- Silahkan Pilih --</option>
@@ -55,7 +59,7 @@ class Flow extends CI_Controller
                 } else {
                     $data['step'] = $this->Komponen_model->get_first_step();
                 }
-                $this->load->view('admin/flow_view', $data);
+                $this->load->view('admin/flow_view_V2', $data);
             }
         }
     }

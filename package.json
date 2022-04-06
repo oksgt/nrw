@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "drawflow": "^0.0.55",
     "easyqrcodejs": "^4.4.10"
   }
 }
