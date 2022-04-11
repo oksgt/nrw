@@ -46,7 +46,7 @@
                     <i class="fa fa-plus"></i>&nbsp; Tambah Komponen
                   </button>
                   <button class="btn btn-default" onclick="reload_table()"><i class="fas fa-sync"></i>&nbsp; Reload</button>
-                  <a class="btn btn-success" href="<?= base_url('index.php/flow/'.$root) ?>"><i class="fas fa-project-diagram"></i>&nbsp; Lihat Diagram</a>
+                  <a class="btn btn-success" href="<?= base_url('index.php/flow/' . $root) ?>"><i class="fas fa-project-diagram"></i>&nbsp; Diagram</a>
                 </div>
                 <div class="card-body">
                   <div class="col-md-12 table-responsive">
@@ -54,12 +54,13 @@
                       <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="20%">Jenis Step</th>
                           <th width="10%">Kode</th>
                           <th width="20%">Nama</th>
-                          <th width="20%">Parent (Turunan Dari)</th>
-                          <th width="20%">URL</th>
-                          <th width="10%">Nilai Parameter</th>
-                          <th width="10%">Action</th>
+                          <th width="5%">In</th>
+                          <th width="5%">Out</th>
+                          <th width="10%">URL</th>
+                          <th width="20%">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -86,36 +87,47 @@
                 <form id="form" method="post" onsubmit="return false;">
                   <input type="hidden" name="id">
                   <input type="hidden" name="root" value="<?= $root ?>">
-                  <div class="form-group">
-                    <label for="input_parent">Pilih Parent (Turunan Dari)</label>
-                    <select  class="form-control" id="input_parent" name="input_parent">
-                      
-                    </select>
-                    <small id="input_parent_error_icon" class="form-text text-danger"></small>
+
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="input_step">Step</label>
+                        <select class="form-control" id="input_step" name="input_step">
+                          <option value="x">-- Silahkan Pilih--</option>'
+                        </select>
+                        <small id="input_step_error_icon" class="form-text text-danger"></small>
+                      </div>
+                      <div class="form-group ">
+                        <label for="input_nama_komponen">Nama</label>
+                        <input type="text" class="form-control" id="input_nama_komponen" name="input_nama_komponen">
+                        <small id="input_nama_komponen_error_detail" class="form-text text-danger"></small>
+                      </div>
+                      <div class="form-group ">
+                        <label for="input_kode">Kode</label>
+                        <input type="text" class="form-control" id="input_kode" name="input_kode">
+                        <small id="input_kode_error_detail" class="form-text text-danger"></small>
+                      </div>
+                    </div>
+
+                    <div class="col-6">
+                      <div class="form-group ">
+                        <label for="input_in">In</label>
+                        <input type="text" class="form-control" id="input_in" name="input_in">
+                        <small id="input_in_error_detail" class="form-text text-danger"></small>
+                      </div>
+                      <div class="form-group ">
+                        <label for="input_out">Out</label>
+                        <input type="text" class="form-control" id="input_out" name="input_out">
+                        <small id="input_out_error_detail" class="form-text text-danger"></small>
+                      </div>
+                      <div class="form-group">
+                        <label for="input_url">URL</label>
+                        <input type="text" class="form-control" id="input_url" name="input_url">
+                        <small id="input_url_error_detail" class="form-text text-danger"></small>
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label for="input_step">Step</label>
-                    <select  class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
-                      <option value="x" >-- Silahkan Pilih Parent--</option>'
-                    </select>
-                    <small id="input_step_error_icon" class="form-text text-danger"></small>
-                  </div>
-                  <div class="form-group form-group-name" >
-                    <label for="input_nama_komponen">Nama</label>
-                    <input type="text" class="form-control" id="input_nama_komponen" name="input_nama_komponen">
-                    <small id="input_nama_komponen_error_detail" class="form-text text-danger"></small>
-                  </div>
-                  <div class="form-group form-group-kode" >
-                    <label for="input_kode">Kode</label>
-                    <input type="text" class="form-control" id="input_kode" name="input_kode">
-                    <small id="input_kode_error_detail" class="form-text text-danger"></small>
-                  </div>
-                  <div class="form-group">
-                    <label for="input_url">URL</label>
-                    <input type="text" class="form-control" id="input_url" name="input_url">
-                    <small id="input_url_error_detail" class="form-text text-danger"></small>
-                  </div>
-                  
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -160,18 +172,18 @@
         table = $('#table').DataTable({
           "processing": true,
           "serverSide": true,
-          "responsive": true, 
-          "lengthChange": false, 
+          "responsive": true,
+          "lengthChange": false,
           "autoWidth": false,
           "order": [],
           "dom": "<'row'>" +
-                                "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"+
-                                "<'row'<'col-sm-12 '>>",
+            "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>" +
+            "<'row'<'col-sm-12 '>>",
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
           "ajax": {
-            "url": "<?php echo site_url('admin/flowkomponen/ajax_list/') ?>"+root,
+            "url": "<?php echo site_url('admin/flowkomponen/ajax_list/') ?>" + root,
             "type": "POST"
           },
           "columnDefs": [{
@@ -196,21 +208,21 @@
         $('#btnSave').addClass('bg-gradient-primary');
         $('.form-group-name').hide();
         $('.form-group-kode').hide();
-        fetch_existing_node();
+        getNextStep();
       }
 
-      function fetch_existing_node(){
+      function fetch_existing_node() {
         $.ajax({
-              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
-              method: "GET",
-              dataType: 'html',
-              success: function(html) {
-                $('#input_parent').html(html);
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-                $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
-              }
+          url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
+          method: "GET",
+          dataType: 'html',
+          success: function(html) {
+            $('#input_parent').html(html);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+          }
         });
       }
 
@@ -219,8 +231,8 @@
           event.preventDefault();
           event.stopPropagation();
 
-          var input_list = [ 'input_parent', 'input_step'];
-          var input_list_error = [ 'input_parent_error_icon', 'input_step_error_icon'];
+          var input_list = ['input_parent', 'input_step'];
+          var input_list_error = ['input_parent_error_icon', 'input_step_error_icon'];
 
           $.ajax({
             url: "<?php echo site_url('admin/flowkomponen/validation') ?>",
@@ -320,43 +332,22 @@
 
       function detail(id, step, pid) {
         reset_validation();
+        getNextStep();
         $.when(
-          $.ajax({
-                url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
-                method: "GET",
-                dataType: 'html',
-                success: function(html) {
-                  $('#input_parent').html(html);
-                  $('[name=input_parent]').val(pid);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.log(errorThrown);
-                  $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
-                }
-          }),
-          $.ajax({
-                url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +step,
-                method: "GET",
-                dataType: 'html',
-                success: function(html) {
-                  $('#input_step').html(html);
-                  $('[name=input_step]').val(step);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.log(errorThrown);
-                  $('#input_step').html('<option>Oups! Something gone wrong!</option>');
-                }
-          }),
           $.ajax({
             url: "<?php echo site_url('admin/flowkomponen/') ?>" + "detail/" + id,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-              console.log(step);
+              console.log(data);
+
               $('[name=id]').val(data.id);
+              $('[name=input_step]').val(data.step);
               $('[name=input_nama_komponen]').val(data.name);
               $('[name=input_kode]').val(data.kode);
               $('[name=input_url]').val(data.url);
+              $('[name=input_in]').val(data.input_port);
+              $('[name=input_out]').val(data.output_port);
 
               save_method = "edit";
               $('.modal-title').text('Edit Komponen');
@@ -415,11 +406,11 @@
         return true;
       }
 
-      
 
-      function input_name_handler(){
+
+      function input_name_handler() {
         var r = $('#input_step').val();
-        if(r == 5){
+        if (r == 5) {
           $('.form-group-name').hide();
           $('.form-group-kode').show();
         } else {
@@ -427,19 +418,19 @@
           $('.form-group-kode').hide();
         }
       }
-      
-      function getNextStep(id=""){
+
+      function getNextStep(id = "") {
         $.ajax({
-              url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/",
-              method: "GET",
-              dataType: 'html',
-              success: function(html) {
-                $('#input_step').html(html);
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-                $('#input_step').html('<option>Oups! Something gone wrong!</option>');
-              }
+          url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchStep/",
+          method: "GET",
+          dataType: 'html',
+          success: function(html) {
+            $('#input_step').html(html);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            $('#input_step').html('<option>Oups! Something gone wrong!</option>');
+          }
         });
       }
     </script>

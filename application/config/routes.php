@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -76,3 +76,4 @@ $route['rsvdetail/(:any)'] = 'admin/rsvdetail/index/$1';
 $route['wildetail/(:any)'] = 'admin/wildetail/index/$1';
 
 $route['drawflow'] = 'admin/flow/testing';
+$route['spam/saveTemplate'] = 'admin/spam/saveTemplate';

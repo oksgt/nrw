@@ -13,7 +13,6 @@ class Spam extends CI_Controller
             'Spam_model', 'Spam_intake_detail_model', 'Spam_rsv_detail_model', 'Spam_ipa_detail_model', 'Spam_wil_detail_model',
             'Komponen_model', 'Komponen_model'
         ]);
-        
     }
 
     public function index()
@@ -24,16 +23,18 @@ class Spam extends CI_Controller
         $this->load->view('admin/spam_view');
     }
 
-    public function getOtherNode($root, $idnya){
+    public function getOtherNode($root, $idnya)
+    {
         $data = $this->Spam_model->getExistingNode($root, $idnya)->result_array();
         echo '<br>';
         foreach ($data as $key => $value) {
-            echo '<button onclick="childDuplicate('.$value['row_id'].')" type="button" class="btn btn-outline-primary btn-block btn-flat" value="'.$value['row_id'].'">'.$value['step_name'] . " - ". $value['name'] .'</button>';
+            echo '<button onclick="childDuplicate(' . $value['row_id'] . ')" type="button" class="btn btn-outline-primary btn-block btn-flat" value="' . $value['row_id'] . '">' . $value['step_name'] . " - " . $value['name'] . '</button>';
         }
         // echo '</div>';
     }
 
-    function childDuplicate($id,$parent){
+    function childDuplicate($id, $parent)
+    {
         if ($this->session->userdata('status') !== 'loggedin') {
             redirect(site_url("admin/login"));
         }
@@ -61,8 +62,8 @@ class Spam extends CI_Controller
             $row[] = $spam->name;
 
             //add html for action
-            $row[] = '<a class="btn btn-sm btn-success" href="'.base_url('index.php/').'flow/'.$spam->id.'" title="Lihat Diagram" ><i class="fas fa-project-diagram"></i> Lihat Diagram</a>
-            <a class="btn btn-sm btn-primary" href="'.base_url('index.php/').'flowkomponen/'.$spam->id.'" title="Komponen Diagram"><i class="fas fa-list"></i> Komponen Diagram</a>
+            $row[] = '<a class="btn btn-sm btn-success" href="' . base_url('index.php/') . 'flow/' . $spam->id . '" title="Lihat Diagram" ><i class="fas fa-project-diagram"></i> Lihat Diagram</a>
+            <a class="btn btn-sm btn-primary" href="' . base_url('index.php/') . 'flowkomponen/' . $spam->id . '" title="Komponen Diagram"><i class="fas fa-list"></i> Komponen Diagram</a>
             <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(\'' . $spam->id . '\')"><i class="fas fa-edit"></i> Edit</a>
             <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
             $data[] = $row;
@@ -98,7 +99,7 @@ class Spam extends CI_Controller
         $data = array(
             'name'                   => $this->input->post('input_spam'),
             'kode'                   => uniqid('spm'),
-            'diagram_flow_direction' => $this->input->post('input_flow'),
+            'diagram_flow_direction' => 'down', //$this->input->post('input_flow'),
             'is_del'                 => 0
         );
         $inserted = $this->Spam_model->save($data);
@@ -133,6 +134,17 @@ class Spam extends CI_Controller
     {
         $data = $this->Spam_model->get_by(array('id' => $id))->row_array();
         echo json_encode($data);
+    }
+
+    function saveTemplate()
+    {
+        $template = $this->input->post('template');
+        $root     = $this->input->post('root');
+        $obj = [
+            'template' => $template
+        ];
+        $affected = $this->Spam_model->update($obj, ['id' => $root]);
+        echo json_encode(['status' => 'ok']);
     }
 
     public function update()
@@ -175,16 +187,18 @@ class Spam extends CI_Controller
         echo json_encode($result);
     }
 
-    function test(){
+    function test()
+    {
         $this->load->view('admin/test');
     }
 
-    public function show_diagram($id=""){
-        if($id == ""){
+    public function show_diagram($id = "")
+    {
+        if ($id == "") {
             redirect('admin/spam');
         } else {
             $data = $this->Spam_model->get_spam_node($id)->result_array();
-            if(empty($data)){
+            if (empty($data)) {
                 redirect('admin/spam');
             } else {
                 $data['spam_name'] = $data[0]['spam_name'];
@@ -196,34 +210,34 @@ class Spam extends CI_Controller
     }
 
     function getNodeStructure($root)
-	{
-		$data = $this->Spam_model->getDataNodeByRoot($root)->result();
-        array_walk_recursive($data, function(&$item) {
+    {
+        $data = $this->Spam_model->getDataNodeByRoot($root)->result();
+        array_walk_recursive($data, function (&$item) {
             if (is_numeric($item)) {
                 $item = intval($item);
             }
         });
         // echo "<pre>";
-		echo json_encode($data, JSON_NUMERIC_CHECK);
-	}
+        echo json_encode($data, JSON_NUMERIC_CHECK);
+    }
 
-	function getNodeDetail($root)
-	{
-		$data = $this->Spam_model->getDataNodeDetailByRoot($root)->result();
-		$result = [];
-		foreach ($data as $key => $value) {
-            $color_box = ($value->step == 1) ? "#f8f9fa" : "#f8f9fa" ;
+    function getNodeDetail($root)
+    {
+        $data = $this->Spam_model->getDataNodeDetailByRoot($root)->result();
+        $result = [];
+        foreach ($data as $key => $value) {
+            $color_box = ($value->step == 1) ? "#f8f9fa" : "#f8f9fa";
 
-            if($value->img == "-"){
+            if ($value->img == "-") {
                 $img = 'node_icon/pump.png';
             } else {
-                $img = 'gambar/'.$value->img;
+                $img = 'gambar/' . $value->img;
             }
 
-            if($value->step == 5){ //jika step komponen == logger
+            if ($value->step == 5) { //jika step komponen == logger
                 $result[$value->id] = [
-                    'trad' => $value->step_name .'<br>'.$value->name,
-                    'kode' => $value->kode, 
+                    'trad' => $value->step_name . '<br>' . $value->name,
+                    'kode' => $value->kode,
                     'current_step' => $value->step,
                     'parent_step' => $value->parent_step,
                     'is_logger' => true,
@@ -233,31 +247,32 @@ class Spam extends CI_Controller
                 ];
             } else {
                 $result[$value->id] = [
-                    'trad' => $value->step_name .'<br>'.$value->name, 
+                    'trad' => $value->step_name . '<br>' . $value->name,
                     'kode' => "",
                     'is_logger' => false,
                     'current_step' => $value->step,
                     'parent_step' => $value->parent_step,
                     'parent_kode' => $value->parent_step_kode,
                     'img'   => $img,
-                    'styles' => ['box-shadow' => '0 0 5px 5px '.$color_box]
+                    'styles' => ['box-shadow' => '0 0 5px 5px ' . $color_box]
                 ];
             }
-			
-		}
-		echo json_encode($result, JSON_PRETTY_PRINT);
-	}
+        }
+        echo json_encode($result, JSON_PRETTY_PRINT);
+    }
 
-	function getNodeName($param){
-		$data = $this->Spam_model->getDataNode($param)->row_array();
-		echo json_encode($data, JSON_PRETTY_PRINT);
-	}
+    function getNodeName($param)
+    {
+        $data = $this->Spam_model->getDataNode($param)->row_array();
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
 
-    function get_image($node_id){
+    function get_image($node_id)
+    {
         $data = $this->Komponen_model->get_image($node_id)->row_array();
         $res = "";
-        if(!empty($data)){
-            if($data['path'] !== ""){
+        if (!empty($data)) {
+            if ($data['path'] !== "") {
                 $res = $data['path'];
             } else {
                 $res = 'no-image.png';
@@ -268,78 +283,79 @@ class Spam extends CI_Controller
         echo $res;
     }
 
-    function get_last_value($step, $node_id){
+    function get_last_value($step, $node_id)
+    {
         $data = [];
         $res = "";
-        if($step == 1) {
+        if ($step == 1) {
             $data = $this->Spam_intake_detail_model->get_last_value($node_id)->row_array();
-            if(!empty($data)){
+            if (!empty($data)) {
                 $res = '
                 <table class="table table-bordered">
                     <tbody>';
-                    foreach ($data as $key => $value) {
-                        if($key == "Periode") {
-                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
-                        } else {
-                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                        }
+                foreach ($data as $key => $value) {
+                    if ($key == "Periode") {
+                        $res .= '<tr><td>' . $key . '</td><td>' . format_month_year($value) . '</td></tr>';
+                    } else {
+                        $res .= '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
                     }
+                }
                 $res .= '</tbody>
-                </table>';   
+                </table>';
             } else {
                 $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
             }
-        } else if($step == 2) {
+        } else if ($step == 2) {
             $data = $this->Spam_ipa_detail_model->get_last_value($node_id)->row_array();
-            if(!empty($data)){
+            if (!empty($data)) {
                 $res = '
                 <table class="table table-bordered">
                     <tbody>';
-                    foreach ($data as $key => $value) {
-                        if($key == "Periode") {
-                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
-                        } else {
-                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                        }
+                foreach ($data as $key => $value) {
+                    if ($key == "Periode") {
+                        $res .= '<tr><td>' . $key . '</td><td>' . format_month_year($value) . '</td></tr>';
+                    } else {
+                        $res .= '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
                     }
+                }
                 $res .= '</tbody>
                 </table>';
             } else {
                 $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
             }
-        } else if($step == 3) {
+        } else if ($step == 3) {
             $data = $this->Spam_rsv_detail_model->get_last_value($node_id)->row_array();
-            if(!empty($data)){
+            if (!empty($data)) {
                 $res = '
                 <table class="table table-bordered">
                     <tbody>';
-                    foreach ($data as $key => $value) {
-                        if($key == "Periode") {
-                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
-                        } else {
-                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                        }
+                foreach ($data as $key => $value) {
+                    if ($key == "Periode") {
+                        $res .= '<tr><td>' . $key . '</td><td>' . format_month_year($value) . '</td></tr>';
+                    } else {
+                        $res .= '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
                     }
+                }
                 $res .= '</tbody>
                 </table>';
             } else {
                 $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
             }
-        } else if($step == 4) {
+        } else if ($step == 4) {
             $data = $this->Spam_wil_detail_model->get_last_value($node_id)->row_array();
-            if(!empty($data)){
+            if (!empty($data)) {
                 $res = '
                 <table class="table table-bordered">
                     <tbody>';
-                    foreach ($data as $key => $value) {
-                        if($key == "Periode") {
-                            $res .= '<tr><td>'.$key.'</td><td>'.format_month_year($value).'</td></tr>';
-                        } else {
-                            $res .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
-                        }
+                foreach ($data as $key => $value) {
+                    if ($key == "Periode") {
+                        $res .= '<tr><td>' . $key . '</td><td>' . format_month_year($value) . '</td></tr>';
+                    } else {
+                        $res .= '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
                     }
+                }
                 $res .= '</tbody>
-                </table>'; 
+                </table>';
             } else {
                 $res .= '<div class="alert alert-warning"><i>Data belum ada</i></div>';
             }
@@ -347,18 +363,20 @@ class Spam extends CI_Controller
         echo $res;
     }
 
-    public function getDataLogger($id){
+    public function getDataLogger($id)
+    {
         $res = $this->Spam_model->get_data_logger($id)->row_array();
         echo json_encode($res);
     }
 
-    function load_active_spam(){
+    function load_active_spam()
+    {
         $data_spam = $this->Spam_model->get_active_spam()->result();
         foreach ($data_spam as $r) {
             echo '<li class="nav-item">
-                <a href="flow/'.$r->id.'" class="nav-link">
+                <a href="flow/' . $r->id . '" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>'.ucwords($r->name).'</p>
+                <p>' . ucwords($r->name) . '</p>
                 </a>
             </li>';
         }

@@ -29,75 +29,75 @@
     </header>
     <div class="wrapper">
         <div class="col" ">
-            <!-- <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="facebook">
-        <i class="fab fa-facebook"></i><span> Facebook</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="slack">
-        <i class="fab fa-slack"></i><span> Slack recive message</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="github">
-        <i class="fab fa-github"></i><span> Github Star</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="telegram">
-        <i class="fab fa-telegram"></i><span> Telegram send message</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="aws">
-        <i class="fab fa-aws"></i><span> AWS</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="log">
-        <i class="fas fa-file-signature"></i><span> File Log</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="google">
-        <i class="fab fa-google-drive"></i><span> Google Drive save</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="email">
-        <i class="fas fa-at"></i><span> Email send</span>
-      </div>
-      <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="template">
-        <i class="fas fa-code"></i><span> Template</span>
-      </div> -->
-            <div class="drag-drawflow" draggable="FALSE" onclick="alert('ok')" style="cursor: pointer !important;">
-                <i class="fas fa-plus"></i><span> Tambah Komponen</span>
-            </div>
-            <div class="drag-drawflow" style="height: 10px;">
-                &nbsp;
-            </div>
-            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="multiple">
-                <i class="fas fa-code-branch"></i><span> Multiple inputs/outputs</span>
-            </div>
-            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="personalized">
-                <i class="fas fa-fill"></i><span> Personalized</span>
-            </div>
-            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="dbclick">
-                <i class="fas fa-mouse"></i><span> DBClick!</span>
-            </div>
-
-
+            <!-- <div class=" drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="facebook">
+            <i class="fab fa-facebook"></i><span> Facebook</span>
         </div>
-        <div class="col-right" >
-            <div class="menu">
-                <ul>
-                    <!-- <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li> -->
-                    <li onclick="editor.changeModule('Other'); changeModule(event);" class="selected">Other Module</li>
-                </ul>
-            </div>
-            <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width: 100%;">
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="slack">
+            <i class="fab fa-slack"></i><span> Slack recive message</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="github">
+            <i class="fab fa-github"></i><span> Github Star</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="telegram">
+            <i class="fab fa-telegram"></i><span> Telegram send message</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="aws">
+            <i class="fab fa-aws"></i><span> AWS</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="log">
+            <i class="fas fa-file-signature"></i><span> File Log</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="google">
+            <i class="fab fa-google-drive"></i><span> Google Drive save</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="email">
+            <i class="fas fa-at"></i><span> Email send</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="template">
+            <i class="fas fa-code"></i><span> Template</span>
+        </div> -->
+        <div class="drag-drawflow" draggable="FALSE" onclick="alert('ok')" style="cursor: pointer !important;">
+            <i class="fas fa-plus"></i><span> Tambah Komponen</span>
+        </div>
+        <div class="drag-drawflow" style="height: 10px;">
+            &nbsp;
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="123">
+            <i class="fas fa-code-branch"></i><span> Multiple inputs/outputs</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="personalized">
+            <i class="fas fa-fill"></i><span> Personalized</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="dbclick">
+            <i class="fas fa-mouse"></i><span> DBClick!</span>
+        </div>
 
-                <div class="btn-export" onclick="Swal.fire({ title: 'Export',
+
+    </div>
+    <div class="col-right">
+        <div class="menu">
+            <ul>
+                <!-- <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li> -->
+                <li onclick="editor.changeModule('Other'); changeModule(event);" class="selected">Other Module</li>
+            </ul>
+        </div>
+        <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width: 100%;">
+
+            <div class="btn-export" onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
         })">Export</div>
-                <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
-                <div class="btn-lock">
-                    <i id="lock" class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i>
-                    <i id="unlock" class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');" style="display:none;"></i>
-                </div>
-                <div class="bar-zoom">
-                    <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
-                    <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
-                    <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
-                </div>
+            <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
+            <div class="btn-lock">
+                <i id="lock" class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i>
+                <i id="unlock" class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');" style="display:none;"></i>
+            </div>
+            <div class="bar-zoom">
+                <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
+                <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
+                <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
@@ -117,23 +117,23 @@
                             "typenode": false,
                             "inputs": {
                                 "input_1": {
-                                    "connections": [
+                                    "connections": [{
+                                            "node": "12",
+                                            "input": "output_1"
+                                        },
                                         {
-                                        "node": "12",
-                                        "input": "output_1"
-                                        }, 
+                                            "node": "12",
+                                            "input": "output_2"
+                                        },
                                         {
-                                        "node": "12",
-                                        "input": "output_2"
-                                        }, 
+                                            "node": "12",
+                                            "input": "output_3"
+                                        },
                                         {
-                                        "node": "12",
-                                        "input": "output_3"
-                                        }, 
-                                        {
-                                        "node": "12",
-                                        "input": "output_4"
-                                        }]
+                                            "node": "12",
+                                            "input": "output_4"
+                                        }
+                                    ]
                                 }
                             },
                             "outputs": {
@@ -487,7 +487,8 @@
                         "template": 'Write your template'
                     }, template);
                     break;
-                case 'multiple':
+
+                case '123':
                     var multiple = `
             <div>
               <div class="box">
@@ -497,12 +498,15 @@
             `;
                     editor.addNode('multiple', 3, 4, pos_x, pos_y, 'multiple', {}, multiple);
                     break;
+
+
                 case 'personalized':
                     var personalized = `
             <div>
               Personalized
             </div>
             `;
+
                     editor.addNode('personalized', 1, 1, pos_x, pos_y, 'personalized', {}, personalized);
                     break;
                 case 'dbclick':

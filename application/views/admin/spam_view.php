@@ -85,19 +85,6 @@
                     <input type="text" class="form-control" id="input_spam" name="input_spam">
                     <small id="input_spam_error_detail" class="form-text text-danger"></small>
                   </div>
-                  <div class="form-group">
-                    <label for="input_flow">Arah Aliran SPAM</label>
-                    <br>
-                    <!-- <input type="text" class="form-control" id="input_flow" name="input_flow" aria-describedby="workflowHelp"> -->
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="input_flow" id="input_flow1" value="up">
-                      <label class="form-check-label" for="input_flow1">UP</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="input_flow" id="input_flow2" value="down" checked>
-                      <label class="form-check-label" for="input_flow2">DOWN</label>
-                    </div>
-                  </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -142,15 +129,15 @@
         table = $('#table').DataTable({
           "processing": true,
           "serverSide": true,
-          "responsive": true, 
-          "lengthChange": false, 
+          "responsive": true,
+          "lengthChange": false,
           "autoWidth": false,
           "order": [],
           "dom": "<'row'>" +
-                    "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"+
-                    "<'row'<'col-sm-12 '>>",
+            "<'row'<'col-sm-12 col-md-6 'B><'col-md-6 text-right 'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>" +
+            "<'row'<'col-sm-12 '>>",
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
           "ajax": {
             "url": "<?php echo site_url('admin/spam/ajax_list') ?>",

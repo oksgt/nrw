@@ -55,18 +55,14 @@ class Flowkomponen extends CI_Controller
         echo $option;
     }
 
-    public function fetchNextStep($id="")
+    public function fetchStep()
     {
         $next_step = $this->Komponen_model->getNextStep();
         $option = "";
-        if($id == 9999){
-            $option .= '<option value="x" >-- Silahkan Pilih Parent--</option>';
-        } else {
-            if (!empty($next_step->result())) {
-                $option .= '<option value="x">-- Silahkan Pilih --</option>';
-                foreach ($next_step->result() as $row) {
-                    $option .= '<option value="' . $row->id . '" >' . $row->name . '</option>';
-                }
+        if (!empty($next_step->result())) {
+            $option .= '<option value="x">-- Silahkan Pilih --</option>';
+            foreach ($next_step->result() as $row) {
+                $option .= '<option value="' . $row->id . '" >' . $row->name . '</option>';
             }
         }
         echo $option;
@@ -81,18 +77,22 @@ class Flowkomponen extends CI_Controller
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = $spam->step_name;
             $row[] = $spam->kode;
-            if ($spam->step == 5) {
-                $row[] = $spam->step_name . ' - ' . $spam->kode;
-            } else {
-                $row[] = $spam->step_name . ' - ' . $spam->name;
-            }
+            $row[] = $spam->name;
+            $row[] = $spam->input_port;
+            $row[] = $spam->output_port;
+            // if ($spam->step == 5) {
+            //     $row[] = $spam->step_name . ' - ' . $spam->kode;
+            // } else {
+            //     $row[] = $spam->step_name . ' - ' . $spam->name;
+            // }
 
-            if ($spam->parent_step == 5) {
-                $row[] = $spam->parent_step_name . ' - ' . $spam->parent_step_kode;
-            } else {
-                $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
-            }
+            // if ($spam->parent_step == 5) {
+            //     $row[] = $spam->parent_step_name . ' - ' . $spam->parent_step_kode;
+            // } else {
+            //     $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
+            // }
             // $row[] = $spam->parent_step_name . ' - ' . $spam->parent;
 
             $string = strip_tags($spam->url);
@@ -113,8 +113,9 @@ class Flowkomponen extends CI_Controller
             $row[] = $button_url;
             // $row[] = $spam->step_name;
 
-            $row[] = '<a class="btn btn-sm btn-info" href="' . base_url('index.php/') . 'detailkomponen/' . $spam->id . '" title="Nilai Parameter"><i class="fas fa-list"></i></a>';
-            $row[] = '
+            // $row[] = ''
+            $row[] = '   
+                <a class="btn btn-sm btn-info" href="' . base_url('index.php/') . 'detailkomponen/' . $spam->id . '" title="Nilai Parameter"><i class="fas fa-list"></i></a>
                 <a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="detail(' . $spam->id . ',' . $spam->step . ',' . $spam->pid . ')"><i class="fas fa-edit"></i> Edit</a>
                 <a class="btn btn-sm btn-outline-danger border-0" href="javascript:void(0)" title="Hapus" onclick="hapus_data(\'' . $spam->id . '\')"><i class="fas fa-trash"></i></a>';
 
@@ -180,7 +181,10 @@ class Flowkomponen extends CI_Controller
             'id'        => $this->Spam_model->getMaxId(),
             'desc'      => '-',
             'name'      => $this->input->post('input_nama_komponen'),
+            'kode'      => $this->input->post('input_kode'),
             'img'       => '-',
+            'input_port' => $this->input->post('input_in'),
+            'output_port' => $this->input->post('input_out'),
             'url'       => $this->input->post('input_url'),
             'is_del'    => 0,
         );
@@ -206,7 +210,9 @@ class Flowkomponen extends CI_Controller
             'step'      => $this->input->post('input_step'),
             'name'      => $this->input->post('input_nama_komponen'),
             'kode'      => $this->input->post('input_kode'),
-            'url'       => $this->input->post('input_url')
+            'url'       => $this->input->post('input_url'),
+            'input_port' => $this->input->post('input_in'),
+            'output_port' => $this->input->post('input_out'),
         );
 
         $existing_data = $this->Komponen_model->get_by(array('ID' => $this->input->post('id', true)))->row_array();
