@@ -116,13 +116,16 @@
             <div class="col-12">
                 <div class="menu">
                     <ul>
-                        <li onclick="openNav()"><i class="fa fa-bars"></i></li>
-                        <li onclick="editor.clearModuleSelected()" title="Clear Editor">
-                            <i class="fas fa-eraser"></i>
-                        </li>
-                        <li onclick="saveTemplate()" title="Save Diagram">
-                            <i class="far fa-save"></i>
-                        </li>
+                        <?php
+                        if ($this->session->userdata('status') !== 'loggedin') { ?>
+                            <li onclick="openNav()"><i class="fa fa-bars"></i></li>
+                            <li onclick="editor.clearModuleSelected()" title="Clear Editor">
+                                <i class="fas fa-eraser"></i>
+                            </li>
+                            <li onclick="saveTemplate()" title="Save Diagram">
+                                <i class="far fa-save"></i>
+                            </li>
+                        <?php } ?>
                         <li><i class="fas fa-search-minus" onclick="editor.zoom_out()"></i></li>
                         <li><i class="fas fa-search" onclick="editor.zoom_reset()"></i></li>
                         <li><i class="fas fa-search-plus" onclick="editor.zoom_in()"></i></li>
