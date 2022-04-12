@@ -117,7 +117,7 @@
                 <div class="menu">
                     <ul>
                         <?php
-                        if ($this->session->userdata('status') !== 'loggedin') { ?>
+                        if ($this->session->userdata('status') == 'loggedin') { ?>
                             <li onclick="openNav()"><i class="fa fa-bars"></i></li>
                             <li onclick="editor.clearModuleSelected()" title="Clear Editor">
                                 <i class="fas fa-eraser"></i>
