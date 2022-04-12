@@ -126,6 +126,9 @@
                         <li><i class="fas fa-search-minus" onclick="editor.zoom_out()"></i></li>
                         <li><i class="fas fa-search" onclick="editor.zoom_reset()"></i></li>
                         <li><i class="fas fa-search-plus" onclick="editor.zoom_in()"></i></li>
+                        <li><i class="fas fa-tachometer-alt"></i>
+                            <b class="timelabel"></b>
+                        </li>
                         <!-- <li id="lock"><i class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i></li>
                         <li id="unlock"><i class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');"></i></li> -->
                     </ul>
