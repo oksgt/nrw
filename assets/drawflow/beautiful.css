@@ -232,11 +232,12 @@ cursor: pointer;
 
 .drawflow .drawflow-node .output {
   right: 10px;
+  background: green !important;
 }
 
 .drawflow .drawflow-node .input {
   left: -10px;
-  background: white;
+  background: orangered !important;
 }
 
 .drawflow > .drawflow-delete {
@@ -367,3 +368,4 @@ cursor: pointer;
     width: 80%;
   }
 }
+

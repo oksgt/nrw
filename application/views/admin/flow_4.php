@@ -81,6 +81,14 @@
                 font-size: 18px;
             }
         }
+
+        .input {
+            background-color: orangered !important;
+        }
+
+        .output {
+            background-color: green !important;
+        }
     </style>
 </head>
 
