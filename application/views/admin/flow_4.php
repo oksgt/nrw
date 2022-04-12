@@ -16,64 +16,122 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <title>Diagram</title>
+
+    <style>
+        .sidebar_komponen {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f7f7f7;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar_komponen a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar_komponen a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar_komponen .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
+        @media screen and (max-height: 450px) {
+            .sidebar_komponen {
+                padding-top: 15px;
+            }
+
+            .sidebar_komponen a {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container h-100 ml-0">
-        <div class="col-12" style="max-height: 50px !important; width:100%">
-            <h1><?= $spam_name ?></h1>
-        </div>
-        <div class="row h-100 ml-100">
-
-            <div class="col-sm-3 " style="height:100%; overflow-y: scroll;">
-                <div class="tetx-center">
-                    <span> Daftar Komponen</span>
-                </div>
-                <div class="drag-drawflow" style="height: 10px;">
-                    &nbsp;
-                </div>
-
-
-                <?php
-                foreach ($node as $r) { ?>
-                    <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node=<?= $r['id'] ?> style="margin-top: 10px">
-                        <div class="card" style="border: none !important">
-                            <div class="row no-gutters">
-                                <div class="col-auto">
-                                    <img src="<?= base_url('assets/gambar/') . $r['img'] ?>" class="img-fluid" width="70px" height="100" onerror="this.onerror=null;this.src='<?= base_url('assets/gambar/no-image.png') ?>';">
-                                </div>
-                                <div class="">
-                                    <div class="card-block px-2 p-0">
-                                        <h4 style="font-size: 12px;" class="card-title "><?= $r['step_name'] ?></h4>
-                                        <h4 style="font-size: 11px;" class="card-title "><?= $r['kode'] . $r['name'] ?></h4>
-                                    </div>
-                                </div>
+    <div id="mySidebar" class="sidebar_komponen">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#">Daftar Komponen</a>
+        <?php
+        foreach ($node as $r) { ?>
+            <div class="drag-drawflow pl-2 pr-2" draggable="true" ondragstart="drag(event)" data-node=<?= $r['id'] ?> style="margin-top: 10px; border: none !important">
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-auto">
+                            <img src="<?= base_url('assets/gambar/') . $r['img'] ?>" class="img-fluid" width="70" height="100" onerror="this.onerror=null;this.src='<?= base_url('assets/gambar/no-image.png') ?>';">
+                        </div>
+                        <div class="">
+                            <div class="card-block pl-2" style="padding: 10px 0; text-align: left">
+                                <h4 style="font-size: 12px; color: #818181;" class="card-title "><?= $r['step_name'] ?></h4>
+                                <h4 style="font-size: 11px; color: #818181;" class="card-title "><?= $r['kode'] . $r['name'] ?></h4>
                             </div>
                         </div>
                     </div>
-                <?php } ?>
-
+                </div>
             </div>
-            <div class="col-sm-9 ">
+        <?php } ?>
+    </div>
+
+    <div class="h-100 ml-0 w-100" id="main">
+        <div class="col-12 pl-0" style="max-height: 50px !important; width:100%">
+            <h1 class="display-4" style="font-size: 30px;"><?= $spam_name ?></h1>
+        </div>
+        <div class="row h-100 ">
+            <div class="col-12">
                 <div class="menu">
                     <ul>
-                        <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Diagram Editor</li>
-                        <li>Display</li>
-                        <!-- <li onclick="editor.changeModule('Other'); changeModule(event);" class="selected">Other Module</li> -->
+                        <li onclick="openNav()"><i class="fa fa-bars"></i></li>
+                        <li onclick="editor.clearModuleSelected()" title="Clear Editor">
+                            <i class="fas fa-eraser"></i>
+                        </li>
+                        <li onclick="saveTemplate()" title="Save Diagram">
+                            <i class="far fa-save"></i>
+                        </li>
+                        <li><i class="fas fa-search-minus" onclick="editor.zoom_out()"></i></li>
+                        <li><i class="fas fa-search" onclick="editor.zoom_reset()"></i></li>
+                        <li><i class="fas fa-search-plus" onclick="editor.zoom_in()"></i></li>
+                        <!-- <li id="lock"><i class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i></li>
+                        <li id="unlock"><i class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');"></i></li> -->
                     </ul>
                 </div>
-                <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width: 100%;">
-                    <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
-                    <div class="btn-export" onclick="saveTemplate()">Save</div>
-                    <div class="btn-lock">
-                        <i id="lock" class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i>
-                        <i id="unlock" class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');" style="display:none;"></i>
-                    </div>
-                    <div class="bar-zoom">
-                        <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
-                        <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
-                        <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
-                    </div>
+                <div class="border w-100" id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+
                 </div>
             </div>
         </div>
@@ -89,13 +147,43 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <script>
-        // var $ = jQuery;
+        const id_logger = [];
+
+        <?php
+        foreach ($node as $r) {
+            if ($r['kode'] !== "") { ?>
+                id_logger.push('<?= $r['kode'] ?>');
+        <?php }
+        } ?>
+
+        $(document).ready(function() {
+            getDataLogger();
+
+            setInterval(function() {
+                getDataLogger();
+            }, 5 * 60 * 1000);
+
+        });
+
+
         var id = document.getElementById("drawflow");
         const editor = new Drawflow(id);
         editor.reroute = true;
         editor.start();
         const dataToImport = <?= $template_db ?>;
-        editor.import(dataToImport);
+        if (dataToImport !== 0) {
+            editor.import(dataToImport);
+
+            getDataLogger();
+
+            setInterval(function() {
+                getDataLogger();
+            }, 5 * 60 * 1000);
+
+        }
+
+
+
 
         //editor.addNode(name, inputs, outputs, posx, posy, class, data, html);
         // editor.addNode('welcome', 0, 0, 50, 50, 'welcome', {}, welcome);
@@ -105,6 +193,7 @@
         // Events!
         editor.on('nodeCreated', function(id) {
             console.log("Node created " + id);
+            getDataLogger();
         })
 
         editor.on('nodeRemoved', function(id) {
@@ -223,6 +312,7 @@
                             if (name == data[key].id) {
                                 var image = "<?= base_url('assets/gambar/') ?>" + data[key].img;
                                 if (data[key].step == 5) {
+                                    id_logger.push(data[key].kode);
                                     var multiple = `
                                         <div>
                                             <div class="card text-center " >
@@ -231,9 +321,9 @@
                                                     <h6 class="card-subtitle mt-1 mb-2 text-muted">` + data[key].kode + data[key].name + `</h6>
                                                 </div>
                                                 <div card-footer>
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button id="P_` + data[key].kode + `" type="button" class="btn btn-sm">P_` + data[key].kode + `</button>
-                                                        <button id="Q_` + data[key].kode + `" type="button" class="btn btn-sm">Q_` + data[key].kode + `</button>
+                                                    <div class="btn-group d-flex" role="group" aria-label="Basic example">
+                                                        <button id="P_` + data[key].kode + `" type="button" class="btn btn-block btn-sm">P_` + data[key].kode + `</button>
+                                                        <button id="Q_` + data[key].kode + `" type="button" class="btn btn-block btn-sm">Q_` + data[key].kode + `</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,6 +351,7 @@
                             // break;
                         }
                     }
+                    getDataLogger();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error get data from ajax');
@@ -339,6 +430,71 @@
                 }
 
             });
+        }
+
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "300px";
+            document.getElementById("main").style.marginLeft = "300px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function getDataLogger() {
+
+            for (var key in id_logger) {
+                console.log('id_logger[key] ' + id_logger[key]);
+                $('#P_' + id_logger[key].replace(".", "\\.")).text('P: -');
+                $('#Q_' + id_logger[key].replace(".", "\\.")).text('Q: -');
+                $.ajax({
+                    url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
+                    method: "GET",
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        if (data != null) {
+                            console.log('data.new_kode ' + data.new_kode);
+                            $('#P_' + data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
+                            if (data.tekanan < data.TEKANAN_NORMAL) {
+                                console.log('danger' + '#P_' + data.new_kode);
+                                $('#P_' + data.new_kode.replace(".", "\\.")).removeClass('btn-success');
+                                $('#P_' + data.new_kode.replace(".", "\\.")).addClass('btn-danger');
+                            } else {
+                                console.log('normal')
+                                $('#P_' + data.new_kode.replace(".", "\\.")).removeClass('btn-danger');
+                                $('#P_' + data.new_kode.replace(".", "\\.")).addClass('btn-success');
+                            }
+
+                            $('#Q_' + data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
+                            if (data.debit < data.DEBIT_NORMAL) {
+                                $('#Q_' + data.new_kode.replace(".", "\\.")).removeClass('btn-success');
+                                $('#Q_' + data.new_kode.replace(".", "\\.")).addClass('btn-danger');
+                            } else {
+                                $('#Q_' + data.new_kode.replace(".", "\\.")).removeClass('btn-danger');
+                                $('#Q_' + data.new_kode.replace(".", "\\.")).addClass('btn-success');
+                            }
+                        } else {
+
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                        // $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+
+                    }
+                });
+            }
+            var currentdate = new Date();
+            var datetime = "Logger Last Sync : " +
+                currentdate.getDate() + "/" +
+                (currentdate.getMonth() + 1) + "/" +
+                currentdate.getFullYear() + " @ " +
+                currentdate.getHours() + ":" +
+                currentdate.getMinutes();
+            $('.timelabel').text(datetime);
+            console.log(datetime);
         }
     </script>
 </body>

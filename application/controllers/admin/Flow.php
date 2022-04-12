@@ -11,15 +11,6 @@ class Flow extends CI_Controller
         $this->load->model(['Spam_model', 'Komponen_model']);
     }
 
-    // function _remap($param)
-    // {
-    //     $this->index($param);
-    // }
-
-    public function index()
-    {
-    }
-
     public function testing()
     {
         $this->load->view('admin/flow_3');
@@ -54,7 +45,7 @@ class Flow extends CI_Controller
                 redirect('admin/spam');
             } else {
                 $data['spam_name'] = $data['node'][0]['spam_name'];
-                $data['template_db'] = $data['node'][0]['template'];
+                $data['template_db'] = (!empty($data['node'][0]['template'])) ? $data['node'][0]['template'] : "0";
                 $data['direction'] = $data['node'][0]['diagram_flow_direction'];
                 $data['root']      = $id;
                 $is_exist = $this->cek_existing_root($id);
