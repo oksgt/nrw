@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
     <!-- drawflow -->
-    <link rel="stylesheet" href="http://localhost/nrw/node_modules/drawflow/dist/drawflow.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost/nrw/assets/drawflow/beautiful.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/drawflow/beautiful.css') ?>" />
+    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.css') ?>" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <title>Diagram</title>
@@ -151,14 +151,13 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/jquery.js') ?>" crossorigin="anonymous"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/bootstrap.bundle.min.js') ?>" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
     <!-- drawflow -->
-    <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/drawflow.min.js') ?>"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.js') ?>" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/micromodal.min.js') ?>"></script>
 
     <script>
         const id_logger = [];
