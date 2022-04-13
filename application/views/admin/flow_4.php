@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css') ?>" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css') ?>" crossorigin="anonymous">
 
     <!-- drawflow -->
     <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/drawflow/beautiful.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.css') ?>" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="<?= base_url('assets/fontawesome-free/css/all.min.css') ?>" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <title>Diagram</title>
@@ -89,6 +89,13 @@
         .output {
             background-color: green !important;
         }
+
+        .drawflow {
+            /* background: #444; */
+            /* min-width: 100%;
+            min-height: 100%;
+            position: absolute; */
+        }
     </style>
 </head>
 
@@ -144,7 +151,7 @@
                         <li id="unlock"><i class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');"></i></li> -->
                     </ul>
                 </div>
-                <div class="border w-100" id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="" id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100%; height: 100%">
 
                 </div>
             </div>
@@ -170,7 +177,6 @@
         } ?>
 
         $(document).ready(function() {
-            getDataLogger();
 
             setInterval(function() {
                 getDataLogger();
@@ -183,15 +189,11 @@
         const editor = new Drawflow(id);
         editor.reroute = true;
         editor.start();
-        const dataToImport = <?= $template_db ?>;
+        const dataToImport = <?= $template_db; ?>;
         if (dataToImport !== 0) {
             editor.import(dataToImport);
 
             getDataLogger();
-
-            setInterval(function() {
-                getDataLogger();
-            }, 5 * 60 * 1000);
 
         }
 
@@ -426,7 +428,7 @@
 
         function saveTemplate() {
             var template_ = editor.export();
-            var string_template_ = JSON.stringify(template_);
+            var string_template_ = JSON.stringify(template_, null, 4);
             $.ajax({
                 url: '<?= base_url('spam/saveTemplate') ?>',
                 method: "POST",
