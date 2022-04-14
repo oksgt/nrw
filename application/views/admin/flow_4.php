@@ -207,6 +207,12 @@
         var id = document.getElementById("drawflow");
         const editor = new Drawflow(id);
         editor.reroute = true;
+
+        <?php
+        if ($this->session->userdata('status') !== 'loggedin') { ?>
+            editor.editor_mode = 'fixed';
+        <?php } ?>
+
         editor.start();
 
         var dataToImport = "";
