@@ -197,8 +197,8 @@ cursor: pointer;
 .drawflow .drawflow-node {
   background: var(--background-color);
   border: 1px solid var(--border-color);
-  -webkit-box-shadow: 0 2px 15px 2px var(--border-color);
-  box-shadow: 0 2px 15px 2px var(--border-color);
+  /* -webkit-box-shadow: 0 2px 15px 2px var(--border-color);
+  box-shadow: 0 2px 15px 2px var(--border-color); */
   padding: 0px;
   width: 200px;
 }
