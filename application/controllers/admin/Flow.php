@@ -9,6 +9,7 @@ class Flow extends CI_Controller
         parent::__construct();
         $this->load->library(array('form_validation'));
         $this->load->model(['Spam_model', 'Komponen_model']);
+        // $this->output->disable_cache();
     }
 
     public function testing()

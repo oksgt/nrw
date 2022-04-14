@@ -4,15 +4,17 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css') ?>" crossorigin="anonymous">
 
     <!-- drawflow -->
-    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/drawflow/beautiful.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('assets/fontawesome-free/css/all.min.css') ?>" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/fontawesome-free/css/all.min.css') ?>" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <title>Diagram</title>
@@ -90,11 +92,27 @@
             background-color: green !important;
         }
 
-        .drawflow {
-            /* background: #444; */
-            /* min-width: 100%;
-            min-height: 100%;
-            position: absolute; */
+        .drawflow-node {
+            background: none !important;
+            border: 2px solid #f7f7f7 !important;
+            color: #f7f7f7 !important;
+        }
+
+
+
+        .drawflow_content_node .card {
+            background: none !important;
+        }
+
+        .main-path {
+            stroke: white !important;
+            stroke-width: 5px !important;
+            stroke-dasharray: 15px !important;
+        }
+
+        .main-path-bg {
+            stroke: #2199e8 !important;
+            stroke-width: 10px !important;
         }
     </style>
 </head>
@@ -162,7 +180,7 @@
     <script src="<?= base_url('node_modules/drawflow/dist/bootstrap.bundle.min.js') ?>" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
     <!-- drawflow -->
-    <script src="<?= base_url('node_modules/drawflow/dist/drawflow.min.js') ?>"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/drawflow.js') ?>"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.js') ?>" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/micromodal.min.js') ?>"></script>
 
@@ -192,9 +210,7 @@
         const dataToImport = <?= $template_db; ?>;
         if (dataToImport !== 0) {
             editor.import(dataToImport);
-
             getDataLogger();
-
         }
 
 
@@ -330,15 +346,16 @@
                                     id_logger.push(data[key].kode);
                                     var multiple = `
                                         <div>
-                                            <div class="card text-center " >
+                                            <div class="card text-center card-logger" >
                                                 <div class="card-body p-0"
                                                     <h5 class="card-title">` + data[key].step_name + `</h5>
                                                     <h6 class="card-subtitle mt-1 mb-2 text-muted">` + data[key].kode + data[key].name + `</h6>
+                                                    
                                                 </div>
-                                                <div card-footer>
+                                                <div class="card-footer p-0">
                                                     <div class="btn-group d-flex" role="group" aria-label="Basic example">
-                                                        <button id="P_` + data[key].kode + `" type="button" class="btn btn-block btn-sm">P_` + data[key].kode + `</button>
-                                                        <button id="Q_` + data[key].kode + `" type="button" class="btn btn-block btn-sm">Q_` + data[key].kode + `</button>
+                                                        <button id="P_` + data[key].kode + `" type="button" class="btn btn-sm">P_` + data[key].kode + `</button>
+                                                        <button id="Q_` + data[key].kode + `" type="button" class="btn btn-sm">Q_` + data[key].kode + `</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -353,7 +370,7 @@
                                                 style="width: 150px; margin-left:23px; margin-top: 10px; margin-bottom: -10px
                                                 -khtml-user-select: none; -o-user-select: none; -moz-user-select: none; -webkit-user-select: none; user-select: none;">
                                                 <div class="card-body p-0"
-                                                    <h5 class="card-title">` + data[key].step_name + `</h5>
+                                                    <h5 class="card-title" >` + data[key].step_name + `</h5>
                                                     <h6 class="card-subtitle mt-2 mb-2 text-muted">` + data[key].kode + data[key].name + `</h6>
                                                 </div>
                                             </div>
@@ -471,7 +488,7 @@
                         console.log(data);
                         if (data != null) {
                             console.log('data.new_kode ' + data.new_kode);
-                            $('#P_' + data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
+                            $('#P_' + data.new_kode.replace(".", "\\.")).text((data.tekanan == 0) ? 'P: 0.00' : 'P: ' + data.tekanan);
                             if (data.tekanan < data.TEKANAN_NORMAL) {
                                 console.log('danger' + '#P_' + data.new_kode);
                                 $('#P_' + data.new_kode.replace(".", "\\.")).removeClass('btn-success');
@@ -482,7 +499,7 @@
                                 $('#P_' + data.new_kode.replace(".", "\\.")).addClass('btn-success');
                             }
 
-                            $('#Q_' + data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
+                            $('#Q_' + data.new_kode.replace(".", "\\.")).text((data.debit == 0) ? 'Q: 0.00' : 'Q: ' + data.debit);
                             if (data.debit < data.DEBIT_NORMAL) {
                                 $('#Q_' + data.new_kode.replace(".", "\\.")).removeClass('btn-success');
                                 $('#Q_' + data.new_kode.replace(".", "\\.")).addClass('btn-danger');
