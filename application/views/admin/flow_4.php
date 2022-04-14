@@ -132,8 +132,8 @@
                         </div>
                         <div class="">
                             <div class="card-block pl-2" style="padding: 10px 0; text-align: left">
-                                <h4 style="font-size: 12px; color: #818181;" class="card-title "><?= $r['step_name'] ?></h4>
-                                <h4 style="font-size: 11px; color: #818181;" class="card-title "><?= $r['kode'] . $r['name'] ?></h4>
+                                <h4 style="font-size: 12px; color: #818181;" class="card-title "><?= $r['step_name'] . " " . $r['kode'] ?></h4>
+                                <h4 style="font-size: 11px; color: #818181;" class="card-title "><?= $r['name'] ?></h4>
                             </div>
                         </div>
                     </div>
@@ -351,8 +351,8 @@
                                         <div>
                                             <div class="card text-center card-logger" >
                                                 <div class="card-body p-0"
-                                                    <h5 class="card-title">` + data[key].step_name + `</h5>
-                                                    <h6 class="card-subtitle mt-1 mb-2 text-muted">` + data[key].kode + data[key].name + `</h6>
+                                                    <h5 class="card-title">` + data[key].step_name + " " + data[key].kode + `</h5>
+                                                    <h6 class="card-subtitle mt-1 mb-2 text-muted">` + data[key].name + `</h6>
                                                     
                                                 </div>
                                                 <div class="card-footer p-0">
