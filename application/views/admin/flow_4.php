@@ -9,13 +9,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css') ?>" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css?no-cache=') ?>" crossorigin="anonymous">
 
     <!-- drawflow -->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/drawflow/beautiful.css') ?>" />
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/fontawesome-free/css/all.min.css') ?>" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>?no-cache=">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/drawflow/beautiful.css') ?>?no-cache=" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/fontawesome-free/css/all.min.css') ?>?no-cache=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap?no-cache=" rel="stylesheet">
 
     <title>Diagram</title>
 
@@ -108,6 +108,7 @@
             stroke: white !important;
             stroke-width: 5px !important;
             stroke-dasharray: 15px !important;
+            animation: dash 2.5s linear infinite;
         }
 
         .main-path-bg {
@@ -207,7 +208,9 @@
         const editor = new Drawflow(id);
         editor.reroute = true;
         editor.start();
-        const dataToImport = <?= $template_db; ?>;
+
+        var dataToImport = "";
+        dataToImport = <?= $template_db; ?>;
         if (dataToImport !== 0) {
             editor.import(dataToImport);
             getDataLogger();
