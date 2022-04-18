@@ -6,8 +6,8 @@ class Komponen_model extends CI_Model
 
     var $table = 'tb_spam_node';
     var $view  = 'view_spam_node';
-    var $column_order = array('id', 'root', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable orderable
-    var $column_search = array('id', 'root', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_order = array('id', 'root', 'input_port', 'output_port', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable orderable
+    var $column_search = array('id', 'root', 'input_port', 'output_port', 'kode', 'spam_name', 'pid', 'parent', 'parent_step', 'parent_step_name', 'step', 'step_name', 'name', 'img', 'url', 'is_del'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('id' => 'asc'); // default order 
 
     public function __construct()
