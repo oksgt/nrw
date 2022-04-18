@@ -112,6 +112,7 @@
         }
 
         .main-path-bg {
+            fill: none !important;
             stroke: #2199e8 !important;
             stroke-width: 10px !important;
         }
@@ -254,7 +255,7 @@
 
         editor.on('connectionCreated', function(connection) {
             console.log('Connection created');
-            console.log(connection);
+            // console.log(connection);
         })
 
         editor.on('connectionRemoved', function(connection) {
