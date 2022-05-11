@@ -521,7 +521,6 @@
                     Change your variable {name} !
                     <input type="text" df-name>
                   </div>
-
                 </div>
               </div>
             </div>

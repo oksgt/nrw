@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <style type="text/css">
-
         .custom-loader {
-        animation: none !important;
-        border-width: 0 !important;
+            animation: none !important;
+            border-width: 0 !important;
         }
+
         .path {
             animation: dash 2.5s linear infinite;
         }
@@ -60,7 +60,7 @@
         }
 
         /* Context menu */
-        .context-menu{
+        .context-menu {
             display: none;
             position: absolute;
             border: 1px solid black;
@@ -71,33 +71,35 @@
             padding-bottom: 0;
         }
 
-        .context-menu ul{
+        .context-menu ul {
             list-style: none;
             padding: 2px;
         }
 
-        .context-menu ul li{
+        .context-menu ul li {
             padding: 5px 2px;
             margin-bottom: 3px;
             /* background-color: darkturquoise; */
         }
 
-        .context-menu ul li:hover{
+        .context-menu ul li:hover {
             cursor: pointer;
             background-color: #28a745;
         }
 
-        .c{
-            width:100%;
+        .c {
+            width: 100%;
             height: 100%;
-            overflow:hidden;
-            overflow-y:auto;
+            overflow: hidden;
+            overflow-y: auto;
         }
-        .card-home{
-            position:absolute;
+
+        .card-home {
+            position: absolute;
             top: 0;
             animation: scroll 70s linear 1s infinite;
         }
+
         /* @keyframes scroll {
             100% { top: -200%; }  
         } */
@@ -123,7 +125,6 @@
             -webkit-transition: all .2s ease-in-out;
             transition: all .2s ease-in-out;
         } */
-
     </style>
 
 
@@ -133,21 +134,21 @@
     <div class="wrapper ">
         <div class="content-wrapper c " id="padre">
             <div class="card-home" id="hijo">
-                <section class="content-header" style="min-width: 100%;"> 
+                <section class="content-header" style="min-width: 100%;">
                     <div class="container">
                         <div class="row mt-3 ">
                             <div class="col-sm-7 col-12">
                                 <h3 class="text-light"><?= $spam_name ?><br><small class="text-light timelabel"></small></h3>
-                                
+
                             </div>
                             <div class="col-sm-5 col-12 text-right">
                                 <!-- <a type="button" class="btn btn-primary pull-right" onclick="UpdateLogger()"> <i class="fa fa-sync"></i> Sync Data Logger</a> -->
-                                
+
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-primary" onclick="UpdateLogger()"><i class="fa fa-sync"></i></button>
                                     <!-- <button type="button" class="btn btn-secondary">Middle</button> -->
                                     <?php if ($this->session->userdata('status') == 'loggedin') { ?>
-                                    <a type="button" class="btn btn-success" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> </a>
+                                        <a type="button" class="btn btn-success" href="<?= base_url('index.php/flowkomponen/' . $root) ?>"> <i class="fa fa-edit"></i> </a>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -164,95 +165,95 @@
                 </section>
             </div>
 
-            
-            
+
+
         </div>
-        
+
 
         <div class="modal" tabindex="-1" id="modal-add-komponen">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true">New Child</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="merge-tab" data-toggle="tab" href="#merge" role="tab" aria-controls="merge" aria-selected="false" onclick="data_to_merge(<?= $root ?>)">Existing Child</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
-                        <form id="form" method="post" onsubmit="return false;">
-                            <input type="hidden" name="id">
-                            <input type="hidden" name="root" value="<?= $root ?>">
-                            <!-- <input type="hidden" name="input_parent" id="input_parent" > -->
-                            <div class="form-group input_parent_container">
-                                <label for="input_parent">Pilih Parent (Turunan Dari)</label>
-                                <select  class="form-control" id="input_parent" name="input_parent">
-                                
-                                </select>
-                                <small id="input_parent_error_icon" class="form-text text-danger"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="input_step">Step</label>
-                                <select  class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
-                                <option value="x" >-- Silahkan Pilih Parent--</option>'
-                                </select>
-                                <small id="input_step_error_icon" class="form-text text-danger"></small>
-                            </div>
-                            <div class="form-group form-group-name" >
-                                <label for="input_nama_komponen">Nama</label>
-                                <input type="text" class="form-control" id="input_nama_komponen" name="input_nama_komponen">
-                                <small id="input_nama_komponen_error_detail" class="form-text text-danger"></small>
-                            </div>
-                            <div class="form-group form-group-kode" >
-                                <label for="input_kode">Kode</label>
-                                <input type="text" class="form-control" id="input_kode" name="input_kode">
-                                <small id="input_kode_error_detail" class="form-text text-danger"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="input_url">URL</label>
-                                <input type="text" class="form-control" id="input_url" name="input_url">
-                                <small id="input_url_error_detail" class="form-text text-danger"></small>
-                            </div>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Simpan</button>
-                        </form>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="tab-pane fade" id="merge" role="tabpanel" aria-labelledby="merge-tab">
-                        <div class="row">
-                            <input type="hidden" id="idnya" name="idnya">
-                            <div class="col-12" id="mergecontainer">
-                                
+                    <div class="modal-body">
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true">New Child</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="merge-tab" data-toggle="tab" href="#merge" role="tab" aria-controls="merge" aria-selected="false" onclick="data_to_merge(<?= $root ?>)">Existing Child</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
+                                <form id="form" method="post" onsubmit="return false;">
+                                    <input type="hidden" name="id">
+                                    <input type="hidden" name="root" value="<?= $root ?>">
+                                    <!-- <input type="hidden" name="input_parent" id="input_parent" > -->
+                                    <div class="form-group input_parent_container">
+                                        <label for="input_parent">Pilih Parent (Turunan Dari)</label>
+                                        <select class="form-control" id="input_parent" name="input_parent">
+
+                                        </select>
+                                        <small id="input_parent_error_icon" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input_step">Step</label>
+                                        <select class="form-control" id="input_step" name="input_step" onchange="input_name_handler()">
+                                            <option value="x">-- Silahkan Pilih Parent--</option>'
+                                        </select>
+                                        <small id="input_step_error_icon" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group form-group-name">
+                                        <label for="input_nama_komponen">Nama</label>
+                                        <input type="text" class="form-control" id="input_nama_komponen" name="input_nama_komponen">
+                                        <small id="input_nama_komponen_error_detail" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group form-group-kode">
+                                        <label for="input_kode">Kode</label>
+                                        <input type="text" class="form-control" id="input_kode" name="input_kode">
+                                        <small id="input_kode_error_detail" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input_url">URL</label>
+                                        <input type="text" class="form-control" id="input_url" name="input_url">
+                                        <small id="input_url_error_detail" class="form-text text-danger"></small>
+                                    </div>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Simpan</button>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="merge" role="tabpanel" aria-labelledby="merge-tab">
+                                <div class="row">
+                                    <input type="hidden" id="idnya" name="idnya">
+                                    <div class="col-12" id="mergecontainer">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
                     </div>
                 </div>
-                
-                
-                  
-              </div>
-              <div class="modal-footer">
-                
-              </div>
             </div>
-          </div>
         </div>
 
         <!-- Context-menu -->
         <div class='context-menu'>
             <ul>
-                <li ><span class='Gainsboro'></span>&nbsp;<span><i class="fa fa-plus"></i> Tambah Child </span></li>
-                <li ><span class='Gainsboro2'></span>&nbsp;<span><i class="fa fa-edit"></i> Edit </span></li>
-                <li ><span class='Gainsboro3'></span>&nbsp;<span><i class="fa fa-trash"></i> Hapus </span></li>
+                <li><span class='Gainsboro'></span>&nbsp;<span><i class="fa fa-plus"></i> Tambah Child </span></li>
+                <li><span class='Gainsboro2'></span>&nbsp;<span><i class="fa fa-edit"></i> Edit </span></li>
+                <li><span class='Gainsboro3'></span>&nbsp;<span><i class="fa fa-trash"></i> Hapus </span></li>
             </ul>
         </div>
         <input type='hidden' value='' id='txt_id'>
@@ -277,7 +278,7 @@
             var detail_clicked = false;
             const id_logger = [];
             $(document).ready(function() {
-                
+
                 generateTreeDiagram();
                 // generateTreeDiagram2();
                 rightClickNode();
@@ -286,67 +287,67 @@
 
                 setInterval(function() {
                     getDataLogger();
-                }, 5 * 60 * 1000 );
+                }, 5 * 60 * 1000);
 
             });
 
             function getDataLogger() {
-                    for (var key in id_logger) {
-                        console.log('id_logger[key] '+id_logger[key]);
-                        $('#P_' +  id_logger[key].replace(".", "\\.")).text('P: -');
-                        $('#Q_' +  id_logger[key].replace(".", "\\.")).text('Q: -');
-                        $.ajax({
-                            url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
-                            method: "GET",
-                            dataType: 'json',
-                            success: function(data) {
-                                // console.log('P: ' + data.debit);
-                                
+                for (var key in id_logger) {
+                    console.log('id_logger[key] ' + id_logger[key]);
+                    $('#P_' + id_logger[key].replace(".", "\\.")).text('P: -');
+                    $('#Q_' + id_logger[key].replace(".", "\\.")).text('Q: -');
+                    $.ajax({
+                        url: "<?php echo site_url('admin/spam/') ?>" + "getDataLogger/" + id_logger[key],
+                        method: "GET",
+                        dataType: 'json',
+                        success: function(data) {
+                            // console.log('P: ' + data.debit);
 
-                                if(data != null){
-                                    console.log('data.new_kode '+data.new_kode);
-                                    $('#P_' +  data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
-                                    if(data.tekanan < data.TEKANAN_NORMAL){
-                                        console.log('danger'+'#P_' +  data.new_kode);
-                                        $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
-                                        $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
-                                    } else {
-                                        console.log('normal')
-                                        $('#P_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
-                                        $('#P_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
-                                    }
 
-                                    $('#Q_' +  data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
-                                    if(data.debit < data.DEBIT_NORMAL){
-                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
-                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
-                                    } else {
-                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
-                                        $('#Q_' +  data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
-                                    }
+                            if (data != null) {
+                                console.log('data.new_kode ' + data.new_kode);
+                                $('#P_' + data.new_kode.replace(".", "\\.")).text('P: ' + data.tekanan);
+                                if (data.tekanan < data.TEKANAN_NORMAL) {
+                                    console.log('danger' + '#P_' + data.new_kode);
+                                    $('#P_' + data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                    $('#P_' + data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
                                 } else {
-                                    
+                                    console.log('normal')
+                                    $('#P_' + data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                    $('#P_' + data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
                                 }
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.log(errorThrown);
-                                // $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
-                                
+
+                                $('#Q_' + data.new_kode.replace(".", "\\.")).text('Q: ' + data.debit);
+                                if (data.debit < data.DEBIT_NORMAL) {
+                                    $('#Q_' + data.new_kode.replace(".", "\\.")).removeClass('badge badge-success');
+                                    $('#Q_' + data.new_kode.replace(".", "\\.")).addClass('badge badge-danger');
+                                } else {
+                                    $('#Q_' + data.new_kode.replace(".", "\\.")).removeClass('badge badge-danger');
+                                    $('#Q_' + data.new_kode.replace(".", "\\.")).addClass('badge badge-success');
+                                }
+                            } else {
+
                             }
-                        });
-                    }
-                    var currentdate = new Date(); 
-                    var datetime = "Logger Last Sync : " 
-                                    + currentdate.getDate() + "/"
-                                    + (currentdate.getMonth()+1)  + "/" 
-                                    + currentdate.getFullYear() + " @ "  
-                                    + currentdate.getHours() + ":"  
-                                    + currentdate.getMinutes();
-                    $('.timelabel').text(datetime);        
-                    console.log(datetime);            
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            // $('#input_parent').html('<option>Oups! Something gone wrong!</option>');
+
+                        }
+                    });
+                }
+                var currentdate = new Date();
+                var datetime = "Logger Last Sync : " +
+                    currentdate.getDate() + "/" +
+                    (currentdate.getMonth() + 1) + "/" +
+                    currentdate.getFullYear() + " @ " +
+                    currentdate.getHours() + ":" +
+                    currentdate.getMinutes();
+                $('.timelabel').text(datetime);
+                console.log(datetime);
             }
 
-            function setCenterScreen(id){
+            function setCenterScreen(id) {
                 $('#58').css({
                     "position": "absolute",
                     "top": "50%",
@@ -358,20 +359,20 @@
                 });
             }
 
-            function input_name_handler(){
+            function input_name_handler() {
                 var r = $('#input_step').val();
-                if(r == 5){
-                $('.form-group-name').hide();
-                $('.form-group-kode').show();
+                if (r == 5) {
+                    $('.form-group-name').hide();
+                    $('.form-group-kode').show();
                 } else {
-                $('.form-group-name').show();
-                $('.form-group-kode').hide();
+                    $('.form-group-name').show();
+                    $('.form-group-kode').hide();
                 }
             }
 
-            function getNextStep(id){
+            function getNextStep(id) {
                 $.ajax({
-                    url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" +id,
+                    url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetchNextStep/" + id,
                     method: "GET",
                     dataType: 'html',
                     success: function(html) {
@@ -386,31 +387,31 @@
                 });
             }
 
-            function UpdateLogger(){
+            function UpdateLogger() {
                 Swal.fire({
-                title: 'Update Data Logger',
-                // input: 'text',
-                // inputAttributes: {
-                //     autocapitalize: 'off'
-                // },
-                showCancelButton: true,
-                confirmButtonText: 'Sync',
-                showLoaderOnConfirm: true,
-                preConfirm: (login) => {
-                    return fetch(`<?php echo site_url('Checklog/ajax_update') ?>`)
-                    .then(response => {
-                        if (!response.status) {
-                        throw new Error(response.statusText)
-                        }
-                        return response.json()
-                    })
-                    .catch(error => {
-                        Swal.showValidationMessage(
-                        `Request failed: ${error}`
-                        )
-                    })
-                },
-                allowOutsideClick: () => !Swal.isLoading()
+                    title: 'Update Data Logger',
+                    // input: 'text',
+                    // inputAttributes: {
+                    //     autocapitalize: 'off'
+                    // },
+                    showCancelButton: true,
+                    confirmButtonText: 'Sync',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (login) => {
+                        return fetch(`<?php echo site_url('Checklog/ajax_update') ?>`)
+                            .then(response => {
+                                if (!response.status) {
+                                    throw new Error(response.statusText)
+                                }
+                                return response.json()
+                            })
+                            .catch(error => {
+                                Swal.showValidationMessage(
+                                    `Request failed: ${error}`
+                                )
+                            })
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Swal.fire(
@@ -418,33 +419,33 @@
                             'Data logger berhasil update!',
                             'success'
                         );
-                        var currentdate = new Date(); 
-                        var datetime = "Logger Last Sync : " 
-                                        + currentdate.getDate() + "/"
-                                        + (currentdate.getMonth()+1)  + "/" 
-                                        + currentdate.getFullYear() + " @ "  
-                                        + currentdate.getHours() + ":"  
-                                        + currentdate.getMinutes();
-                        $('.timelabel').text(datetime); 
+                        var currentdate = new Date();
+                        var datetime = "Logger Last Sync : " +
+                            currentdate.getDate() + "/" +
+                            (currentdate.getMonth() + 1) + "/" +
+                            currentdate.getFullYear() + " @ " +
+                            currentdate.getHours() + ":" +
+                            currentdate.getMinutes();
+                        $('.timelabel').text(datetime);
                     }
                 })
-                
+
             }
 
-            function rightClickNode(){
+            function rightClickNode() {
                 // disable right click and show custom context menu
-                $(".node").bind('contextmenu', function (e) {
+                $(".node").bind('contextmenu', function(e) {
                     var id = this.id;
                     console.log($(this).attr("data-step"));
                     $("#txt_id").val(id);
 
-                    if($(this).attr("data-step") == 5){
+                    if ($(this).attr("data-step") == 5) {
                         $("#txt_step").val($(this).attr("data-parent-step"));
                     } else {
                         $("#txt_step").val($(this).attr("data-step"));
                     }
 
-                    var top = e.pageY+5;
+                    var top = e.pageY + 5;
                     var left = e.pageX;
 
                     // Show contextmenu
@@ -458,34 +459,34 @@
                 });
 
                 // Hide context menu
-                $(document).bind('contextmenu click',function(){
+                $(document).bind('contextmenu click', function() {
                     $(".context-menu").hide();
                     $("#txt_id").val("");
                     $("#txt_step").val("");
                 });
 
                 // disable context-menu from custom menu
-                $('.context-menu').bind('contextmenu',function(){
+                $('.context-menu').bind('contextmenu', function() {
                     return false;
                 });
-                
+
                 // Clicked context-menu item
-                $('.context-menu li').click(function(){
+                $('.context-menu li').click(function() {
                     var className = $(this).find("span:nth-child(1)").attr("class");
                     var titleid = $('#txt_id').val();
                     var nextStep = $('#txt_step').val();
                     titleid = titleid.split("_");
-                    
-                    if(className == "Gainsboro") { //add child
+
+                    if (className == "Gainsboro") { //add child
                         fetch_existing_node(titleid[1]);
                         console.log(titleid[1]);
                         $('#idnya').val(titleid[1]);
                         // console.log('ss '+titleid[1]);
                         getNextStep(nextStep);
                         add_spam();
-                    } else if(className == "Gainsboro2"){ //edit
+                    } else if (className == "Gainsboro2") { //edit
                         detail(titleid[1]);
-                    } else { 
+                    } else {
                         hapus_data(titleid[1]);
                     }
                     $(".context-menu").hide();
@@ -494,53 +495,53 @@
 
             function form_validation() {
                 $('#form').on('submit', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
 
-                var input_list = ['input_parent', 'input_step'];
-                var input_list_error = ['input_parent_error_icon', 'input_step_error_icon'];
+                    var input_list = ['input_parent', 'input_step'];
+                    var input_list_error = ['input_parent_error_icon', 'input_step_error_icon'];
 
-                $.ajax({
-                    url: "<?php echo site_url('admin/flowkomponen/validation') ?>",
-                    method: 'post',
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    beforeSend: function() {
-                    $('#btnSave').attr('disabled', true);
-                    },
-                    success: function(data) {
+                    $.ajax({
+                        url: "<?php echo site_url('admin/flowkomponen/validation') ?>",
+                        method: 'post',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $('#btnSave').attr('disabled', true);
+                        },
+                        success: function(data) {
 
-                    if (data.error) {
-                        for (let index = 0; index < input_list.length; index++) {
-                        const input_ = input_list[index];
-                        const input_error = input_list_error[index];
-                        if (data[input_error] !== "") {
-                            $('[id=' + input_error + ']').html(data[input_error]);
-                            $('[id=' + input_ + ']').addClass('is-invalid');
-                        } else {
-                            $('[id=' + input_error + ']').html('');
-                            $('[id=' + input_ + ']').removeClass('is-invalid');
-                            $('[id=' + input_ + ']').addClass('is-valid');
+                            if (data.error) {
+                                for (let index = 0; index < input_list.length; index++) {
+                                    const input_ = input_list[index];
+                                    const input_error = input_list_error[index];
+                                    if (data[input_error] !== "") {
+                                        $('[id=' + input_error + ']').html(data[input_error]);
+                                        $('[id=' + input_ + ']').addClass('is-invalid');
+                                    } else {
+                                        $('[id=' + input_error + ']').html('');
+                                        $('[id=' + input_ + ']').removeClass('is-invalid');
+                                        $('[id=' + input_ + ']').addClass('is-valid');
+                                    }
+                                }
+                            }
+
+                            if (data.success) {
+                                for (let index = 0; index < input_list.length; index++) {
+                                    const input_ = input_list[index];
+                                    const input_error = input_list_error[index]
+
+                                    $('[id=' + input_error + ']').html('');
+                                    $('[id=' + input_ + ']').removeClass('is-invalid');
+                                    $('[id=' + input_ + ']').addClass('is-valid');
+                                }
+                                save();
+                            }
+
+                            $('#btnSave').attr('disabled', false);
+
                         }
-                        }
-                    }
-
-                    if (data.success) {
-                        for (let index = 0; index < input_list.length; index++) {
-                        const input_ = input_list[index];
-                        const input_error = input_list_error[index]
-
-                        $('[id=' + input_error + ']').html('');
-                        $('[id=' + input_ + ']').removeClass('is-invalid');
-                        $('[id=' + input_ + ']').addClass('is-valid');
-                        }
-                        save();
-                    }
-
-                    $('#btnSave').attr('disabled', false);
-
-                    }
-                });
+                    });
                 });
             }
 
@@ -549,21 +550,21 @@
                 var input_list_error = ['input_parent_error_icon', 'input_step_error_icon'];
 
                 for (let index = 0; index < input_list.length; index++) {
-                const input_ = input_list[index];
-                const input_error = input_list_error[index]
+                    const input_ = input_list[index];
+                    const input_error = input_list_error[index]
 
-                $('[id=' + input_error + ']').html('');
-                $('[id=' + input_ + ']').removeClass('is-invalid');
-                $('[id=' + input_ + ']').removeClass('is-valid');
+                    $('[id=' + input_error + ']').html('');
+                    $('[id=' + input_ + ']').removeClass('is-invalid');
+                    $('[id=' + input_ + ']').removeClass('is-valid');
                 }
             }
 
             function save() {
                 var url;
                 if (save_method == "add") {
-                url = "<?php echo site_url('admin/flowkomponen/') ?>" + "insert/";
+                    url = "<?php echo site_url('admin/flowkomponen/') ?>" + "insert/";
                 } else {
-                url = "<?php echo site_url('admin/flowkomponen/') ?>" + "update/";
+                    url = "<?php echo site_url('admin/flowkomponen/') ?>" + "update/";
                 }
                 var form = $('#form')[0];
                 var formData = new FormData(form);
@@ -603,19 +604,19 @@
                 });
             }
 
-            function fetch_existing_node(id="", action=""){
+            function fetch_existing_node(id = "", action = "") {
                 $.ajax({
                     url: "<?php echo site_url('admin/flowkomponen/') ?>" + "fetch_existing_node/" + <?= $root ?>,
                     method: "GET",
                     dataType: 'html',
                     success: function(html) {
                         console.log('fetched');
-                        console.log('id '+id);
+                        console.log('id ' + id);
                         $('#input_parent').html(html);
-                        if(id!==""){
+                        if (id !== "") {
                             $('#input_parent').val(id);
                             console.log(action);
-                            if(action!=="edit"){
+                            if (action !== "edit") {
                                 $('.input_parent_container').hide();
                                 $('#input_parent').attr('disabled', false);
                             } else {
@@ -633,70 +634,70 @@
             function detail(id) {
                 reset_validation();
                 $.ajax({
-                url: "<?php echo site_url('admin/flowkomponen/') ?>" + "detail/" + id,
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    $('.input_parent_container').show();
-                    fetch_existing_node(data.pid, "edit");
-                    getNextStep(data.step);
-                    // console.log(data.step);
-                    $('[name=id]').val(data.id);
-                    // $('[name=input_parent]').val(data.pid);
-                    
-                    $('[name=input_nama_komponen]').val(data.name);
-                    $('[name=input_kode]').val(data.kode);
-                    $('[name=input_url]').val(data.url);
+                    url: "<?php echo site_url('admin/flowkomponen/') ?>" + "detail/" + id,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        $('.input_parent_container').show();
+                        fetch_existing_node(data.pid, "edit");
+                        getNextStep(data.step);
+                        // console.log(data.step);
+                        $('[name=id]').val(data.id);
+                        // $('[name=input_parent]').val(data.pid);
 
-                    save_method = "edit";
-                    $('.modal-title').text('Edit Child');
+                        $('[name=input_nama_komponen]').val(data.name);
+                        $('[name=input_kode]').val(data.kode);
+                        $('[name=input_url]').val(data.url);
 
-                    $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
-                    $('#btnSave').removeClass('bg-gradient-primary');
-                    $('#btnSave').addClass('bg-gradient-warning');
-                    
-                    $('#modal-add-komponen').modal('show');
-                }
+                        save_method = "edit";
+                        $('.modal-title').text('Edit Child');
+
+                        $('#btnSave').html('<b class="fa fa-edit"></b> Edit');
+                        $('#btnSave').removeClass('bg-gradient-primary');
+                        $('#btnSave').addClass('bg-gradient-warning');
+
+                        $('#modal-add-komponen').modal('show');
+                    }
                 });
             }
 
             function hapus_data(id) {
                 Swal.fire({
-                title: 'Hapus Data',
-                text: 'Apakah Anda yakin?',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#aaa',
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak',
+                    title: 'Hapus Data',
+                    text: 'Apakah Anda yakin?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#aaa',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
                 }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                    url: "<?php echo site_url('admin/flowkomponen/') ?>" + "delete/" + id,
-                    method: "GET",
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.status) {
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                generateTreeDiagram();
-                                rightClickNode();
-                                getDataLogger();
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "<?php echo site_url('admin/flowkomponen/') ?>" + "delete/" + id,
+                            method: "GET",
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                    ).then((result) => {
+                                        if (result.isConfirmed) {
+                                            generateTreeDiagram();
+                                            rightClickNode();
+                                            getDataLogger();
+                                        }
+                                    });
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                                alert('Error get data from ajax' + jqXHR + textStatus + errorThrown);
                             }
                         });
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                        alert('Error get data from ajax' + jqXHR + textStatus + errorThrown);
                     }
-                    });
-                }
                 })
             }
 
@@ -720,8 +721,10 @@
                 }();
 
                 let output;
-                output = result_structure.reduce(aggregateTree, {result: {} }).result;
-            
+                output = result_structure.reduce(aggregateTree, {
+                    result: {}
+                }).result;
+
                 let t = JSON.stringify(output);
 
                 t = t.replace(/{}/g, '""');
@@ -746,7 +749,7 @@
                 }();
 
                 for (var key in result_node_detail) {
-                    if(result_node_detail[key].kode !== ""){
+                    if (result_node_detail[key].kode !== "") {
                         id_logger.push(result_node_detail[key].kode);
                     }
                 }
@@ -764,36 +767,58 @@
                 });
             }
 
-            function aggregateTree( 
-                { index = {}, result = {} }, 
-                { id, pid },                 
-            ) {
-                const childItem = (index[id] ??= { [id]: {} });
-                const parentItem = (pid !== 0)
-                    && (index[pid] ??= { [pid]: {} })
-                    || null;
+            function aggregateTree({
+                index = {},
+                result = {}
+            }, {
+                id,
+                pid
+            }, ) {
+                const childItem = (index[id] ?? = {
+                    [id]: {}
+                });
+                const parentItem = (pid !== 0) &&
+                    (index[pid] ?? = {
+                        [pid]: {}
+                    }) ||
+                    null;
 
                 if (parentItem !== null) {
                     Object.assign(parentItem[pid], childItem);
-                } else {Object.assign(result, childItem);
+                } else {
+                    Object.assign(result, childItem);
                 }
-                return { index, result };
+                return {
+                    index,
+                    result
+                };
             }
 
-            function aggregateTreeV2( 
-                { index = {}, result = {} }, 
-                { seq, pid },                 
-            ) {
-                const childItem = (index[seq] ??= { [seq]: {} });
-                const parentItem = (pid !== 0)
-                    && (index[pid] ??= { [pid]: {} })
-                    || null;
+            function aggregateTreeV2({
+                index = {},
+                result = {}
+            }, {
+                seq,
+                pid
+            }, ) {
+                const childItem = (index[seq] ?? = {
+                    [seq]: {}
+                });
+                const parentItem = (pid !== 0) &&
+                    (index[pid] ?? = {
+                        [pid]: {}
+                    }) ||
+                    null;
 
                 if (parentItem !== null) {
                     Object.assign(parentItem[pid], childItem);
-                } else {Object.assign(result, childItem);
+                } else {
+                    Object.assign(result, childItem);
                 }
-                return { index, result };
+                return {
+                    index,
+                    result
+                };
             }
 
             function convertIntObj(obj) {
@@ -809,37 +834,38 @@
             }
 
             function getTableDetail(id) {
+                console.log('getTableDetail');
                 $.ajax({
-                        url: "<?php echo site_url('admin/spam/getNodeName/') ?>" + id,
-                        dataType: 'json',
-                        success: function(data) {
-                            // console.log(data)
-                            $('#node_id').val(data.id);
-                            $('.modal-title').html(data.step_name + " - " + data.name);
-                            $.ajax({
-                                url: '<?= base_url('index.php/admin/spam/get_last_value/') ?>' + data.step + "/" + data.id,
-                                dataType: 'html',
-                                success: function(data_lagi) {
-                                    $('.data_log').html(data_lagi);
-                                }
-                            });
+                    url: "<?php echo site_url('admin/spam/getNodeName/') ?>" + id,
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data)
+                        $('#node_id').val(data.id);
+                        $('.modal-title').html(data.step_name + " - " + data.name);
+                        $.ajax({
+                            url: '<?= base_url('index.php/admin/spam/get_last_value/') ?>' + data.step + "/" + data.id,
+                            dataType: 'html',
+                            success: function(data_lagi) {
+                                $('.data_log').html(data_lagi);
+                            }
+                        });
 
-                            $.ajax({
-                                url: '<?= base_url('index.php/admin/spam/get_image/') ?>' + data.id,
-                                dataType: 'html',
-                                success: function(data_lagi) {
-                                    // console.log(data_lagi);
-                                    if (data_lagi == "") {
-                                        $('.img-fluid').attr('src', '<?= base_url('assets/no-image.png') ?>');
-                                    } else {
-                                        $('.img-fluid').attr('src', '<?= base_url('assets/gambar/') ?>' + data_lagi);
-                                    }
+                        $.ajax({
+                            url: '<?= base_url('index.php/admin/spam/get_image/') ?>' + data.id,
+                            dataType: 'html',
+                            success: function(data_lagi) {
+                                // console.log(data_lagi);
+                                if (data_lagi == "") {
+                                    $('.img-fluid').attr('src', '<?= base_url('assets/no-image.png') ?>');
+                                } else {
+                                    $('.img-fluid').attr('src', '<?= base_url('assets/gambar/') ?>' + data_lagi);
                                 }
-                            });
-                            $('#modal-info').modal('show'); 
-                        }
+                            }
+                        });
+                        $('#modal-info').modal('show');
+                    }
                 });
-                
+
             }
 
             function add_spam() {
@@ -854,60 +880,60 @@
                 $('.form-group-kode').hide();
             }
 
-            function next(id){
+            function next(id) {
                 alert(id);
             }
 
-            function data_to_merge(id){
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: "<?php echo site_url('admin/spam/') ?>" + 'getOtherNode/' + id+'/'+$('#idnya').val(),
-                        dataType: 'html',
-                        global: false,
-                        success: function(html) {
-                            $('#mergecontainer').html(html);
-                        }
-                    });
+            function data_to_merge(id) {
+                $.ajax({
+                    async: false,
+                    type: 'GET',
+                    url: "<?php echo site_url('admin/spam/') ?>" + 'getOtherNode/' + id + '/' + $('#idnya').val(),
+                    dataType: 'html',
+                    global: false,
+                    success: function(html) {
+                        $('#mergecontainer').html(html);
+                    }
+                });
             }
 
-            function childDuplicate(id){
+            function childDuplicate(id) {
                 var parent = $('#idnya').val();
                 $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: "<?php echo site_url('admin/spam/') ?>" + 'childDuplicate/' + id+"/"+parent,
-                        dataType: 'json',
-                        global: false,
-                        success: function(data) {
-                            // $('#mergecontainer').html(html);
-                            if (data.status) {
-                                // console.log(data.id);
-                                Swal.fire(
-                                    'Good job!',
-                                    'Data saved successfully!',
-                                    'success'
-                                );
-                                reset_validation();
-                                generateTreeDiagram();
-                                rightClickNode();
-                                getDataLogger();
-                                $('#modal-add-komponen').modal('hide');
-                                $('#form')[0].reset();
-                            } else {
-                                Swal.fire(
-                                    'Oups!',
-                                    data.message,
-                                    'warning'
-                                );
-                            }
+                    async: false,
+                    type: 'GET',
+                    url: "<?php echo site_url('admin/spam/') ?>" + 'childDuplicate/' + id + "/" + parent,
+                    dataType: 'json',
+                    global: false,
+                    success: function(data) {
+                        // $('#mergecontainer').html(html);
+                        if (data.status) {
+                            // console.log(data.id);
+                            Swal.fire(
+                                'Good job!',
+                                'Data saved successfully!',
+                                'success'
+                            );
+                            reset_validation();
+                            generateTreeDiagram();
+                            rightClickNode();
+                            getDataLogger();
+                            $('#modal-add-komponen').modal('hide');
+                            $('#form')[0].reset();
+                        } else {
+                            Swal.fire(
+                                'Oups!',
+                                data.message,
+                                'warning'
+                            );
                         }
+                    }
                 });
             }
         </script>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function(event) { 
+            document.addEventListener("DOMContentLoaded", function(event) {
                 var scrollpos = localStorage.getItem('scrollpos');
                 if (scrollpos) window.scrollTo(0, scrollpos);
             });

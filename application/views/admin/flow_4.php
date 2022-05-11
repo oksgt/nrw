@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css?no-cache=') ?>" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= base_url('node_modules/drawflow/dist/bootstrap.min.css') ?>">
 
     <!-- drawflow -->
     <link rel="stylesheet" type="text/css" href="<?= base_url('node_modules/drawflow/dist/drawflow.css') ?>?no-cache=">
@@ -178,11 +178,39 @@
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" id="modal-info">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" id="node_id">
+                <div class="modal-body">
+                    <div class="row col-12">
+                        <div class="col-6 data_log">
+
+                        </div>
+                        <div class="col-6 img_log">
+                            <label for="">Gambar Terbaru</label>
+                            <img src="" class="img-fluid" alt="...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="<?= base_url('node_modules/drawflow/dist/jquery.js') ?>" crossorigin="anonymous"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/bootstrap.bundle.min.js') ?>" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
     <!-- drawflow -->
-    <script src="<?= base_url('node_modules/drawflow/dist/drawflow.js') ?>"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/drawflow_aslipol.js?v=') . time() ?>"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.js') ?>" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/micromodal.min.js') ?>"></script>
 
@@ -219,6 +247,7 @@
         var dataToImport = "";
         dataToImport = <?= $template_db; ?>;
         if (dataToImport !== 0) {
+            console.log(dataToImport);
             editor.import(dataToImport);
             getDataLogger();
         }
@@ -371,10 +400,12 @@
                                             </div>
                                         </div>
                                     `;
+
+                                    editor.addNode('multiple', data[key].input_port, data[key].output_port, pos_x, pos_y, 'multiple', {}, multiple);
                                 } else {
                                     var multiple = `
                                         <div>
-                                            <div class="card text-center " >
+                                            <div class="card text-center" ondblclick="getTableDetail(` + data[key].id + `)">
                                                 <img src="` + image + `" class="card-img-top " 
                                                 onerror="this.onerror=null;this.src='<?= base_url('assets/gambar/no-image.png') ?>';"
                                                 style="width: 150px; margin-left:23px; margin-top: 10px; margin-bottom: -10px
@@ -386,9 +417,11 @@
                                             </div>
                                         </div>
                                     `;
+
+                                    editor.addNode('multiple', data[key].input_port, data[key].output_port, pos_x, pos_y, 'multiple', {}, multiple);
                                 }
 
-                                editor.addNode('multiple', data[key].input_port, data[key].output_port, pos_x, pos_y, 'multiple', {}, multiple);
+
                             }
                             // break;
                         }
@@ -455,6 +488,7 @@
 
         function saveTemplate() {
             var template_ = editor.export();
+            console.log(template_);
             var string_template_ = JSON.stringify(template_, null, 4);
             $.ajax({
                 url: '<?= base_url('spam/saveTemplate') ?>',
@@ -537,6 +571,41 @@
                 currentdate.getMinutes();
             $('.timelabel').text(datetime);
             console.log(datetime);
+        }
+
+        function getTableDetail(id) {
+            console.log('getTableDetail');
+            $.ajax({
+                url: "<?php echo site_url('admin/spam/getNodeName/') ?>" + id,
+                dataType: 'json',
+                success: function(data) {
+                    // console.log(data)
+                    $('#node_id').val(data.id);
+                    $('.modal-title').html(data.step_name + " - " + data.name);
+                    $.ajax({
+                        url: '<?= base_url('index.php/admin/spam/get_last_value/') ?>' + data.step + "/" + data.id,
+                        dataType: 'html',
+                        success: function(data_lagi) {
+                            $('.data_log').html(data_lagi);
+                        }
+                    });
+
+                    $.ajax({
+                        url: '<?= base_url('index.php/admin/spam/get_image/') ?>' + data.id,
+                        dataType: 'html',
+                        success: function(data_lagi) {
+                            // console.log(data_lagi);
+                            if (data_lagi == "") {
+                                $('.img-fluid').attr('src', '<?= base_url('assets/no-image.png') ?>');
+                            } else {
+                                $('.img-fluid').attr('src', '<?= base_url('assets/gambar/') ?>' + data_lagi);
+                            }
+                        }
+                    });
+                    $('#modal-info').modal('show');
+                }
+            });
+
         }
     </script>
 </body>
