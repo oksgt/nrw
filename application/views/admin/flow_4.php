@@ -109,6 +109,7 @@
             stroke-width: 5px !important;
             stroke-dasharray: 15px !important;
             animation: dash 2.5s linear infinite;
+            stroke: #2199e8 !important;
         }
 
         .main-path-bg {
