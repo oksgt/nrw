@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 class Logger_model extends CI_Model
 {
@@ -8,10 +8,23 @@ class Logger_model extends CI_Model
     {
         return $this->db->get($this->_table)->result();
     }
-    
+
     public function getById($id)
     {
         return $this->db->get_where($this->_table, ["no" => $id])->row();
+    }
+
+    public function get_data_log($kode, $tanggal = "")
+    {
+        $qry = "select debit, tekanan, updatedindb from log_inbox li where kode like '%" . $kode . "' ";
+        $qry .= " and updatedindb like '%" . $tanggal . "%'";
+        return $this->db->query($qry)->result();
+    }
+
+    public function get_lokasi_log($kode)
+    {
+        $qry = "select kode, lokasi from m_mendoan where kode = 'M." . $kode . "'";
+        return $this->db->query($qry)->row_array();
     }
 
     // public function save()

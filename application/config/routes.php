@@ -60,6 +60,7 @@ $route['logger'] = 'admin/logger';
 $route['spam_pelanggan'] = 'admin/spam_pelanggan';
 
 $route['dashboard'] = 'admin/dashboard';
+$route['chart'] = 'admin/chart';
 
 $route['kartu'] = 'admin/kartu';
 $route['step'] = 'admin/step';

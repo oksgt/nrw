@@ -1,12 +1,16 @@
     <li class="nav-item menu-open">
-      <p>
     <li class="nav-item">
       <a href="dashboard" class="nav-link active">
         <i class="far fa-circle nav-icon"></i>
         <p>Dashboard</p>
       </a>
     </li>
-    </a>
+    <li class="nav-item">
+      <a href="chart" class="nav-link active">
+        <i class="fa fa-chart-line nav-icon"></i>
+        <p>Graphic Chart</p>
+      </a>
+    </li>
     </li>
     <?php
     if ($this->session->userdata('status') == 'loggedin') { ?>
