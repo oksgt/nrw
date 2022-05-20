@@ -78,11 +78,12 @@
         };
         date_input.datepicker(options);
 
-
+        setInterval(function() {
+            load_chart();
+        }, 5 * 60 * 1000);
     });
 
     function load_chart() {
-
         var id = $('#selectlog').find(":selected").text();
         var date = $('input[name="date"]').val();
 
