@@ -28,7 +28,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-6">
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="input_logger">Logger</label>
@@ -44,9 +44,15 @@
 
                         <div class="form-group ml-4">
                             <label for="input_logger">Periode</label>
-                            <input class="form-control ml-2" id="date" name="date" placeholder="MM/DD/YYY" type="text" onchange="load_chart();" />
+                            <input class="form-control ml-2" id="date" name="date" placeholder="tahun-bulan-tanggal" type="text" onchange="load_chart();" />
                         </div>
                     </form>
+
+                </div>
+                <div class="col-sm-6 col-6 ">
+                    <div class="form-group ml-4 float-right">
+                        <button type="button" class="btn btn-success">Export Excel</button>
+                    </div>
                 </div>
             </div>
             <div class="row mb-2 ">
@@ -55,6 +61,9 @@
         </div>
     </div>
     <section class="content">
+        <div class="container text-center mb-3" id="">
+            <h1 class="display-4" id="judul"></h1>
+        </div>
         <div class="container-fluid" id="idGraph">
 
         </div>
@@ -75,6 +84,7 @@
             format: 'yyyy-mm-dd',
             todayHighlight: true,
             autoclose: true,
+            forceParse: false
         };
         date_input.datepicker(options);
 
@@ -96,12 +106,21 @@
             method: 'GET',
             dataType: 'json',
             success: function(data) {
+                console.log(data.lokasi);
+                $('#judul').text(data.lokasi);
                 $('#idGraph').html('<canvas id="myChart"></canvas>');
                 var ctx = document.getElementById('myChart').getContext('2d');
                 var chart = new Chart(ctx, {
                     type: "line",
                     data: {},
-                    options: {}
+                    options: {
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'TEST'
+                            }
+                        }
+                    }
                 });
                 // console.log(data.result);
                 for (var i in data.result) {
@@ -109,12 +128,6 @@
                     debit.push(data.result[i].debit);
                     tekanan.push(data.result[i].tekanan);
                 }
-
-                chart = new Chart(ctx, {
-                    type: "line",
-                    data: {},
-                    options: {}
-                });
 
                 chart.data = {
                     labels: periode,
@@ -134,14 +147,6 @@
                         },
                     ]
                 };
-                chart.options = {
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: data.lokasi
-                        }
-                    }
-                }
 
                 chart.update();
             }
