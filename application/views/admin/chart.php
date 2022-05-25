@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-sm-6 col-6 ">
                     <div class="form-group ml-4 float-right">
-                        <button type="button" class="btn btn-success">Export Excel</button>
+                        <button type="button" class="btn btn-success" onclick="export_excel()">Export Excel</button>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,22 @@
             load_chart();
         }, 5 * 60 * 1000);
     });
+
+    function export_excel() {
+        var id = $('#selectlog').find(":selected").text();
+        var date = $('input[name="date"]').val();
+
+        window.open("<?= base_url('admin/chart/export/'); ?>" + id + "/" + date)
+
+        // $.ajax({
+        //     url: "<?php echo site_url('admin/chart/') ?>" + "get_chart/" + id + "/" + date,
+        //     method: 'GET',
+        //     dataType: 'json',
+        //     success: function(data) {
+
+        //     }
+        // });
+    }
 
     function load_chart() {
         var id = $('#selectlog').find(":selected").text();
@@ -152,13 +168,6 @@
             }
         });
     }
-</script>
-<script>
-
-</script>
-
-<script type="text/javascript">
-
 </script>
 
 </html>

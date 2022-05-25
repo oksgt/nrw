@@ -27,6 +27,16 @@ class Logger_model extends CI_Model
         return $this->db->query($qry)->row_array();
     }
 
+    public function report_logger($kode, $tanggal)
+    {
+        $qry = "select
+        mm.KODE, debit, tekanan, updatedindb as 'periode_data_logger',  mm.JENIS_PIPA, mm.DIAMETER_PIPA, mm.SPAM, mm.LOKASI, mm.JENIS_LAYANAN , mm.KODE1 , mm.CABANG_LAYANAN, mm.DEBIT_NORMAL, mm.TEKANAN_NORMAL 
+        from log_inbox li 
+        inner join m_mendoan mm on right(li.kode, 3) =  right(mm.kode, 3)
+        where li.kode like '%" . $kode . "' and updatedindb like '%" . $tanggal . "%' order by updatedindb asc";
+        return $this->db->query($qry)->result();
+    }
+
     // public function save()
     // {
     //     $post = $this->input->post();
