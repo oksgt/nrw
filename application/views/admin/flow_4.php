@@ -211,7 +211,7 @@
     <script src="<?= base_url('node_modules/drawflow/dist/bootstrap.bundle.min.js') ?>" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
     <!-- drawflow -->
-    <script src="<?= base_url('node_modules/drawflow/dist/drawflow_aslipol.js?v=') . time() ?>"></script>
+    <script src="<?= base_url('node_modules/drawflow/dist/drawflow_aslipol.js?v=') . time() ?>" crossorigin="anonymous"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/font-awesome_5.13.0_all.min.js') ?>" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <script src="<?= base_url('node_modules/drawflow/dist/micromodal.min.js') ?>"></script>
 
