@@ -5,18 +5,20 @@ class Checklog_model extends CI_Model
 {
 
     private $db_212;
+    private $db_gis;
 
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
         $this->db_212 = $this->load->database('db_212', TRUE);
+        $this->db_gis = $this->load->database('gis', TRUE);
     }
 
     public function get_local_last_date_record()
     {
         $qry = 'select max(li.updatedindb) as last_updatedindb from log_inbox li';
-        return $this->db->query($qry)->row_array()['last_updatedindb'];
+        return $this->db_gis->query($qry)->row_array()['last_updatedindb'];
     }
 
     public function check_compare($last_updatedindb)
@@ -58,11 +60,18 @@ class Checklog_model extends CI_Model
         return $this->db_212->query($qry);
     }
 
-    public function insert_local($data){
-        return $this->db->insert_batch('log_inbox', $data);
+    public function insert_local($data)
+    {
+        return $this->db_gis->insert_batch('log_inbox', $data);
     }
 
-    public function cekrowscheme(){
+    public function insert_local_datalama($data)
+    {
+        return $this->db->insert_batch('log_inbox_datalama', $data);
+    }
+
+    public function cekrowscheme()
+    {
         $sql = "select TABLE_ROWS  from information_schema.TABLES where TABLE_SCHEMA = 'GAMMU_9200' and TABLE_NAME = 'inbox'";
         return $this->db_212->query($sql);
     }
