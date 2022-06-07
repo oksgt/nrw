@@ -7,6 +7,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Chart extends CI_Controller
 {
+    private $db_212;
+    private $db_gis;
 
     public function __construct()
     {
@@ -14,6 +16,8 @@ class Chart extends CI_Controller
         $this->load->library(array('form_validation'));
         $this->load->model(['M_mendoan_model', 'Logger_model']);
         $this->load->helper('app_helper');
+        $this->db_212 = $this->load->database('db_212', TRUE);
+        $this->db_gis = $this->load->database('gis', TRUE);
     }
 
     public function index()
@@ -23,7 +27,218 @@ class Chart extends CI_Controller
         $this->load->view('admin/chart', $data);
     }
 
-    public function get_chart($kode_logger, $tanggal = "")
+    function max_with_key($array, $key)
+    {
+        if (!is_array($array) || count($array) == 0) return false;
+        $max = $array[0][$key];
+        foreach ($array as $a) {
+            if ($a[$key] > $max) {
+                $max = $a[$key];
+            }
+        }
+        return $max;
+    }
+
+    public function get_chart($kode_logger = "", $tanggal = "")
+    {
+        $type = "";
+        $first_date_of_current_month = null;
+        $logger = explode(".", $kode_logger);
+        if ($tanggal == "") {
+            $tanggal = Date('Y-m');
+            $first_date_of_current_month = date('Y-m-01 00:00:00');
+            $type = "CURRENT_MONTH";
+        } else {
+            $exp_tanggal = explode("-", $tanggal);
+            if (count($exp_tanggal) > 2) { // jika format tanggal
+                $first_date_of_current_month = $tanggal;
+                $type = "SELECTED_DATE";
+            } else if (count($exp_tanggal) == 2) { // jika format bulan
+                $first_date_of_current_month = $tanggal;
+                $type = "MONTH";
+            }
+        }
+
+        //ambil data GPRS dari table t_bakwan
+        $sql_gprs = "select null as 'kode', id_mendoan as kode_m, debit, tekanan, tanggal as updatedindb, tgl_log, jam_log, concat(tgl_log, ' ', jam_log) as periode
+	                from t_bakwan where id_mendoan = 'm." . $logger[1] . "' and tanggal like '%" . $tanggal . "%'";
+        $data_gprs = $this->db_gis->query($sql_gprs)->result();
+
+        if (!empty($data_gprs)) { //jika ada data gprs 
+
+            if ($type == "MONTH") {
+                $list_tgl_gprs = [];
+                foreach ($data_gprs as $key => $value) {
+                    $data_gprs[$key]->periode = date('Y-m-d H:i:s', strtotime($value->periode));
+                    // kumpulan data tanggal kedalam array
+                    $list_tgl_gprs[] = $value->updatedindb;
+                }
+
+                if (!empty($list_tgl_gprs)) {
+                    $min_tgl = min($list_tgl_gprs);
+                    $first_date_of_current_month = date('Y-m-01 00:00:00', strtotime($min_tgl));
+                    if ($min_tgl > $first_date_of_current_month) {
+                        $sql_sms = "select li.kode,
+                        concat(substring(li.kode, 2, 1), '.',
+                            if(LENGTH(trim(substring(li.kode, 9, 3))) >= 3, substring(li.kode, 9, 3), concat(trim(substring(li.kode, 9, 3)), '0'))
+                        ) as kode_m, debit, tekanan, updatedindb, DATE_FORMAT(DATE(updatedindb),'%d-%m-%Y') as tgl_log, TIME_FORMAT(time(updatedindb),'%H:%i') as jam_log, updatedindb as periode
+                        from log_inbox li where kode like '%" . $logger[1] . "' and 
+                        updatedindb >= '" . $first_date_of_current_month . "' and updatedindb <= '" . $min_tgl . "'";
+                        $data_sms = $this->db_gis->query($sql_sms)->result();
+                        $data = array_merge($data_gprs, $data_sms);
+                        $sort = array();
+                        foreach ($data as $k => $v) {
+                            $sort['periode'][$k] = $v->periode;
+                        }
+
+                        # sort by event_type desc and then title asc
+                        array_multisort($sort['periode'], SORT_ASC, $data);
+
+                        $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+
+                        echo json_encode(['result' => $data, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+                    }
+                }
+            } else if ($type == "SELECTED_DATE") {
+                foreach ($data_gprs as $key => $value) {
+                    $data_gprs[$key]->periode = date('Y-m-d H:i:s', strtotime($value->periode));
+                }
+
+                $sort = array();
+                foreach ($data_gprs as $k => $v) {
+                    $sort['periode'][$k] = $v->periode;
+                }
+
+                # sort by event_type desc and then title asc
+                array_multisort($sort['periode'], SORT_ASC, $data_gprs);
+
+                $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+
+                echo json_encode(['result' => $data_gprs, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+            }
+        } else {
+            $sql_sms = "select li.kode,
+                        concat(substring(li.kode, 2, 1), '.',
+                            if(LENGTH(trim(substring(li.kode, 9, 3))) >= 3, substring(li.kode, 9, 3), concat(trim(substring(li.kode, 9, 3)), '0'))
+                        ) as kode_m, debit, tekanan, updatedindb, DATE_FORMAT(DATE(updatedindb),'%d-%m-%Y') as tgl_log, TIME_FORMAT(time(updatedindb),'%H:%i') as jam_log, updatedindb as periode
+                        from log_inbox li where kode like '%" . $logger[1] . "' and updatedindb like '%" . $tanggal . "%'";
+            $data_sms = $this->db_gis->query($sql_sms)->result();
+
+            if (!empty($data_sms)) {
+                $sort = array();
+                foreach ($data_sms as $k => $v) {
+                    $sort['periode'][$k] = $v->periode;
+                }
+
+                array_multisort($sort['periode'], SORT_ASC, $data_sms);
+
+                $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+                echo json_encode(['result' => $data_sms, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+            }
+        }
+    }
+
+    public function get_chart_data($kode_logger = "", $tanggal = "")
+    {
+        $type = "";
+        $first_date_of_current_month = null;
+        $logger = explode(".", $kode_logger);
+        if ($tanggal == "") {
+            $tanggal = Date('Y-m');
+            $first_date_of_current_month = date('Y-m-01 00:00:00');
+            $type = "CURRENT_MONTH";
+        } else {
+            $exp_tanggal = explode("-", $tanggal);
+            if (count($exp_tanggal) > 2) { // jika format tanggal
+                $first_date_of_current_month = $tanggal;
+                $type = "SELECTED_DATE";
+            } else if (count($exp_tanggal) == 2) { // jika format bulan
+                $first_date_of_current_month = $tanggal;
+                $type = "MONTH";
+            }
+        }
+
+        //ambil data GPRS dari table t_bakwan
+        $sql_gprs = "select null as 'kode', id_mendoan as kode_m, debit, tekanan, tanggal as updatedindb, tgl_log, jam_log, concat(tgl_log, ' ', jam_log) as periode
+	                from t_bakwan where id_mendoan = 'm." . $logger[1] . "' and tanggal like '%" . $tanggal . "%'";
+        $data_gprs = $this->db_gis->query($sql_gprs)->result();
+
+        if (!empty($data_gprs)) { //jika ada data gprs 
+
+            if ($type == "MONTH") {
+                $list_tgl_gprs = [];
+                foreach ($data_gprs as $key => $value) {
+                    $data_gprs[$key]->periode = date('Y-m-d H:i:s', strtotime($value->periode));
+                    // kumpulan data tanggal kedalam array
+                    $list_tgl_gprs[] = $value->updatedindb;
+                }
+
+                if (!empty($list_tgl_gprs)) {
+                    $min_tgl = min($list_tgl_gprs);
+                    $first_date_of_current_month = date('Y-m-01 00:00:00', strtotime($min_tgl));
+                    if ($min_tgl > $first_date_of_current_month) {
+                        $sql_sms = "select li.kode,
+                        concat(substring(li.kode, 2, 1), '.',
+                            if(LENGTH(trim(substring(li.kode, 9, 3))) >= 3, substring(li.kode, 9, 3), concat(trim(substring(li.kode, 9, 3)), '0'))
+                        ) as kode_m, debit, tekanan, updatedindb, DATE_FORMAT(DATE(updatedindb),'%d-%m-%Y') as tgl_log, TIME_FORMAT(time(updatedindb),'%H:%i') as jam_log, updatedindb as periode
+                        from log_inbox li where kode like '%" . $logger[1] . "' and 
+                        updatedindb >= '" . $first_date_of_current_month . "' and updatedindb <= '" . $min_tgl . "'";
+                        $data_sms = $this->db_gis->query($sql_sms)->result();
+                        $data = array_merge($data_gprs, $data_sms);
+                        $sort = array();
+                        foreach ($data as $k => $v) {
+                            $sort['periode'][$k] = $v->periode;
+                        }
+
+                        # sort by event_type desc and then title asc
+                        array_multisort($sort['periode'], SORT_ASC, $data);
+
+                        $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+                        return $data;
+                        // echo json_encode(['result' => $data, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+                    }
+                }
+            } else if ($type == "SELECTED_DATE") {
+                foreach ($data_gprs as $key => $value) {
+                    $data_gprs[$key]->periode = date('Y-m-d H:i:s', strtotime($value->periode));
+                }
+
+                $sort = array();
+                foreach ($data_gprs as $k => $v) {
+                    $sort['periode'][$k] = $v->periode;
+                }
+
+                # sort by event_type desc and then title asc
+                array_multisort($sort['periode'], SORT_ASC, $data_gprs);
+
+                $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+                return $data_gprs;
+                // echo json_encode(['result' => $data_gprs, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+            }
+        } else {
+            $sql_sms = "select li.kode,
+                        concat(substring(li.kode, 2, 1), '.',
+                            if(LENGTH(trim(substring(li.kode, 9, 3))) >= 3, substring(li.kode, 9, 3), concat(trim(substring(li.kode, 9, 3)), '0'))
+                        ) as kode_m, debit, tekanan, updatedindb, DATE_FORMAT(DATE(updatedindb),'%d-%m-%Y') as tgl_log, TIME_FORMAT(time(updatedindb),'%H:%i') as jam_log, updatedindb as periode
+                        from log_inbox li where kode like '%" . $logger[1] . "' and updatedindb like '%" . $tanggal . "%'";
+            $data_sms = $this->db_gis->query($sql_sms)->result();
+
+            if (!empty($data_sms)) {
+                $sort = array();
+                foreach ($data_sms as $k => $v) {
+                    $sort['periode'][$k] = $v->periode;
+                }
+
+                array_multisort($sort['periode'], SORT_ASC, $data_sms);
+
+                $lokasi = $this->Logger_model->get_lokasi_log($logger[1]);
+                return $data_sms;
+                // echo json_encode(['result' => $data_sms, 'lokasi' => $lokasi['kode'] . " - " . $lokasi['lokasi']]);
+            }
+        }
+    }
+
+    public function get_chart_old($kode_logger, $tanggal = "")
     {
         $logger = explode(".", $kode_logger);
         if ($tanggal == "") {
@@ -37,6 +252,14 @@ class Chart extends CI_Controller
 
     public function export($kode_logger, $tanggal = "")
     {
+
+        $logger = explode(".", $kode_logger);
+        if ($tanggal == "") {
+            $tanggal = Date('Y-m');
+        }
+        // $data = $this->Logger_model->report_logger($logger[1], $tanggal);
+        $data = $this->get_chart_data($kode_logger, $tanggal);
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -77,14 +300,14 @@ class Chart extends CI_Controller
         $sheet->setCellValue('C3', "DEBIT");
         $sheet->setCellValue('D3', "TEKANAN");
         $sheet->setCellValue('E3', "TIME LOGGER");
-        $sheet->setCellValue('F3', "JENIS PIPA");
-        $sheet->setCellValue('G3', "DIAMETER PIPA");
-        $sheet->setCellValue('H3', "SPAM");
-        $sheet->setCellValue('I3', "LOKASI");
-        $sheet->setCellValue('J3', "JENIS LAYANAN");
-        $sheet->setCellValue('K3', "CABANG LAYANAN");
-        $sheet->setCellValue('L3', "DEBIT NORMAL");
-        $sheet->setCellValue('M3', "TEKANAN NORMAL");
+        // $sheet->setCellValue('F3', "JENIS PIPA");
+        // $sheet->setCellValue('G3', "DIAMETER PIPA");
+        // $sheet->setCellValue('H3', "SPAM");
+        // $sheet->setCellValue('I3', "LOKASI");
+        // $sheet->setCellValue('J3', "JENIS LAYANAN");
+        // $sheet->setCellValue('K3', "CABANG LAYANAN");
+        // $sheet->setCellValue('L3', "DEBIT NORMAL");
+        // $sheet->setCellValue('M3', "TEKANAN NORMAL");
 
         // Apply style header yang telah kita buat tadi ke masing-masing kolom header
         $sheet->getStyle('A3')->applyFromArray($style_col);
@@ -92,21 +315,14 @@ class Chart extends CI_Controller
         $sheet->getStyle('C3')->applyFromArray($style_col);
         $sheet->getStyle('D3')->applyFromArray($style_col);
         $sheet->getStyle('E3')->applyFromArray($style_col);
-        $sheet->getStyle('F3')->applyFromArray($style_col);
-        $sheet->getStyle('G3')->applyFromArray($style_col);
-        $sheet->getStyle('H3')->applyFromArray($style_col);
-        $sheet->getStyle('I3')->applyFromArray($style_col);
-        $sheet->getStyle('J3')->applyFromArray($style_col);
-        $sheet->getStyle('K3')->applyFromArray($style_col);
-        $sheet->getStyle('L3')->applyFromArray($style_col);
-        $sheet->getStyle('M3')->applyFromArray($style_col);
-
-        // Panggil function view yang ada di SiswaModel untuk menampilkan semua data siswanya
-        $logger = explode(".", $kode_logger);
-        if ($tanggal == "") {
-            $tanggal = Date('Y-m');
-        }
-        $data = $this->Logger_model->report_logger($logger[1], $tanggal);
+        // $sheet->getStyle('F3')->applyFromArray($style_col);
+        // $sheet->getStyle('G3')->applyFromArray($style_col);
+        // $sheet->getStyle('H3')->applyFromArray($style_col);
+        // $sheet->getStyle('I3')->applyFromArray($style_col);
+        // $sheet->getStyle('J3')->applyFromArray($style_col);
+        // $sheet->getStyle('K3')->applyFromArray($style_col);
+        // $sheet->getStyle('L3')->applyFromArray($style_col);
+        // $sheet->getStyle('M3')->applyFromArray($style_col);
 
         $no = 1; // Untuk penomoran tabel, di awal set dengan 1
         $numrow = 4; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -114,18 +330,18 @@ class Chart extends CI_Controller
         foreach ($data as $data) {
             // Lakukan looping pada variabel DATA
             $sheet->setCellValue('A' . $numrow, $no);
-            $sheet->setCellValue('B' . $numrow, $data->KODE);
+            $sheet->setCellValue('B' . $numrow, $data->kode_m);
             $sheet->setCellValue('C' . $numrow, $data->debit);
             $sheet->setCellValue('D' . $numrow, $data->tekanan);
-            $sheet->setCellValue('E' . $numrow, $data->periode_data_logger);
-            $sheet->setCellValue('F' . $numrow, $data->JENIS_PIPA);
-            $sheet->setCellValue('G' . $numrow, $data->DIAMETER_PIPA);
-            $sheet->setCellValue('H' . $numrow, $data->SPAM);
-            $sheet->setCellValue('I' . $numrow, $data->LOKASI);
-            $sheet->setCellValue('J' . $numrow, $data->JENIS_LAYANAN);
-            $sheet->setCellValue('K' . $numrow, $data->CABANG_LAYANAN);
-            $sheet->setCellValue('L' . $numrow, $data->DEBIT_NORMAL);
-            $sheet->setCellValue('M' . $numrow, $data->TEKANAN_NORMAL);
+            $sheet->setCellValue('E' . $numrow, strval($data->periode));
+            // $sheet->setCellValue('F' . $numrow, $data->JENIS_PIPA);
+            // $sheet->setCellValue('G' . $numrow, $data->DIAMETER_PIPA);
+            // $sheet->setCellValue('H' . $numrow, $data->SPAM);
+            // $sheet->setCellValue('I' . $numrow, $data->LOKASI);
+            // $sheet->setCellValue('J' . $numrow, $data->JENIS_LAYANAN);
+            // $sheet->setCellValue('K' . $numrow, $data->CABANG_LAYANAN);
+            // $sheet->setCellValue('L' . $numrow, $data->DEBIT_NORMAL);
+            // $sheet->setCellValue('M' . $numrow, $data->TEKANAN_NORMAL);
 
             // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
             $sheet->getStyle('A' . $numrow)->applyFromArray($style_row);
@@ -133,14 +349,14 @@ class Chart extends CI_Controller
             $sheet->getStyle('C' . $numrow)->applyFromArray($style_row);
             $sheet->getStyle('D' . $numrow)->applyFromArray($style_row);
             $sheet->getStyle('E' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('F' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('G' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('H' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('I' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('J' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('K' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('L' . $numrow)->applyFromArray($style_row);
-            $sheet->getStyle('M' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('F' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('G' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('H' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('I' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('J' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('K' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('L' . $numrow)->applyFromArray($style_row);
+            // $sheet->getStyle('M' . $numrow)->applyFromArray($style_row);
 
             $no++; // Tambah 1 setiap kali looping
             $numrow++; // Tambah 1 setiap kali looping
@@ -152,14 +368,14 @@ class Chart extends CI_Controller
         $sheet->getColumnDimension('C')->setWidth(25);
         $sheet->getColumnDimension('D')->setWidth(20);
         $sheet->getColumnDimension('E')->setWidth(30);
-        $sheet->getColumnDimension('F')->setWidth(30);
-        $sheet->getColumnDimension('G')->setWidth(30);
-        $sheet->getColumnDimension('H')->setWidth(30);
-        $sheet->getColumnDimension('I')->setWidth(30);
-        $sheet->getColumnDimension('J')->setWidth(30);
-        $sheet->getColumnDimension('K')->setWidth(30);
-        $sheet->getColumnDimension('L')->setWidth(30);
-        $sheet->getColumnDimension('M')->setWidth(30);
+        // $sheet->getColumnDimension('F')->setWidth(30);
+        // $sheet->getColumnDimension('G')->setWidth(30);
+        // $sheet->getColumnDimension('H')->setWidth(30);
+        // $sheet->getColumnDimension('I')->setWidth(30);
+        // $sheet->getColumnDimension('J')->setWidth(30);
+        // $sheet->getColumnDimension('K')->setWidth(30);
+        // $sheet->getColumnDimension('L')->setWidth(30);
+        // $sheet->getColumnDimension('M')->setWidth(30);
 
         // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
         $sheet->getDefaultRowDimension()->setRowHeight(-1);

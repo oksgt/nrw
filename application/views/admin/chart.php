@@ -122,7 +122,7 @@
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(data.lokasi);
+                console.log(data.result);
                 $('#judul').text(data.lokasi);
                 $('#idGraph').html('<canvas id="myChart"></canvas>');
                 var ctx = document.getElementById('myChart').getContext('2d');
@@ -140,7 +140,7 @@
                 });
                 // console.log(data.result);
                 for (var i in data.result) {
-                    periode.push(data.result[i].updatedindb);
+                    periode.push(data.result[i].periode);
                     debit.push(data.result[i].debit);
                     tekanan.push(data.result[i].tekanan);
                 }
