@@ -6,6 +6,7 @@ class Checklog_model extends CI_Model
 
     private $db_212;
     private $db_gis;
+    private $db_84;
 
     public function __construct()
     {
@@ -13,6 +14,7 @@ class Checklog_model extends CI_Model
         $this->load->database();
         $this->db_212 = $this->load->database('db_212', TRUE);
         $this->db_gis = $this->load->database('gis', TRUE);
+        $this->db_84 = $this->load->database('db84', TRUE);
     }
 
     public function get_local_last_date_record()

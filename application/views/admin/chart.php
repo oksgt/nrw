@@ -110,6 +110,7 @@
     }
 
     function load_chart() {
+        console.log('oke');
         var id = $('#selectlog').find(":selected").text();
         var date = $('input[name="date"]').val();
 

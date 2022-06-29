@@ -39,22 +39,23 @@ class Chart extends CI_Controller
         return $max;
     }
 
-    public function get_chart($kode_logger = "", $tanggal = "")
+    public function get_chart($kode_logger = "", $tanggal_ = "")
     {
         $type = "";
         $first_date_of_current_month = null;
         $logger = explode(".", $kode_logger);
-        if ($tanggal == "") {
+        $tanggal = null;
+        if ($tanggal_ == "") {
             $tanggal = Date('Y-m');
             $first_date_of_current_month = date('Y-m-01 00:00:00');
             $type = "CURRENT_MONTH";
         } else {
-            $exp_tanggal = explode("-", $tanggal);
+            $exp_tanggal = explode("-", $tanggal_);
             if (count($exp_tanggal) > 2) { // jika format tanggal
-                $first_date_of_current_month = $tanggal;
+                $first_date_of_current_month = $tanggal_;
                 $type = "SELECTED_DATE";
             } else if (count($exp_tanggal) == 2) { // jika format bulan
-                $first_date_of_current_month = $tanggal;
+                $first_date_of_current_month = $tanggal_;
                 $type = "MONTH";
             }
         }
@@ -63,7 +64,8 @@ class Chart extends CI_Controller
         $sql_gprs = "select null as 'kode', id_mendoan as kode_m, debit, tekanan, tanggal as updatedindb, tgl_log, jam_log, concat(tgl_log, ' ', jam_log) as periode
 	                from t_bakwan where id_mendoan = 'm." . $logger[1] . "' and tanggal like '%" . $tanggal . "%'";
         $data_gprs = $this->db_gis->query($sql_gprs)->result();
-
+        // echo $this->db_gis->last_query();
+        // die;
         if (!empty($data_gprs)) { //jika ada data gprs 
 
             if ($type == "MONTH") {
