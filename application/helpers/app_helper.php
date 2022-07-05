@@ -239,7 +239,15 @@ function getJumlahPelangganSpam($id){
   $ci = get_instance();
   $data_ipa = $ci->db->query('select * FROM `view_spam_node` where step = 2 and root = 6 and is_del = 0; ')->row_array();
   $ci->load->model('Spam_ipa_detail_model');
-
-  $data_ipda_detail = $ci->Spam_ipa_detail_model->get_last_value($data_ipa['id'])->row_array();
-  return $data_ipda_detail['jml_pelanggan_'];
+  
+  if(!empty($data_ipa['id'])){
+    $data_ipda_detail = $ci->Spam_ipa_detail_model->get_last_value($data_ipa['id'])->row_array();
+    if (!empty($data_ipda_detail)) {
+      return $data_ipda_detail['jml_pelanggan_'];
+    } else {
+      return 0;
+    }
+  } else {
+    return 0;
+  }
 }

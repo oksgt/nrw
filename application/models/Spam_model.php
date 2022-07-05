@@ -128,7 +128,7 @@ class Spam_model extends CI_Model
         from tb_spam_node as node 
         inner join tb_spam as spam on node.root = spam.id 
         left join tb_spam_step tss on node.step = tss.id
-        where node.is_del = 0 and node.root = ' . $id;
+        where node.is_del is null and node.root = ' . $id;
         // $this->db->where('root', $id);
         return $this->db->query($qry);
     }
