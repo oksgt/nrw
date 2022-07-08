@@ -185,7 +185,7 @@ class Spam_model extends CI_Model
 
     public function get_active_spam()
     {
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null');
         return $this->db->get('tb_spam');
     }
 
