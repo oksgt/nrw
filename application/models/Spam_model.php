@@ -17,7 +17,7 @@ class Spam_model extends CI_Model
 
     private function _get_datatables_query()
     {
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $this->db->from($this->table);
 
         $i = 0;
@@ -68,7 +68,7 @@ class Spam_model extends CI_Model
 
     public function count_all()
     {
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
@@ -128,7 +128,7 @@ class Spam_model extends CI_Model
         from tb_spam_node as node 
         inner join tb_spam as spam on node.root = spam.id 
         left join tb_spam_step tss on node.step = tss.id
-        where node.is_del is null and node.root = ' . $id;
+        where (node.is_del is null or node.is_del = 0) and node.root = ' . $id;
         // $this->db->where('root', $id);
         return $this->db->query($qry);
     }
@@ -136,7 +136,7 @@ class Spam_model extends CI_Model
     public function getDataNodeByRoot($id)
     {
         $this->db->where('root', $id);
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $this->db->select('id, pid');
         $this->db->order_by('id', 'asc');
         $data = $this->db->get("tb_spam_node");
@@ -146,7 +146,7 @@ class Spam_model extends CI_Model
     public function getDataNodeByRootV2($id)
     {
         $this->db->where('root', $id);
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $this->db->select('seq, pid');
         $this->db->order_by('id', 'asc');
         $data = $this->db->get("tb_spam_node");
@@ -160,7 +160,7 @@ class Spam_model extends CI_Model
         node.pid, node.step, tss.name as step_name, node.name, tss.img , node.url from view_spam_node as node 
         inner join tb_spam as spam on node.root = spam.id 
         left join tb_spam_step tss on node.step = tss.id
-        where node.is_del = 0 and node.root = ' . $id;
+        where (node.is_del is null or node.is_del = 0) and node.root = ' . $id;
         // $this->db->where('root', $id);
         return $this->db->query($qry);
     }
@@ -168,7 +168,7 @@ class Spam_model extends CI_Model
     public function getDataNode($id)
     {
         $this->db->where('id', $id);
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $data = $this->db->get("view_spam_node");
         return $data;
     }
@@ -198,7 +198,7 @@ class Spam_model extends CI_Model
 
     public function getExistingNode($root, $idnya = "")
     {
-        $this->db->where('is_del', 0);
+        $this->db->where('is_del is null or is_del = 0');
         $this->db->where('step != 999');
         $this->db->where('root', $root);
         $this->db->where('id > ' . $idnya);
